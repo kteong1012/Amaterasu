@@ -3,41 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniFramework.Event;
 using YooAsset;
+using Cysharp.Threading.Tasks;
 
-public class GameManager
+public class GameManager : MonoBehaviour
 {
-    private static GameManager _instance;
-    public static GameManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = new GameManager();
-            return _instance;
-        }
-    }
+    public static GameManager Instance { get; private set; }
 
     private readonly EventGroup _eventGroup = new EventGroup();
 
-    /// <summary>
-    /// 协程启动器
-    /// </summary>
-    public MonoBehaviour Behaviour;
+    public ResourceComponent Resource { get; private set; }
+    public ConfigComponent Config { get; private set; }
 
-
-    private GameManager()
+    private async void Awake()
     {
+        Instance = this;
+        Application.targetFrameRate = 60;
+        Application.runInBackground = true;
+        DontDestroyOnLoad(this.gameObject);
+
+        // 初始化Log
+        Log.RegisterLogger(new UnityConsoleLog());
+
         // 注册监听事件
         _eventGroup.AddListener<SceneEventDefine.ChangeToHomeScene>(OnHandleEventMessage);
         _eventGroup.AddListener<SceneEventDefine.ChangeToBattleScene>(OnHandleEventMessage);
-    }
 
-    /// <summary>
-    /// 开启一个协程
-    /// </summary>
-    public void StartCoroutine(IEnumerator enumerator)
-    {
-        Behaviour.StartCoroutine(enumerator);
+        // 初始化游戏组件
+        await InitGameComponents();
     }
 
     /// <summary>
@@ -53,5 +45,22 @@ public class GameManager
         {
             YooAssets.LoadSceneAsync("scene_battle");
         }
+    }
+
+    private async UniTask InitGameComponents()
+    {
+        async UniTask<T> GetGameComponent<T>() where T : GameComponent
+        {
+            var component = transform.GetComponentInChildren<T>();
+            if (component == null)
+            {
+                throw new System.Exception($"GameComponent {typeof(T).Name} not found");
+            }
+            await component.Initialize();
+            return component;
+        }
+
+        Resource = await GetGameComponent<ResourceComponent>();
+        Config = await GetGameComponent<ConfigComponent>();
     }
 }
