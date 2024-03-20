@@ -1,0 +1,13 @@
+<module name="">
+    <bean name="NumericValue">
+        <var name="type" type="NumericValueType" comment="数值类别"/>
+        <var name="value" type="float" comment="数值"/>
+    </bean>
+    <enum name="NumericValueType">
+        <var name="Base" alias="B"/>
+        <var name="BaseAdd" alias="BA"/>
+        <var name="BaseMul" alias="BM"/>
+        <var name="FinalAdd" alias="FA"/>
+        <var name="FinalMul" alias="FM"/>
+    </enum>
+</module>

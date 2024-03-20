@@ -1,0 +1,36 @@
+using Luban;
+using Cysharp.Threading.Tasks;
+
+{{namespace_with_grace_begin __namespace}}
+public partial class {{__name}}
+{
+    {{~for table in __tables ~}}
+{{~if table.comment != '' ~}}
+    /// <summary>
+    /// {{escape_comment table.comment}}
+    /// </summary>
+{{~end~}}
+    public {{table.full_name}} {{format_property_name __code_style table.name}} {get; private set; }
+    {{~end~}}
+
+    public async UniTask LoadAll(System.Func<string, UniTask<ByteBuf>> loader)
+    {
+        var tasks = new UniTask[]
+        {      
+{{~for table in __tables ~}}
+            UniTask.Create(async () => {{format_property_name __code_style table.name}} = new {{table.full_name}}(await loader("{{table.output_data_file}}"))),
+{{~end~}}
+        };
+        await UniTask.WhenAll(tasks);
+        ResolveRef();
+    }
+    
+    private void ResolveRef()
+    {
+        {{~for table in __tables ~}}
+        {{format_property_name __code_style table.name}}.ResolveRef(this);
+        {{~end~}}
+    }
+}
+
+{{namespace_with_grace_end __namespace}}

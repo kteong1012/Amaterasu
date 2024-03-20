@@ -1,0 +1,87 @@
+[
+  {
+    "id": 10001,
+    "name": "小明",
+    "desc": "一个小明",
+    "attributes": [
+      {
+        "id": 1,
+        "base_value": {
+          "type": 0,
+          "value": 500
+        },
+        "grow_value": {
+          "type": 0,
+          "value": 50
+        }
+      },
+      {
+        "id": 3,
+        "base_value": {
+          "type": 0,
+          "value": 200
+        },
+        "grow_value": {
+          "type": 0,
+          "value": 15
+        }
+      },
+      {
+        "id": 4,
+        "base_value": {
+          "type": 0,
+          "value": 105
+        },
+        "grow_value": {
+          "type": 0,
+          "value": 0
+        }
+      },
+      {
+        "id": 5,
+        "base_value": {
+          "type": 0,
+          "value": 80
+        },
+        "grow_value": {
+          "type": 0,
+          "value": 6
+        }
+      },
+      {
+        "id": 6,
+        "base_value": {
+          "type": 0,
+          "value": 10
+        },
+        "grow_value": {
+          "type": 0,
+          "value": 0
+        }
+      },
+      {
+        "id": 7,
+        "base_value": {
+          "type": 0,
+          "value": 50
+        },
+        "grow_value": {
+          "type": 0,
+          "value": 0
+        }
+      },
+      {
+        "id": 8,
+        "base_value": {
+          "type": 0,
+          "value": 150
+        },
+        "grow_value": {
+          "type": 0,
+          "value": 15
+        }
+      }
+    ],
+    "skill_ids": []
+  }
+]

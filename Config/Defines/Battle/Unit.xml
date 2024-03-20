@@ -1,0 +1,8 @@
+<module name="Unit">
+    <bean name="UnitAttrData">
+        <var name="id" type="NumericId" comment="数值类型ID"/>
+        <var name="base_value" type="NumericValue" comment="基础值"/>
+        <var name="grow_value" type="NumericValue" comment="成长值"/>
+    </bean>
+    <table name="TbUnitData" value="UnitData" input="Unit.xlsx" readSchemaFromFile="1"/>
+</module>
