@@ -5,6 +5,7 @@ using UniFramework.Event;
 using YooAsset;
 using Cysharp.Threading.Tasks;
 using Game.Log;
+using UniFramework.Machine;
 
 namespace Game
 {
@@ -15,6 +16,8 @@ namespace Game
         private Dictionary<System.Type, GameComponent> _gameComponents = new Dictionary<System.Type, GameComponent>();
 
         private readonly EventGroup _eventGroup = new EventGroup();
+
+        private StateMachine _machine;
 
         private void Awake()
         {
@@ -30,7 +33,17 @@ namespace Game
             _eventGroup.AddListener<SceneEventDefine.ChangeToHomeScene>(OnHandleEventMessage);
             _eventGroup.AddListener<SceneEventDefine.ChangeToBattleScene>(OnHandleEventMessage);
 
-            StartApp.Start();
+            // 创建状态机
+            _machine = new StateMachine(this);
+            _machine.AddNode<FsmInitializeAppConst>();
+            _machine.AddNode<FsmInitializeResourceComponent>();
+            _machine.AddNode<FsmLoadDll>();
+            _machine.Run<FsmInitializeAppConst>();
+        }
+
+        private void Update()
+        {
+            _machine.Update();
         }
 
         private void OnDestroy()
@@ -62,24 +75,27 @@ namespace Game
         }
         public async UniTask<T> RegisterGameComponent<T>() where T : GameComponent
         {
-            var component = GetGameComponent<T>();
+            var component = Get<T>();
             if (component != null)
             {
                 GameLog.Warning($"GameComponent {typeof(T).Name} already exists");
                 return component;
             }
-            component = transform.GetComponentInChildren<T>();
-            if (component == null)
-            {
-                throw new System.Exception($"GameComponent {typeof(T).Name} not found");
-            }
+            component = CreateGameComponent<T>();
             await component.Initialize();
 
             _gameComponents.Add(typeof(T), component);
             return component;
         }
 
-        public T GetGameComponent<T>() where T : GameComponent
+        private T CreateGameComponent<T>() where T : GameComponent
+        {
+            var go = new GameObject(typeof(T).Name);
+            go.transform.SetParent(transform);
+            return go.AddComponent<T>();
+        }
+
+        public T Get<T>() where T : GameComponent
         {
             if (_gameComponents.TryGetValue(typeof(T), out var component))
             {

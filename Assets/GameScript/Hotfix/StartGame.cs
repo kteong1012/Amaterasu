@@ -14,8 +14,10 @@ namespace Game
 
         private static async UniTask DoStart()
         {
-            await G.Ins.RegisterGameComponent<ResourceComponent>();
             await G.Ins.RegisterGameComponent<ConfigComponent>();
+
+            // 切换到主页面场景
+            SceneEventDefine.ChangeToHomeScene.SendEventMessage();
         }
     }
 }

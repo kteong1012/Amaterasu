@@ -79,3 +79,6 @@ crashlytics-build.properties
 
 # YooAsset Bundle Directory
 /[Bb]undles/
+
+# HybridCLRData Directory
+/[Hh]ybridCLRData/
