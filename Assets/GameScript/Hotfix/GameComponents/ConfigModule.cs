@@ -9,7 +9,7 @@ using UnityEngine;
 using Game;
 using YooAsset;
 
-public class ConfigComponent : GameComponent
+public class ConfigModule : GameModule
 {
     public Tables Tables { get; private set; }
     private List<AssetHandle> _assetHandles = new List<AssetHandle>();

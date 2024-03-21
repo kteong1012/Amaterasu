@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniFramework.Event;
+using YooAsset;
 
 public class UIBattleWindow : MonoBehaviour
 {
@@ -32,11 +33,11 @@ public class UIBattleWindow : MonoBehaviour
 
     private void OnClickRestartBtn()
     {
-        SceneEventDefine.ChangeToBattleScene.SendEventMessage();
+        YooAssets.LoadSceneAsync("scene_battle");
     }
     private void OnClickHomeBtn()
     {
-        SceneEventDefine.ChangeToHomeScene.SendEventMessage();
+        YooAssets.LoadSceneAsync("scene_home");
     }
     private void OnHandleEventMessage(IEventMessage message)
     {

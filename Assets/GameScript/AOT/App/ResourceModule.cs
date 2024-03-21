@@ -9,7 +9,7 @@ using YooAsset;
 
 namespace Game
 {
-    public class ResourceComponent : GameComponent
+    public class ResourceModule : GameModule
     {
         private const float UNLOAD_UNUSED_ASSETS_INTERVAL = 15f;
         private float _unloadUnusedAssetsCountdown = UNLOAD_UNUSED_ASSETS_INTERVAL;
@@ -23,12 +23,6 @@ namespace Game
 
             // 初始化资源系统
             YooAssets.Initialize(UnityConsoleLog.Instance);
-
-            await base.OnInitialize();
-        }
-
-        public async UniTask UpdatePatch()
-        {
 
             // 加载更新页面
             var go = Resources.Load<GameObject>("PatchWindow");
@@ -47,6 +41,10 @@ namespace Game
 
         private void Update()
         {
+            if (_gamePackage == null)
+            {
+                return;
+            }
             // 定时卸载未使用的资源
             if (_unloadUnusedAssetsCountdown > 0)
             {

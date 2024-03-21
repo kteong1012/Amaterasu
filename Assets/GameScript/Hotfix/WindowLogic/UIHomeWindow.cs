@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using YooAsset;
 
 public class UIHomeWindow : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class UIHomeWindow : MonoBehaviour
 
     private void OnClickLoginBtn()
     {
-        SceneEventDefine.ChangeToBattleScene.SendEventMessage();
+        YooAssets.LoadSceneAsync("scene_battle");
     }
     private void OnClicAboutBtn()
     {

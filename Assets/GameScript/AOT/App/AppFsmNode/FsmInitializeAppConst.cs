@@ -12,7 +12,7 @@ namespace Game
         {
             //todo set app const
 
-            _machine.ChangeState<FsmInitializeResourceComponent>();
+            _machine.ChangeState<FsmInitializeResourceModule>();
         }
 
         public override void OnExit()

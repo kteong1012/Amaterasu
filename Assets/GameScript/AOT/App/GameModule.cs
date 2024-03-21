@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class GameComponent : MonoBehaviour,IDisposable
+public abstract class GameModule : MonoBehaviour,IDisposable
 {
     protected bool IsInitialized { get; private set; }
 

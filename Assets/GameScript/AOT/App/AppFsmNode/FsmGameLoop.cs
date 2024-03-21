@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using Game.Log;
+using System;
 using System.Reflection;
 using UnityEngine;
 using YooAsset;
@@ -11,22 +12,30 @@ namespace Game
         EditorMode,
         AssetMode,
     }
-    public class FsmLoadDll : FsmNode
+    public class FsmGameLoop : FsmNode
     {
+        private Action _gameLoopUpdateDelegate;
+        private Action _gameLoopReleaseDelegate;
+
         public async override void OnEnter()
         {
             var assembly = await GetHotfixAssembly();
-            var type = assembly.GetType("Game.StartGame");
-            var method = type.GetMethod("Start");
-            method.Invoke(null, null);
+            var type = assembly.GetType("Game.GameLoop");
+            var methodStart = type.GetMethod("Start");
+            _gameLoopUpdateDelegate = type.GetMethod("Update").CreateDelegate(typeof(Action)) as Action;
+            _gameLoopReleaseDelegate = type.GetMethod("Release").CreateDelegate(typeof(Action)) as Action;
+
+            methodStart.Invoke(null, null);
         }
 
         public override void OnExit()
         {
+            _gameLoopReleaseDelegate?.Invoke();
         }
 
         public override void OnUpdate()
         {
+            _gameLoopUpdateDelegate?.Invoke();
         }
 
         private async UniTask<Assembly> GetHotfixAssembly()
