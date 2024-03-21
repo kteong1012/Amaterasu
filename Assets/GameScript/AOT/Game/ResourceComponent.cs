@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using Game.Log;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UniFramework.Event;
 using UnityEngine;
 using YooAsset;
@@ -25,6 +26,10 @@ public class ResourceComponent : GameComponent
 
         // 初始化资源系统
         YooAssets.Initialize(UnityConsoleLog.Instance);
+    }
+
+    public async UniTask UpdatePatch()
+    {
 
         // 加载更新页面
         var go = Resources.Load<GameObject>("PatchWindow");
@@ -39,9 +44,6 @@ public class ResourceComponent : GameComponent
         // 设置默认的资源包
         _gamePackage = YooAssets.GetPackage("DefaultPackage");
         YooAssets.SetDefaultPackage(_gamePackage);
-
-        // 切换到主页面场景
-        SceneEventDefine.ChangeToHomeScene.SendEventMessage();
     }
 
     private void Update()

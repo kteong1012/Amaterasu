@@ -6,18 +6,23 @@ using UnityEngine;
 
 namespace Game.Log
 {
-    public class Log
+    public class GameLog
     {
-        private static ConcurrentDictionary<Type, ILog> _loggers = new ConcurrentDictionary<Type, ILog>();
+        private static ConcurrentDictionary<Type, IGameLog> _loggers = new ConcurrentDictionary<Type, IGameLog>();
 
-        public static void RegisterLogger<T>(T logger) where T : ILog
+        public static void RegisterLogger<T>(T logger) where T : IGameLog
         {
             _loggers.TryAdd(typeof(T), logger);
         }
 
-        public static void RemoveLogger<T>() where T : ILog
+        public static void RemoveLogger<T>() where T : IGameLog
         {
             _loggers.TryRemove(typeof(T), out _);
+        }
+
+        public static void ClearLogger()
+        {
+            _loggers.Clear();
         }
 
 
@@ -28,7 +33,7 @@ namespace Game.Log
         {
             foreach (var (_, logger) in _loggers)
             {
-                if (@object && logger is ILogWithObject objectLogger)
+                if (@object && logger is IGameLogWithObject objectLogger)
                 {
                     objectLogger.Log(LogLevel.Debug, message.ToString(), @object);
                 }
@@ -44,7 +49,7 @@ namespace Game.Log
         {
             foreach (var (_, logger) in _loggers)
             {
-                if (@object && logger is ILogWithObject objectLogger)
+                if (@object && logger is IGameLogWithObject objectLogger)
                 {
                     objectLogger.Log(LogLevel.Info, message.ToString(), @object);
                 }
@@ -59,7 +64,7 @@ namespace Game.Log
         {
             foreach (var (_, logger) in _loggers)
             {
-                if (@object && logger is ILogWithObject objectLogger)
+                if (@object && logger is IGameLogWithObject objectLogger)
                 {
                     objectLogger.Log(LogLevel.Warning, message.ToString(), @object);
                 }
@@ -74,7 +79,7 @@ namespace Game.Log
         {
             foreach (var (_, logger) in _loggers)
             {
-                if (@object && logger is ILogWithObject objectLogger)
+                if (@object && logger is IGameLogWithObject objectLogger)
                 {
                     objectLogger.Log(LogLevel.Error, message.ToString(), @object);
                 }
@@ -89,7 +94,7 @@ namespace Game.Log
         {
             foreach (var (_, logger) in _loggers)
             {
-                if (@object && logger is ILogWithObject objectLogger)
+                if (@object && logger is IGameLogWithObject objectLogger)
                 {
                     objectLogger.Exception(LogLevel.Error, exception, @object);
                 }

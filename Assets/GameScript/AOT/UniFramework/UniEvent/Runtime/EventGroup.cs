@@ -25,7 +25,7 @@ namespace UniFramework.Event
 			}
 			else
 			{
-				Log.Warning($"Event listener is exist : {eventType}");
+				GameLog.Warning($"Event listener is exist : {eventType}");
 			}
 		}
 

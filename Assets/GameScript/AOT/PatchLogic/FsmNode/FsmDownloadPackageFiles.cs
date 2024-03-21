@@ -2,6 +2,7 @@
 using UnityEngine;
 using UniFramework.Machine;
 using YooAsset;
+using Game;
 
 /// <summary>
 /// 下载更新文件
@@ -17,7 +18,7 @@ public class FsmDownloadPackageFiles : IStateNode
     void IStateNode.OnEnter()
     {
         PatchEventDefine.PatchStatesChange.SendEventMessage("开始下载补丁文件！");
-        GameManager.Instance.StartCoroutine(BeginDownload());
+        G.Ins.StartCoroutine(BeginDownload());
     }
     void IStateNode.OnUpdate()
     {

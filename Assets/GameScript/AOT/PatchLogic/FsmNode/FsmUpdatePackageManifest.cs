@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniFramework.Machine;
 using YooAsset;
+using Game;
 
 /// <summary>
 /// 更新资源清单
@@ -18,7 +19,7 @@ public class FsmUpdatePackageManifest : IStateNode
     void IStateNode.OnEnter()
     {
         PatchEventDefine.PatchStatesChange.SendEventMessage("更新资源清单！");
-        GameManager.Instance.StartCoroutine(UpdateManifest());
+        G.Ins.StartCoroutine(UpdateManifest());
     }
     void IStateNode.OnUpdate()
     {

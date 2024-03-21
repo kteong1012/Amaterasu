@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniFramework.Machine;
 using YooAsset;
+using Game;
 
 /// <summary>
 /// 更新资源版本号
@@ -18,7 +19,7 @@ internal class FsmUpdatePackageVersion : IStateNode
     void IStateNode.OnEnter()
     {
         PatchEventDefine.PatchStatesChange.SendEventMessage("获取最新的资源版本 !");
-        GameManager.Instance.StartCoroutine(UpdatePackageVersion());
+        G.Ins.StartCoroutine(UpdatePackageVersion());
     }
     void IStateNode.OnUpdate()
     {

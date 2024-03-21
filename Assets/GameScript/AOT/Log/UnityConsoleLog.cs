@@ -4,7 +4,7 @@ using YooAsset;
 
 namespace Game.Log
 {
-    public class UnityConsoleLog : ILogWithObject, YooAsset.ILogger
+    public class UnityConsoleLog : IGameLogWithObject, YooAsset.ILogger
     {
         private static UnityConsoleLog _instance;
         public static UnityConsoleLog Instance

@@ -98,7 +98,7 @@ namespace UniFramework.Machine
 			}
 			else
 			{
-				Log.Error($"State node already existed : {nodeName}");
+				GameLog.Error($"State node already existed : {nodeName}");
 			}
 		}
 
@@ -124,11 +124,11 @@ namespace UniFramework.Machine
 			IStateNode node = TryGetNode(nodeName);
 			if (node == null)
 			{
-				Log.Error($"Can not found state node : {nodeName}");
+				GameLog.Error($"Can not found state node : {nodeName}");
 				return;
 			}
 
-            Log.Debug($"{_curNode.GetType().FullName} --> {node.GetType().FullName}");
+            GameLog.Debug($"{_curNode.GetType().FullName} --> {node.GetType().FullName}");
 			_preNode = _curNode;
 			_curNode.OnExit();
 			_curNode = node;
@@ -159,7 +159,7 @@ namespace UniFramework.Machine
 			}
 			else
 			{
-				Log.Warning($"Not found blackboard value : {key}");
+				GameLog.Warning($"Not found blackboard value : {key}");
 				return null;
 			}
 		}

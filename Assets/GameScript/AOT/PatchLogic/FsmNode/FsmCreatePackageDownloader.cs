@@ -4,6 +4,7 @@ using UnityEngine;
 using UniFramework.Machine;
 using YooAsset;
 using Game.Log;
+using Game;
 
 /// <summary>
 /// 创建文件下载器
@@ -19,7 +20,7 @@ public class FsmCreatePackageDownloader : IStateNode
     void IStateNode.OnEnter()
     {
         PatchEventDefine.PatchStatesChange.SendEventMessage("创建补丁下载器！");
-        GameManager.Instance.StartCoroutine(CreateDownloader());
+        G.Ins.StartCoroutine(CreateDownloader());
     }
     void IStateNode.OnUpdate()
     {
@@ -41,7 +42,7 @@ public class FsmCreatePackageDownloader : IStateNode
 
         if (downloader.TotalDownloadCount == 0)
         {
-            Log.Debug("Not found any download files !");
+            Game.Log.GameLog.Debug("Not found any download files !");
             _machine.ChangeState<FsmUpdaterDone>();
         }
         else

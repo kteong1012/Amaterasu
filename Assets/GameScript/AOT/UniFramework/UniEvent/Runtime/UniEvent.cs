@@ -42,7 +42,7 @@ namespace UniFramework.Event
 				_driver = new UnityEngine.GameObject($"[{nameof(UniEvent)}]");
 				_driver.AddComponent<UniEventDriver>();
 				UnityEngine.Object.DontDestroyOnLoad(_driver);
-				Log.Debug($"{nameof(UniEvent)} initalize !");
+                Game.Log.GameLog.Debug($"{nameof(Event.UniEvent)} initalize !");
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace UniFramework.Event
 				_isInitialize = false;
 				if (_driver != null)
 					GameObject.Destroy(_driver);
-				Log.Debug($"{nameof(UniEvent)} destroy all !");
+                Game.Log.GameLog.Debug($"{nameof(Event.UniEvent)} destroy all !");
 			}
 		}
 
