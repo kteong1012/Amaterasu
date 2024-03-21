@@ -20,42 +20,6 @@ public class LogLevelCheck : Editor
         SetSymbolState("LOG_DEBUG");
     }
 
-    [MenuItem("LogLevel/Info")]
-    private static void SetInfoSymbol()
-    {
-        SetSymbolState("LOG_INFO");
-    }
-
-    [MenuItem("LogLevel/Warning")]
-    private static void SetWarningSymbol()
-    {
-        SetSymbolState("LOG_WARNING");
-    }
-
-    [MenuItem("LogLevel/Disable All", priority = 100)]
-    private static void DisableAllSymbol()
-    {
-        foreach (string symbol in symbols)
-        {
-            if (IsSymbolEnabled(symbol))
-            {
-                SetSymbolState(symbol);
-            }
-        }
-    }
-
-    [MenuItem("LogLevel/Enable All", priority = 100)]
-    private static void EnableAllSymbol()
-    {
-        foreach (string symbol in symbols)
-        {
-            if (!IsSymbolEnabled(symbol))
-            {
-                SetSymbolState(symbol);
-            }
-        }
-    }
-
     private static void CheckSymbolState()
     {
         foreach (string symbol in symbols)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Log;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -24,7 +25,7 @@ namespace UniFramework.Event
 			}
 			else
 			{
-				UniLogger.Warning($"Event listener is exist : {eventType}");
+				Log.Warning($"Event listener is exist : {eventType}");
 			}
 		}
 

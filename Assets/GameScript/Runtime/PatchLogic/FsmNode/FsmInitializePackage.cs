@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniFramework.Machine;
 using YooAsset;
+using Game.Log;
 
 /// <summary>
 /// 初始化资源包
@@ -86,13 +87,13 @@ internal class FsmInitializePackage : IStateNode
         // 如果初始化失败弹出提示界面
         if (initializationOperation.Status != EOperationStatus.Succeed)
         {
-            Debug.LogWarning($"{initializationOperation.Error}");
+            Log.Warning($"{initializationOperation.Error}");
             PatchEventDefine.InitializeFailed.SendEventMessage();
         }
         else
         {
             var version = initializationOperation.PackageVersion;
-            Debug.Log($"Init resource package version : {version}");
+            Log.Debug($"Init resource package version : {version}");
             _machine.ChangeState<FsmUpdatePackageVersion>();
         }
     }

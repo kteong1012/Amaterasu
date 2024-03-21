@@ -20,7 +20,7 @@ namespace YooAsset
         /// <summary>
         /// 日志
         /// </summary>
-        [Conditional("DEBUG")]
+        [Conditional("LOG_DEBUG")]
         public static void Log(string info)
         {
             if (Logger != null)

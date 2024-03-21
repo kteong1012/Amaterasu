@@ -5,3 +5,4 @@
 [assembly: InternalsVisibleTo("YooAsset.RuntimeExtension")]
 [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
 [assembly: InternalsVisibleTo("Assembly-CSharp")]
+[assembly: InternalsVisibleTo("AOT")]

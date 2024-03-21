@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Log;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,7 +42,7 @@ namespace UniFramework.Event
 				_driver = new UnityEngine.GameObject($"[{nameof(UniEvent)}]");
 				_driver.AddComponent<UniEventDriver>();
 				UnityEngine.Object.DontDestroyOnLoad(_driver);
-				UniLogger.Log($"{nameof(UniEvent)} initalize !");
+				Log.Debug($"{nameof(UniEvent)} initalize !");
 			}
 		}
 
@@ -57,7 +58,7 @@ namespace UniFramework.Event
 				_isInitialize = false;
 				if (_driver != null)
 					GameObject.Destroy(_driver);
-				UniLogger.Log($"{nameof(UniEvent)} destroy all !");
+				Log.Debug($"{nameof(UniEvent)} destroy all !");
 			}
 		}
 

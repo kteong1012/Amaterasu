@@ -4,6 +4,7 @@ using UnityEngine;
 using UniFramework.Event;
 using YooAsset;
 using Cysharp.Threading.Tasks;
+using Game.Log;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         // 初始化Log
-        Log.RegisterLogger(new UnityConsoleLog());
+        Log.RegisterLogger(UnityConsoleLog.Instance);
 
         // 注册监听事件
         _eventGroup.AddListener<SceneEventDefine.ChangeToHomeScene>(OnHandleEventMessage);

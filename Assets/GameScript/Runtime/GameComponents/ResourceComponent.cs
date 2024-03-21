@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Game.Log;
 using System.Collections;
 using System.Collections.Generic;
 using UniFramework.Event;
@@ -23,7 +24,7 @@ public class ResourceComponent : GameComponent
         UniEvent.Initalize();
 
         // 初始化资源系统
-        YooAssets.Initialize();
+        YooAssets.Initialize(UnityConsoleLog.Instance);
 
         // 加载更新页面
         var go = Resources.Load<GameObject>("PatchWindow");

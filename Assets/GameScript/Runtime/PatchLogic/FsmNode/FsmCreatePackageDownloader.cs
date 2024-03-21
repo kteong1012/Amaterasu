@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniFramework.Machine;
 using YooAsset;
+using Game.Log;
 
 /// <summary>
 /// 创建文件下载器
@@ -40,7 +41,7 @@ public class FsmCreatePackageDownloader : IStateNode
 
         if (downloader.TotalDownloadCount == 0)
         {
-            Debug.Log("Not found any download files !");
+            Log.Debug("Not found any download files !");
             _machine.ChangeState<FsmUpdaterDone>();
         }
         else
