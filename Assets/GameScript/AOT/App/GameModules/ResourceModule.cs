@@ -37,6 +37,8 @@ namespace Game
             // 设置默认的资源包
             _gamePackage = YooAssets.GetPackage("DefaultPackage");
             YooAssets.SetDefaultPackage(_gamePackage);
+
+
         }
 
         private void Update()
