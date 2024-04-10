@@ -56,6 +56,7 @@ namespace Game
                 GameLog.Warning($"已经存在 {lifeSpan} 的服务");
                 return;
             }
+            GameLog.Debug($"创建 {lifeSpan} 的服务");
 
             var serviceDict = new Dictionary<Type, GameService>();
 

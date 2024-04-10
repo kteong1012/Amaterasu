@@ -41,6 +41,9 @@ namespace Game
 
             // 创建Game服务
             await _serviceManager.CreateServices(GameServiceLifeSpan.Game);
+
+            // 进入登录界面
+            _ = YooAssets.LoadSceneAsync("scene_home");
         }
 
         private void AddEventListeners()

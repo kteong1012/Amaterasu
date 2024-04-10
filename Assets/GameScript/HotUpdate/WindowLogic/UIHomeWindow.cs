@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Cysharp.Threading.Tasks;
+using Game;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,9 +32,10 @@ public class UIHomeWindow : MonoBehaviour
         _version.text = "Ver : " + package.GetPackageVersion();
     }
 
-    private void OnClickLoginBtn()
+    private async void OnClickLoginBtn()
     {
-        YooAssets.LoadSceneAsync("scene_battle");
+        await YooAssets.LoadSceneAsync("scene_battle");
+        GameEntryEventsDefine.Login.SendEventMessage();
     }
     private void OnClicAboutBtn()
     {

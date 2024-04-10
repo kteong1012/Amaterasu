@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniFramework.Event;
 using YooAsset;
+using Cysharp.Threading.Tasks;
+using Game;
 
 public class UIBattleWindow : MonoBehaviour
 {
@@ -35,9 +37,10 @@ public class UIBattleWindow : MonoBehaviour
     {
         YooAssets.LoadSceneAsync("scene_battle");
     }
-    private void OnClickHomeBtn()
+    private async void OnClickHomeBtn()
     {
-        YooAssets.LoadSceneAsync("scene_home");
+        await YooAssets.LoadSceneAsync("scene_home");
+        GameEntryEventsDefine.Logout.SendEventMessage();
     }
     private void OnHandleEventMessage(IEventMessage message)
     {
