@@ -20,7 +20,7 @@ public class FsmCreatePackageDownloader : IStateNode
     void IStateNode.OnEnter()
     {
         PatchEventDefine.PatchStatesChange.SendEventMessage("创建补丁下载器！");
-        GameEntry.Ins.StartCoroutine(CreateDownloader());
+        CoroutineManager.Instance.StartCoroutine(CreateDownloader());
     }
     void IStateNode.OnUpdate()
     {

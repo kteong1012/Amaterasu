@@ -22,7 +22,7 @@ internal class FsmInitializePackage : IStateNode
     void IStateNode.OnEnter()
     {
         PatchEventDefine.PatchStatesChange.SendEventMessage("初始化资源包！");
-        GameEntry.Ins.StartCoroutine(InitPackage());
+        CoroutineManager.Instance.StartCoroutine(InitPackage());
     }
     void IStateNode.OnUpdate()
     {

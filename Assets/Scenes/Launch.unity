@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 450980817}
   - component: {fileID: 450980816}
   m_Layer: 0
-  m_Name: LoadDll
+  m_Name: LaunchApp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308c23c09e414cd44988db527dc37de3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayMode: 0
 --- !u!4 &450980817
 Transform:
   m_ObjectHideFlags: 0

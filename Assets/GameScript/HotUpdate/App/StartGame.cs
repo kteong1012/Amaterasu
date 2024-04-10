@@ -8,11 +8,8 @@ namespace Game
 {
     public class StartGame
     {
-        public static async void Start()
+        public static void Start()
         {
-            var handle = SceneManager.LoadSceneAsync("Lobby");
-            await handle.ToUniTask();
-
             var go = new GameObject("G");
             go.AddComponent<GameEntry>();
         }

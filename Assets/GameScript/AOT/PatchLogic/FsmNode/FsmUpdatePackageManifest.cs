@@ -6,9 +6,9 @@ using YooAsset;
 using Game;
 
 /// <summary>
-/// 更新资源版本号
+/// 更新资源清单
 /// </summary>
-internal class FsmUpdatePackageVersion : IStateNode
+public class FsmUpdatePackageManifest : IStateNode
 {
     private StateMachine _machine;
 
@@ -18,8 +18,8 @@ internal class FsmUpdatePackageVersion : IStateNode
     }
     void IStateNode.OnEnter()
     {
-        PatchEventDefine.PatchStatesChange.SendEventMessage("获取最新的资源版本 !");
-        GameEntry.Ins.StartCoroutine(UpdatePackageVersion());
+        PatchEventDefine.PatchStatesChange.SendEventMessage("更新资源清单！");
+        CoroutineManager.Instance.StartCoroutine(UpdateManifest());
     }
     void IStateNode.OnUpdate()
     {
@@ -28,24 +28,26 @@ internal class FsmUpdatePackageVersion : IStateNode
     {
     }
 
-    private IEnumerator UpdatePackageVersion()
+    private IEnumerator UpdateManifest()
     {
         yield return new WaitForSecondsRealtime(0.5f);
 
         var packageName = (string)_machine.GetBlackboardValue("PackageName");
+        var packageVersion = (string)_machine.GetBlackboardValue("PackageVersion");
         var package = YooAssets.GetPackage(packageName);
-        var operation = package.UpdatePackageVersionAsync();
+        bool savePackageVersion = true;
+        var operation = package.UpdatePackageManifestAsync(packageVersion, savePackageVersion);
         yield return operation;
 
         if (operation.Status != EOperationStatus.Succeed)
         {
             Debug.LogWarning(operation.Error);
-            PatchEventDefine.PackageVersionUpdateFailed.SendEventMessage();
+            PatchEventDefine.PatchManifestUpdateFailed.SendEventMessage();
+            yield break;
         }
         else
         {
-            _machine.SetBlackboardValue("PackageVersion", operation.PackageVersion);
-            _machine.ChangeState<FsmUpdatePackageManifest>();
+            _machine.ChangeState<FsmCreatePackageDownloader>();
         }
     }
 }
