@@ -3,3 +3,7 @@
 
 # Preserve *.sln
 !*.sln
+
+# bin and obj folders
+**/[Bb]in/
+**/[Oo]bj/

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyzer", "Analyzer.csproj", "{C5BDCE64-7526-4FEF-8891-93E7846D4724}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyzer", "Analyzer/Analyzer.csproj", "{C5BDCE64-7526-4FEF-8891-93E7846D4724}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +15,10 @@ Global
 		{C5BDCE64-7526-4FEF-8891-93E7846D4724}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5BDCE64-7526-4FEF-8891-93E7846D4724}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5BDCE64-7526-4FEF-8891-93E7846D4724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E72F9D3D-5107-4413-9801-58A23D00D22D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E72F9D3D-5107-4413-9801-58A23D00D22D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E72F9D3D-5107-4413-9801-58A23D00D22D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E72F9D3D-5107-4413-9801-58A23D00D22D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

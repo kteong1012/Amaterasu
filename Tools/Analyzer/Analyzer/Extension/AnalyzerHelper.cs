@@ -18,9 +18,9 @@ namespace Analyzer.Extension
         /// <param name="syntaxNode">语法树节点</param>
         /// <typeparam name="T">指定语法节点类型</typeparam>
         /// <returns>第一个指定类型节点</returns>
-        public static T? GetFirstChild<T>(this SyntaxNode syntaxNode) where T : SyntaxNode
+        public static T GetFirstChild<T>(this SyntaxNode syntaxNode) where T : SyntaxNode
         {
-            foreach (SyntaxNode? childNode in syntaxNode.ChildNodes())
+            foreach (SyntaxNode childNode in syntaxNode.ChildNodes())
             {
                 if (childNode.GetType() == typeof(T))
                 {
@@ -31,7 +31,7 @@ namespace Analyzer.Extension
             return null;
         }
 
-        public static SyntaxNode? GetFirstChild(this SyntaxNode syntaxNode)
+        public static SyntaxNode GetFirstChild(this SyntaxNode syntaxNode)
         {
             var childNodes = syntaxNode.ChildNodes();
             if (childNodes.Count() > 0)
@@ -48,9 +48,9 @@ namespace Analyzer.Extension
         /// <param name="syntaxNode">语法树节点</param>
         /// <typeparam name="T">指定语法节点类型</typeparam>
         /// <returns>最后一个指定类型节点</returns>
-        public static T? GetLastChild<T>(this SyntaxNode syntaxNode) where T : SyntaxNode
+        public static T GetLastChild<T>(this SyntaxNode syntaxNode) where T : SyntaxNode
         {
-            foreach (SyntaxNode? childNode in syntaxNode.ChildNodes().Reverse())
+            foreach (SyntaxNode childNode in syntaxNode.ChildNodes().Reverse())
             {
                 if (childNode.GetType() == typeof(T))
                 {
@@ -64,9 +64,9 @@ namespace Analyzer.Extension
         /// <summary>
         ///     获取语法节点所属的ClassDeclarationSyntax
         /// </summary>
-        public static ClassDeclarationSyntax? GetParentClassDeclaration(this SyntaxNode syntaxNode)
+        public static ClassDeclarationSyntax GetParentClassDeclaration(this SyntaxNode syntaxNode)
         {
-            SyntaxNode? parentNode = syntaxNode.Parent;
+            SyntaxNode parentNode = syntaxNode.Parent;
             while (parentNode != null)
             {
                 if (parentNode is ClassDeclarationSyntax classDeclarationSyntax)
@@ -85,9 +85,9 @@ namespace Analyzer.Extension
         /// </summary>
         public static bool HasAttribute(this ITypeSymbol typeSymbol, string AttributeName)
         {
-            foreach (AttributeData? attributeData in typeSymbol.GetAttributes())
+            foreach (AttributeData attributeData in typeSymbol.GetAttributes())
             {
-                if (attributeData.AttributeClass?.ToString() == AttributeName)
+                if (attributeData.AttributeClass.ToString() == AttributeName)
                 {
                     return true;
                 }
@@ -115,7 +115,7 @@ namespace Analyzer.Extension
 
         public static IEnumerable<ITypeSymbol> BaseTypes(this ITypeSymbol typeSymbol)
         {
-            ITypeSymbol? baseType = typeSymbol.BaseType;
+            ITypeSymbol baseType = typeSymbol.BaseType;
             while (baseType != null)
             {
                 yield return baseType;
@@ -128,9 +128,9 @@ namespace Analyzer.Extension
         /// </summary>
         public static bool HasBaseAttribute(this INamedTypeSymbol namedTypeSymbol, string AttributeName)
         {
-            foreach (AttributeData? attributeData in namedTypeSymbol.GetAttributes())
+            foreach (AttributeData attributeData in namedTypeSymbol.GetAttributes())
             {
-                INamedTypeSymbol? attributeType = attributeData.AttributeClass?.BaseType;
+                INamedTypeSymbol attributeType = attributeData.AttributeClass.BaseType;
                 while (attributeType != null)
                 {
                     if (attributeType.ToString() == AttributeName)
@@ -148,11 +148,11 @@ namespace Analyzer.Extension
         /// <summary>
         ///     INamedTypeSymbol 获取指定类型的第一个Attribute
         /// </summary>
-        public static AttributeData? GetFirstAttribute(this INamedTypeSymbol namedTypeSymbol, string AttributeName)
+        public static AttributeData GetFirstAttribute(this INamedTypeSymbol namedTypeSymbol, string AttributeName)
         {
-            foreach (AttributeData? attributeData in namedTypeSymbol.GetAttributes())
+            foreach (AttributeData attributeData in namedTypeSymbol.GetAttributes())
             {
-                if (attributeData.AttributeClass?.ToString() == AttributeName)
+                if (attributeData.AttributeClass.ToString() == AttributeName)
                 {
                     return attributeData;
                 }
@@ -166,7 +166,7 @@ namespace Analyzer.Extension
         /// </summary>
         public static bool HasInterface(this INamedTypeSymbol namedTypeSymbol, string InterfaceName)
         {
-            foreach (INamedTypeSymbol? iInterface in namedTypeSymbol.AllInterfaces)
+            foreach (INamedTypeSymbol iInterface in namedTypeSymbol.AllInterfaces)
             {
                 if (iInterface.IsInterface(InterfaceName))
                 {
@@ -189,7 +189,7 @@ namespace Analyzer.Extension
         /// <summary>
         ///     判断指定的程序集是否需要分析
         /// </summary>
-        public static bool IsAssemblyNeedAnalyze(string? assemblyName, params string[] analyzeAssemblyNames)
+        public static bool IsAssemblyNeedAnalyze(string assemblyName, params string[] analyzeAssemblyNames)
         {
             if (assemblyName == null)
             {
@@ -210,16 +210,16 @@ namespace Analyzer.Extension
         /// <summary>
         /// 获取 成员访问语法节点的父级类型
         /// </summary>
-        public static ITypeSymbol? GetMemberAccessSyntaxParentType(this MemberAccessExpressionSyntax memberAccessExpressionSyntax,
+        public static ITypeSymbol GetMemberAccessSyntaxParentType(this MemberAccessExpressionSyntax memberAccessExpressionSyntax,
         SemanticModel semanticModel)
         {
-            SyntaxNode? firstChildSyntaxNode = memberAccessExpressionSyntax.GetFirstChild();
+            SyntaxNode firstChildSyntaxNode = memberAccessExpressionSyntax.GetFirstChild();
             if (firstChildSyntaxNode == null)
             {
                 return null;
             }
 
-            ISymbol? firstChildSymbol = semanticModel.GetSymbolInfo(firstChildSyntaxNode).Symbol;
+            ISymbol firstChildSymbol = semanticModel.GetSymbolInfo(firstChildSyntaxNode).Symbol;
             if (firstChildSymbol == null)
             {
                 return null;
@@ -261,7 +261,7 @@ namespace Analyzer.Extension
         /// <summary>
         /// 获取最近的指定类型祖先节点
         /// </summary>
-        public static T? GetNeareastAncestor<T>(this SyntaxNode syntaxNode) where T : SyntaxNode
+        public static T GetNeareastAncestor<T>(this SyntaxNode syntaxNode) where T : SyntaxNode
         {
 
             foreach (var ancestorNode in syntaxNode.Ancestors())
@@ -277,7 +277,7 @@ namespace Analyzer.Extension
         /// <summary>
         /// 判断函数是否是否含有指定类型的参数
         /// </summary>
-        public static bool HasParameterType(this IMethodSymbol methodSymbol, string parameterType, out IParameterSymbol? cencelTokenSymbol)
+        public static bool HasParameterType(this IMethodSymbol methodSymbol, string parameterType, out IParameterSymbol cencelTokenSymbol)
         {
             foreach (var parameterSymbol in methodSymbol.Parameters)
             {
@@ -308,7 +308,7 @@ namespace Analyzer.Extension
         /// <summary>
         /// 获取与该语法节点同层级的上一个节点
         /// </summary>
-        public static SyntaxNode? PreviousNode(this SyntaxNode syntaxNode)
+        public static SyntaxNode PreviousNode(this SyntaxNode syntaxNode)
         {
             if (syntaxNode.Parent == null)
             {
@@ -336,7 +336,7 @@ namespace Analyzer.Extension
         /// <summary>
         /// 获取与该语法节点同层级的下一个节点
         /// </summary>
-        public static SyntaxNode? NextNode(this SyntaxNode syntaxNode)
+        public static SyntaxNode NextNode(this SyntaxNode syntaxNode)
         {
             if (syntaxNode.Parent == null)
             {
@@ -365,7 +365,7 @@ namespace Analyzer.Extension
         /// <summary>
         /// 获取await表达式所在的控制流block
         /// </summary>
-        public static BasicBlock? GetAwaitStatementControlFlowBlock(StatementSyntax statementSyntax, AwaitExpressionSyntax awaitExpressionSyntax, SemanticModel semanticModel)
+        public static BasicBlock GetAwaitStatementControlFlowBlock(StatementSyntax statementSyntax, AwaitExpressionSyntax awaitExpressionSyntax, SemanticModel semanticModel)
         {
             // 跳过 return 表达式
             if (statementSyntax.IsKind(SyntaxKind.ReturnStatement))
@@ -392,7 +392,7 @@ namespace Analyzer.Extension
                 return null;
             }
 
-            BasicBlock? block = controlFlowGraph.Blocks.FirstOrDefault(x => x.Operations.Any(y => y.Syntax.Contains(statementSyntax)));
+            BasicBlock block = controlFlowGraph.Blocks.FirstOrDefault(x => x.Operations.Any(y => y.Syntax.Contains(statementSyntax)));
             return block;
         }
 
@@ -412,11 +412,11 @@ namespace Analyzer.Extension
             return false;
         }
 
-        public static string? GetNameSpace(this INamedTypeSymbol namedTypeSymbol)
+        public static string GetNameSpace(this INamedTypeSymbol namedTypeSymbol)
         {
-            INamespaceSymbol? namespaceSymbol = namedTypeSymbol.ContainingNamespace;
-            string? namespaceName = namespaceSymbol?.Name;
-            while (namespaceSymbol?.ContainingNamespace != null)
+            INamespaceSymbol namespaceSymbol = namedTypeSymbol.ContainingNamespace;
+            string namespaceName = namespaceSymbol.Name;
+            while (namespaceSymbol.ContainingNamespace != null)
             {
                 namespaceSymbol = namespaceSymbol.ContainingNamespace;
                 if (string.IsNullOrEmpty(namespaceSymbol.Name))
@@ -554,9 +554,9 @@ namespace Analyzer.Extension
         /// </summary>
         public static bool HasAttribute(this IMethodSymbol methodSymbol, string AttributeName)
         {
-            foreach (AttributeData? attributeData in methodSymbol.GetAttributes())
+            foreach (AttributeData attributeData in methodSymbol.GetAttributes())
             {
-                if (attributeData?.AttributeClass?.ToString() == AttributeName)
+                if (attributeData.AttributeClass.ToString() == AttributeName)
                 {
                     return true;
                 }

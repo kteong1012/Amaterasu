@@ -26,7 +26,9 @@ public class UILoadingWindow : MonoBehaviour
         {
             _countdown++;
             if (_countdown > 6)
+            {
                 _countdown = 0;
+            }
 
             string tips = "Loading";
             for(int i=0; i<_countdown; i++)

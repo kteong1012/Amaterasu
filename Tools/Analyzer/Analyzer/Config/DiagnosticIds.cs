@@ -8,7 +8,7 @@ namespace Analyzer.Config
     {
         #region Standard
         #region Error
-        public const string ForceBrace = "STD-ERR001";
+        public const string ForceBrace = "STD001";
         #endregion
         #endregion
     }

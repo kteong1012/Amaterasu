@@ -75,12 +75,16 @@ public class BattleRoom
     public void DestroyRoom()
     {
         if (_eventGroup != null)
+        {
             _eventGroup.RemoveAllListener();
+        }
 
         if (_roomRoot != null)
+        {
             GameObject.Destroy(_roomRoot);
+        }
 
-        foreach(var handle in _handles)
+        foreach (var handle in _handles)
         {
             handle.Release();
         }

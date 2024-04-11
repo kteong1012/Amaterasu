@@ -11,10 +11,7 @@ namespace Game
             AddComponent<UnitAnimationComponent>();
             AddComponent<UnitMoveComponent>();
             gameObject.AddComponent<UnitGameObjectComponent>();
-            int a = 1;
-            if (a > 1)
-                Debug.Log("a>1");
-        }
+        } 
         void Update()
         {
             try

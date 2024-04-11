@@ -65,6 +65,8 @@ internal class SceneBattle : MonoBehaviour
     private void Update()
     {
         if (_battleRoom != null)
+        {
             _battleRoom.UpdateRoom();
+        }
     }
 }

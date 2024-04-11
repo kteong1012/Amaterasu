@@ -15,17 +15,23 @@ namespace Analyzer.Analyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class ForceBraceAnalyzer : DiagnosticAnalyzer
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => throw new NotImplementedException();
+        public sealed override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DiagnosticRules.ForceBraceRule.Rule);
 
-        public override void Initialize(AnalysisContext context)
+        public sealed override void Initialize(AnalysisContext context)
         {
-
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
-            context.RegisterSyntaxTreeAction(AnalyzeSymbol);
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
+            context.RegisterCompilationStartAction(analysisContext =>
+            {
+                if (AnalyzerHelper.IsAssemblyNeedAnalyze(analysisContext.Compilation.AssemblyName, Definitions.TargetAssemblyName))
+                {
+                    analysisContext.RegisterSyntaxTreeAction(AnalyzeAction);
+                }
+            });
+
         }
 
-        private static void AnalyzeSymbol(SyntaxTreeAnalysisContext context)
+        private static void AnalyzeAction(SyntaxTreeAnalysisContext context)
         {
             var root = context.Tree.GetRoot(context.CancellationToken);
             foreach (var ifstatement in root.DescendantNodes().OfType<IfStatementSyntax>())
@@ -35,7 +41,9 @@ namespace Analyzer.Analyzer
                 {
                     if (!(estate.Parent is BlockSyntax))
                     {
-                        var diagnostic = Diagnostic.Create(DiagnosticRules.ForceBraceRule.Rule, estate.GetFirstToken().GetLocation());
+                        // whole line
+                        var location = estate.GetLocation();
+                        var diagnostic = Diagnostic.Create(DiagnosticRules.ForceBraceRule.Rule, location);
                         context.ReportDiagnostic(diagnostic);
                     }
                 }
