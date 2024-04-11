@@ -30,7 +30,7 @@ namespace Game
                 return null;
             }
             T component = gameObject.AddComponent<T>();
-            component.Init(this);
+            //component.Init(this);
             return component;
         }
         #endregion

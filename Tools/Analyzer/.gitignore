@@ -1,0 +1,6 @@
+# Ignore Cache files
+/[Oo]bj/
+/[Bb]in/
+
+# Visual Studio cache directory
+.vs/

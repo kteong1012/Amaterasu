@@ -6,6 +6,6 @@ namespace Game
 {
     public abstract class UnitComponent : MonoBehaviour
     {
-        public virtual void Init(UnitController battleUnit) { }
+        //public virtual void Init(UnitController battleUnit) { }
     }
 }
