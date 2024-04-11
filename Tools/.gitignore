@@ -1,0 +1,5 @@
+# Preserve *.csproj
+!*.csproj
+
+# Preserve *.sln
+!*.sln
