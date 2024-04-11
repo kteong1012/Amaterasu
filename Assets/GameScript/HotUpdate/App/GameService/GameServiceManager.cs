@@ -145,5 +145,22 @@ namespace Game
 
             return null;
         }
+
+        public T GetService<T>() where T : GameService
+        {
+            foreach (var services in _services.Values)
+            {
+                if (services == null)
+                {
+                    continue;
+                }
+                if (services.TryGetValue(typeof(T), out var service))
+                {
+                    return service as T;
+                }
+            }
+
+            return null;
+        }
     }
 }

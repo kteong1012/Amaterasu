@@ -12,6 +12,10 @@
         /// <summary>
         /// 登陆生命周期，登陆时创建，登出时销毁。
         /// </summary>
-        Login
+        Login,
+        /// <summary>
+        /// 战斗生命周期，战斗开始时创建，战斗结束时销毁。
+        /// </summary>
+        Battle
     }
 }
