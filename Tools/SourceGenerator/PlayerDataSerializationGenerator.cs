@@ -8,12 +8,28 @@ namespace SourceGenerator
     {
         public void Initialize(GeneratorInitializationContext context)
         {
-            throw new NotImplementedException();
+            context.RegisterForSyntaxNotifications(() => SyntaxContexReceiver.Create());
         }
 
         public void Execute(GeneratorExecutionContext context)
         {
-            throw new NotImplementedException();
+            if(context.SyntaxReceiver is not SyntaxContexReceiver receiver)
+            {
+                return;
+            }
+        }
+
+        class SyntaxContexReceiver : ISyntaxContextReceiver
+        {
+            public static SyntaxContexReceiver Create()
+            {
+                return new SyntaxContexReceiver();
+            }
+            public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
+            {
+                var node = context.Node;
+
+            }
         }
     }
 }
