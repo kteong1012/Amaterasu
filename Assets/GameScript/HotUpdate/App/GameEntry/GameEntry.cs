@@ -56,11 +56,6 @@ namespace Game
         {
             YooAssets.Initialize(UnityConsoleLog.Instance);
 
-            // 加载更新页面
-            var go = Resources.Load<GameObject>("PatchWindow");
-            go.AddComponent<PatchWindow>();
-            GameObject.Instantiate(go);
-
             // 开始补丁更新流程
             PatchOperation operation = new PatchOperation(AppSettings.YooAssetPackageName, EDefaultBuildPipeline.BuiltinBuildPipeline.ToString(), AppSettings.PlayMode);
             YooAssets.StartOperation(operation);
