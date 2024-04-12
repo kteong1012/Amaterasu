@@ -8,6 +8,7 @@ using YooAsset;
 
 namespace Game
 {
+
     [GameService(GameServiceLifeSpan.Game)]
     public class ConfigService : GameService
     {
