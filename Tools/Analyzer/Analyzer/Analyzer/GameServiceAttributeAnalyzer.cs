@@ -10,14 +10,17 @@ using System.Linq;
 
 namespace Analyzer.Analyzer
 {
-    [DiagnosticAnalyzer(Microsoft.CodeAnalysis.LanguageNames.CSharp)]
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class GameServiceAttributeAnalyzer : DiagnosticAnalyzer
     {
         public const string GameServiceAttributeNameSpace = "Game";
         public const string GameServiceAttributeName = "GameServiceAttribute";
         public const string GameServiceClassName = "GameService";
         public const string GameServiceAttributeDefaultParam = "GameServiceLifeSpan.None";
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DiagnosticRules.GameServiceAttributeRule.Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
+            DiagnosticRules.GameServiceAttributeRule.Rule,
+            DiagnosticRules.GameServiceAttributeNone.Rule
+            );
 
         public override void Initialize(AnalysisContext context)
         {
@@ -33,7 +36,7 @@ namespace Analyzer.Analyzer
             });
         }
 
-        private void AnalyzeAction(SemanticModelAnalysisContext context)
+        private async void AnalyzeAction(SemanticModelAnalysisContext context)
         {
             var classDeclarations = context.SemanticModel.SyntaxTree.GetRoot().DescendantNodes<ClassDeclarationSyntax>();
 
@@ -52,12 +55,41 @@ namespace Analyzer.Analyzer
                 }
 
                 // check if class has GameServiceAttribute
-                var hasGameServiceAttribute = classTypeSymbol.GetAttributes().Any(a => a.AttributeClass.Name.Equals(GameServiceAttributeName));
-                if (!hasGameServiceAttribute)
+                var gameServiceAttribute = classTypeSymbol.GetAttributes().FirstOrDefault(a => a.AttributeClass.Name.Equals(GameServiceAttributeName));
+                if (gameServiceAttribute == null)
                 {
                     var location = classDeclaration.Identifier.GetLocation();
                     var diagnostic = Diagnostic.Create(DiagnosticRules.GameServiceAttributeRule.Rule, location);
                     context.ReportDiagnostic(diagnostic);
+                }
+                else
+                {
+                    var enumTypeName = "GameServiceLifeSpan";
+                    var uselessEnumValue = "None";
+                    var attributeLocation = gameServiceAttribute.ApplicationSyntaxReference.GetSyntax().GetLocation();
+
+                    // check if GameServiceAttribute has correct parameter, location should be on the enum value
+                    var argumentList = gameServiceAttribute.ConstructorArguments;
+                    var argument = argumentList.FirstOrDefault();
+                    var typeWithoutNamespace = argument.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+                    var valueString = argument.Value.ToString();
+
+                    if (typeWithoutNamespace.Equals(enumTypeName))
+                    {
+                        var attributeSyntaxNode = await gameServiceAttribute.ApplicationSyntaxReference.GetSyntaxAsync();
+                        var argumentListSyntaxNode = attributeSyntaxNode.DescendantNodes<AttributeArgumentListSyntax>().FirstOrDefault();
+                        var argumentSyntaxNode = argumentListSyntaxNode.DescendantNodes<AttributeArgumentSyntax>().FirstOrDefault();
+                        var expression = argumentSyntaxNode.Expression;
+                        // the value is the second child of the expression
+                        var value = expression.ChildNodes().ElementAt(1);
+                        var valueText = value.GetText();
+                        if (valueText.ToString().Equals(uselessEnumValue))
+                        {
+                            var location = value.GetLocation();
+                            var diagnostic = Diagnostic.Create(DiagnosticRules.GameServiceAttributeNone.Rule, location);
+                            context.ReportDiagnostic(diagnostic);
+                        }
+                    }
                 }
             }
         }

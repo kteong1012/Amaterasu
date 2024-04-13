@@ -18,6 +18,7 @@ namespace Game
     }
     public enum GameServiceLifeSpan
     {
-        None
+        None,
+        Game
     }
 }

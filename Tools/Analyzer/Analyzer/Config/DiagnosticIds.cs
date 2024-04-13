@@ -9,7 +9,13 @@ namespace Analyzer.Config
         #region Standard
         #region Error
         public const string ForceBrace = "STD001";
-        public const string GameServiceAttribute = "STD002";
+        #endregion
+        #endregion
+
+        #region Logic
+        #region Error
+        public const string GameServiceAttribute = "LOG001";
+        public const string GameServiceAttributeNone = "LOG002";
         #endregion
         #endregion
     }

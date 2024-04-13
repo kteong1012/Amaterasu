@@ -11,10 +11,12 @@ namespace Analyzer.Test
         {
             int a = 1;
             if (a == 1)
+            {
                 a = 2;
+            }
         }
     }
-    public class TestSTD002
+    public class TestLOG001
     {
         public class TestGameService : GameService
         {
@@ -22,5 +24,13 @@ namespace Analyzer.Test
         }
     }
 
+    public class TestLOG002
+    {
+        [GameService(GameServiceLifeSpan.None)]
+        public class TestGameService : GameService
+        {
+
+        }
+    }
 }
 #endif
