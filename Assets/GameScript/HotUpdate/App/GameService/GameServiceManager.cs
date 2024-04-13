@@ -32,6 +32,11 @@ namespace Game
                         throw new Exception($"GameService {type.Name} 必须添加 GameServiceAttribute 属性");
                     }
 
+                    if(attribute.LifeSpan == GameServiceLifeSpan.None)
+                    {
+                        throw new Exception($"GameService {type.Name} 的 LifeSpan 不能为 None");
+                    }
+
                     if (!_serviceTypes.ContainsKey(attribute.LifeSpan))
                     {
                         _serviceTypes.Add(attribute.LifeSpan, new List<Type>());

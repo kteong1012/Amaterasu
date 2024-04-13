@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyzer", "Analyzer\Analyz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SourceGenerator", "SourceGenerator\SourceGenerator.csproj", "{9F6C52FA-D51C-458B-A65B-8A2589EECAC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyzer.Test", "Analyzer.Test\Analyzer.Test.csproj", "{F7982971-840F-4646-8CAD-65D0542C5D13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9F6C52FA-D51C-458B-A65B-8A2589EECAC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F6C52FA-D51C-458B-A65B-8A2589EECAC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F6C52FA-D51C-458B-A65B-8A2589EECAC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7982971-840F-4646-8CAD-65D0542C5D13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7982971-840F-4646-8CAD-65D0542C5D13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7982971-840F-4646-8CAD-65D0542C5D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7982971-840F-4646-8CAD-65D0542C5D13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

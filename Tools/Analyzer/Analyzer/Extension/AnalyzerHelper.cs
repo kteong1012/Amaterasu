@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Analyzer.Analyzer;
+using Analyzer.Config;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -194,6 +196,11 @@ namespace Analyzer.Extension
             if (assemblyName == null)
             {
                 return false;
+            }
+
+            if(assemblyName == Definitions.TestAssemblyName)
+            {
+                return true;
             }
 
             foreach (string analyzeAssemblyName in analyzeAssemblyNames)

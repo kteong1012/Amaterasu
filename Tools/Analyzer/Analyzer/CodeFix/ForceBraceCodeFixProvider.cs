@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace Analyzer.CodeFix
 {
+
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ForceBraceCodeFixProvider)), Shared]
     public class ForceBraceCodeFixProvider : CodeFixProvider
     {
