@@ -35,7 +35,6 @@ public class UIHomeWindow : MonoBehaviour
     private async void OnClickLoginBtn()
     {
         await YooAssets.LoadSceneAsync("scene_battle");
-        GameEntryEventsDefine.Login.SendEventMessage();
     }
     private void OnClicAboutBtn()
     {

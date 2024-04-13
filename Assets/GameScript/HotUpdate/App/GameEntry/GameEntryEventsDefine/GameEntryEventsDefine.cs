@@ -4,20 +4,28 @@ namespace Game
 { 
     public class GameEntryEventsDefine
     {
-        public class Login : IEventMessage
+        public class LoginSuccess : IEventMessage
         {
-            public static void SendEventMessage()
+            public LoginChannel LoginChannel { get; private set; }
+            public string PlayerId { get; private set; }
+            public static void SendEventMessage(LoginChannel loginChannel, string playerId)
             {
-                var msg = new Login();
+                var msg = new LoginSuccess();
+                msg.LoginChannel = loginChannel;
+                msg.PlayerId = playerId;;
                 UniEvent.SendMessage(msg);
             }
         }
 
-        public class Logout : IEventMessage
+        public class LogoutSuccess : IEventMessage
         {
-            public static void SendEventMessage()
+            public LoginChannel LoginChannel { get; private set; }
+            public string PlayerId { get; private set; }
+            public static void SendEventMessage(LoginChannel loginChannel, string playerId)
             {
-                var msg = new Logout();
+                var msg = new LogoutSuccess();
+                msg.LoginChannel = loginChannel;
+                msg.PlayerId = playerId;
                 UniEvent.SendMessage(msg);
             }
         }

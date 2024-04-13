@@ -1,5 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
+using Game.Log;
 using System;
+using System.Reflection;
 
 namespace Game
 {
@@ -14,8 +16,10 @@ namespace Game
     }
     public abstract class GameService
     {
+        private GameServiceLifeSpan _lifeSpan => GetType().GetCustomAttribute<GameServiceAttribute>().LifeSpan;
         public virtual UniTask Init()
         {
+            GameLog.Debug($"GameService {GetType().Name} Init, LifeSpan: {_lifeSpan}");
             return UniTask.CompletedTask;
         }
 
@@ -25,6 +29,7 @@ namespace Game
 
         public virtual void Release()
         {
+            GameLog.Debug($"GameService {GetType().Name} Release, LifeSpan: {_lifeSpan}");
         }
     }
 }

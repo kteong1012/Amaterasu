@@ -40,7 +40,7 @@ namespace Game
             InitServiceManager();
 
             // 创建Game服务
-            await _serviceManager.CreateServices(GameServiceLifeSpan.Game);
+            await _serviceManager.StartServices(GameServiceLifeSpan.Game);
 
             // 进入登录界面
             _ = YooAssets.LoadSceneAsync("scene_home");
@@ -48,8 +48,6 @@ namespace Game
 
         private void AddEventListeners()
         {
-            _eventGroup.AddListener<GameEntryEventsDefine.Login>(OnLogin);
-            _eventGroup.AddListener<GameEntryEventsDefine.Logout>(OnLogout);
         }
 
         private static async Task InitResourceModule()
@@ -72,6 +70,16 @@ namespace Game
             _serviceManager = new GameServiceManager();
         }
 
+        public async UniTask StartServices(GameServiceLifeSpan lifeSpan)
+        {
+            await _serviceManager.StartServices(lifeSpan);
+        }
+
+        public void StopServices(GameServiceLifeSpan lifeSpan)
+        {
+            _serviceManager.StopServices(lifeSpan);
+        }
+
         private static void InitUniEvent()
         {
             UniEvent.Initalize();
@@ -82,16 +90,6 @@ namespace Game
             GameLog.RegisterLogger(UnityConsoleLog.Instance);
         }
 
-        private async void OnLogin(IEventMessage message)
-        {
-            await _serviceManager.CreateServices(GameServiceLifeSpan.Login);
-        }
-
-        private void OnLogout(IEventMessage message)
-        {
-            _serviceManager.ReleaseServices(GameServiceLifeSpan.Login);
-        }
-
         private void Update()
         {
             _serviceManager?.Update();
@@ -99,7 +97,7 @@ namespace Game
 
         private void OnDestroy()
         {
-            _serviceManager?.ReleaseServices(GameServiceLifeSpan.Game);
+            _serviceManager?.StopServices(GameServiceLifeSpan.Game);
             _serviceManager?.Release();
 
             _eventGroup?.RemoveAllListener();

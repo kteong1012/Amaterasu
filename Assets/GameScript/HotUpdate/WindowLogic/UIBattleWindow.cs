@@ -40,7 +40,7 @@ public class UIBattleWindow : MonoBehaviour
     private async void OnClickHomeBtn()
     {
         await YooAssets.LoadSceneAsync("scene_home");
-        GameEntryEventsDefine.Logout.SendEventMessage();
+        //GameEntryEventsDefine.LogoutSuccess.SendEventMessage();
     }
     private void OnHandleEventMessage(IEventMessage message)
     {

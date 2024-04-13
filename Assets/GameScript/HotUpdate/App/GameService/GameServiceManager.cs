@@ -16,8 +16,7 @@ namespace Game
 
         public GameServiceManager()
         {
-            var assembly = typeof(GameService).Assembly;
-            foreach (var type in assembly.GetTypes())
+            foreach (var type in TypeManager.Instance.GetTypes())
             {
                 if (type.IsAbstract)
                 {
@@ -47,7 +46,7 @@ namespace Game
             }
         }
 
-        public async UniTask CreateServices(GameServiceLifeSpan lifeSpan)
+        public async UniTask StartServices(GameServiceLifeSpan lifeSpan)
         {
             var types = GetServiceTypes(lifeSpan);
             if (types == null)
@@ -103,7 +102,7 @@ namespace Game
             _services.Add(lifeSpan, serviceDict);
         }
 
-        public void ReleaseServices(GameServiceLifeSpan lifeSpan)
+        public void StopServices(GameServiceLifeSpan lifeSpan)
         {
             if (!_services.TryGetValue(lifeSpan, out var services))
             {
