@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Analyzer.CodeFix
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ForceBraceCodeFixProvider)), Shared]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(GameServiceAttributeCodeFixProvider)), Shared]
     public class GameServiceAttributeCodeFixProvider : CodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(DiagnosticIds.GameServiceAttribute);
@@ -36,8 +36,8 @@ namespace Analyzer.CodeFix
             var classDeclaration = root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<ClassDeclarationSyntax>().First();
             // 构造Code Action
             var action = CodeAction.Create(
-                "Add GameService",
-                c => AddGameServiceAttributeAsync(context.Document, classDeclaration, GameServiceAttributeAnalyzer.GameServiceAttributeName, c),
+                title: "Add GameService",
+                createChangedDocument: c => AddGameServiceAttributeAsync(context.Document, classDeclaration, GameServiceAttributeAnalyzer.GameServiceAttributeName, c),
                 equivalenceKey: nameof(GameServiceAttributeCodeFixProvider));
 
             // 注册codeFix Code Action
@@ -63,7 +63,7 @@ namespace Analyzer.CodeFix
             var newClassDeclaration = classDeclaration?.WithAttributeLists(attributes).WithAdditionalAnnotations(Formatter.Annotation);
 
             // 获取Document的SyntaxRoot
-            var root = await document.GetSyntaxRootAsync(c).ConfigureAwait(false);
+            var root = await document.GetSyntaxRootAsync(c);
 
             // 替换原有的Class
             var newRoot = root.ReplaceNode(classDeclaration, newClassDeclaration);

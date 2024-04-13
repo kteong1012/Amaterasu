@@ -18,6 +18,7 @@ namespace Analyzer.Test
     }
     public class TestLOG001
     {
+        [GameService(GameServiceLifeSpan.Game)]
         public class TestGameService : GameService
         {
 
@@ -26,11 +27,6 @@ namespace Analyzer.Test
 
     public class TestLOG002
     {
-        [GameService(GameServiceLifeSpan.None)]
-        public class TestGameService : GameService
-        {
-
-        }
     }
 }
 #endif

@@ -36,7 +36,7 @@ namespace Analyzer.Analyzer
             });
         }
 
-        private async void AnalyzeAction(SemanticModelAnalysisContext context)
+        private void AnalyzeAction(SemanticModelAnalysisContext context)
         {
             var classDeclarations = context.SemanticModel.SyntaxTree.GetRoot().DescendantNodes<ClassDeclarationSyntax>();
 
@@ -76,7 +76,7 @@ namespace Analyzer.Analyzer
 
                     if (typeWithoutNamespace.Equals(enumTypeName))
                     {
-                        var attributeSyntaxNode = await gameServiceAttribute.ApplicationSyntaxReference.GetSyntaxAsync();
+                        var attributeSyntaxNode = gameServiceAttribute.ApplicationSyntaxReference.GetSyntax();
                         var argumentListSyntaxNode = attributeSyntaxNode.DescendantNodes<AttributeArgumentListSyntax>().FirstOrDefault();
                         var argumentSyntaxNode = argumentListSyntaxNode.DescendantNodes<AttributeArgumentSyntax>().FirstOrDefault();
                         var expression = argumentSyntaxNode.Expression;
