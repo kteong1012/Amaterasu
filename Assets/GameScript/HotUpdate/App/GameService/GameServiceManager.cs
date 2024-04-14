@@ -31,7 +31,7 @@ namespace Game
                         throw new Exception($"GameService {type.Name} 必须添加 GameServiceAttribute 属性");
                     }
 
-                    if(attribute.LifeSpan == GameServiceLifeSpan.None)
+                    if (attribute.LifeSpan == GameServiceLifeSpan.None)
                     {
                         throw new Exception($"GameService {type.Name} 的 LifeSpan 不能为 None");
                     }
@@ -69,6 +69,7 @@ namespace Game
                 var service = Activator.CreateInstance(type) as GameService;
                 serviceDict.Add(type, service);
             }
+            _services.Add(lifeSpan, serviceDict);
 
             // 注入GameService类型的字段和属性
             foreach (var service in serviceDict.Values)
@@ -76,7 +77,11 @@ namespace Game
                 var members = service.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 foreach (var member in members)
                 {
-                    var attribute = member.GetCustomAttribute<GameServiceAttribute>();
+                    if (member.MemberType != MemberTypes.Field && member.MemberType != MemberTypes.Property)
+                    {
+                        continue;
+                    }
+                    var attribute = member.GetFieldType().GetCustomAttribute<GameServiceAttribute>();
                     if (attribute == null)
                     {
                         continue;
@@ -99,7 +104,6 @@ namespace Game
             }
 
             await UniTask.WhenAll(serviceDict.Values.Select(service => service.Init()));
-            _services.Add(lifeSpan, serviceDict);
         }
 
         public void StopServices(GameServiceLifeSpan lifeSpan)

@@ -1,7 +1,8 @@
-﻿//#define TEST_ON
+﻿#define TEST_ON
 #if TEST_ON
 
 using Game;
+using UnityEngine;
 using YooAsset;
 
 namespace Analyzer.Test
@@ -53,6 +54,14 @@ namespace Analyzer.Test
         public void Test()
         {
             YooAsset.YooAssets.LoadSceneAsync("test");
+        }
+    }
+
+    public class TestLOG004
+    {
+        public void Test()
+        {
+            Debug.Log("test");
         }
     }
 }

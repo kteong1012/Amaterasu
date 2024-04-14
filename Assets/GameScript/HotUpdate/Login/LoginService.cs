@@ -31,6 +31,8 @@ namespace Game
 
         private Dictionary<Type, PlayerData> _cachePlayerDataMap = new();
 
+        private SceneService _sceneService;
+
         private EventGroup _eventGroup;
         #endregion
 
@@ -60,15 +62,20 @@ namespace Game
 
             // 发送登录事件
             GameEntryEventsDefine.LoginSuccess.SendEventMessage(LoginChannel, playerId);
+
+            await _sceneService.ChangeToHomeScene();
         }
 
         public void Logout()
         {
+            // 发送登出事件
+            GameEntryEventsDefine.LogoutSuccess.SendEventMessage(LoginChannel, PlayerId);
+
             // 关闭LoginService
             GameEntry.Ins.StopServices(GameServiceLifeSpan.Login);
 
-            // 发送登出事件
-            GameEntryEventsDefine.LogoutSuccess.SendEventMessage(LoginChannel, PlayerId);
+            // 返回登录界面
+            _sceneService.ChangeToLoginScene().Forget();
         }
         #endregion
 

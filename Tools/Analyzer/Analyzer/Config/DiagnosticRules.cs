@@ -130,5 +130,21 @@ namespace Analyzer.Config
             private const string _message = "禁止使用YooAssets.LoadSceneAsync接口，切换场景只允许在SceneService内部调用";
             private const string _description = "禁止使用YooAssets.LoadSceneAsync接口，切换场景只允许在SceneService内部调用.";
         }
+
+        public static class UseGameLogRule
+        {
+            public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+                id: DiagnosticIds.UseGameLog,
+                title: _title,
+                messageFormat: _message,
+                category: DiagnosticCategories.Logic,
+                defaultSeverity: DiagnosticSeverity.Error,
+                isEnabledByDefault: true,
+                description: _description
+                );
+            private const string _title = "禁止使用UnityEngine.Debug";
+            private const string _message = "禁止使用UnityEngine.Debug类，使用Game.Log.GameLog代替";
+            private const string _description = "禁止使用UnityEngine.Debug类，使用Game.Log.GameLog代替.";
+        }
     }
 }

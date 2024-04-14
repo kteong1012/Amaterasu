@@ -4,49 +4,48 @@ using YIUIFramework;
 using UnityEngine;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using YooAsset;
 using Game.Log;
 
-namespace Game.UI.UILogin
+namespace Game.UI.UIHome
 {
     /// <summary>
     /// Author  YIUI
     /// Date    2024.4.14
     /// </summary>
-    public sealed partial class UILoginPanel : UILoginPanelBase
+    public sealed partial class UIHomePanel : UIHomePanelBase
     {
 
         #region 生命周期
 
         protected override void Initialize()
         {
-            u_ComBtn_EnterGame.onClick.AddListener(OnClickBtnEnterGame);
+            u_ComBtn_StartBattleButton.onClick.AddListener(OnClickBtnStartBattle);
         }
 
         protected override void Start()
         {
-            GameLog.Debug($"UILoginPanel Start");
+            GameLog.Debug($"UIHomePanel Start");
         }
 
         protected override void OnEnable()
         {
-            GameLog.Debug($"UILoginPanel OnEnable");
+            GameLog.Debug($"UIHomePanel OnEnable");
         }
 
         protected override void OnDisable()
         {
-            GameLog.Debug($"UILoginPanel OnDisable");
+            GameLog.Debug($"UIHomePanel OnDisable");
         }
 
         protected override void OnDestroy()
         {
-            GameLog.Debug($"UILoginPanel OnDestroy");
+            GameLog.Debug($"UIHomePanel OnDestroy");
         }
 
         protected override async UniTask<bool> OnOpen()
         {
             await UniTask.CompletedTask;
-            GameLog.Debug($"UILoginPanel OnOpen");
+            GameLog.Debug($"UIHomePanel OnOpen");
             return true;
         }
 
@@ -58,10 +57,11 @@ namespace Game.UI.UILogin
         #endregion
 
         #region Event开始
-        private async void OnClickBtnEnterGame()
+
+        private async void OnClickBtnStartBattle()
         {
-            var loginService = GameEntry.Ins.GetService<LoginService>();
-            await loginService.Login(LoginChannel.Local, "0");
+            var sceneService = GameEntry.Ins.GetService<SceneService>();
+            await sceneService.ChangeToBattleScene();
             Close();
         }
 

@@ -4,6 +4,7 @@ using YIUIFramework;
 using UnityEngine;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Game.Log;
 
 namespace ${Namespace}.${PkgName}
 {
@@ -18,27 +19,27 @@ namespace ${Namespace}.${PkgName}
         
         protected override void Initialize()
         {
-            Debug.Log($"${ResName} Initialize");
+            GameLog.Debug($"${ResName} Initialize");
         }
 
         protected override void Start()
         {
-            Debug.Log($"${ResName} Start");
+            GameLog.Debug($"${ResName} Start");
         }
 
         protected override void OnEnable()
         {
-            Debug.Log($"${ResName} OnEnable");
+            GameLog.Debug($"${ResName} OnEnable");
         }
 
         protected override void OnDisable()
         {
-            Debug.Log($"${ResName} OnDisable");
+            GameLog.Debug($"${ResName} OnDisable");
         }
 
         protected override void OnDestroy()
         {
-            Debug.Log($"${ResName} OnDestroy");
+            GameLog.Debug($"${ResName} OnDestroy");
         }
 
         #endregion
