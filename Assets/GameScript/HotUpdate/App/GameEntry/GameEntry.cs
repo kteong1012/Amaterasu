@@ -46,9 +46,7 @@ namespace Game
 
             // 进入登录界面
             var sceneService = GetService<SceneService>();
-
-
-            PanelMgr.Inst.OpenPanel<UILoginPanel>();
+            sceneService.ChangeToLoginScene().Forget();
         }
 
         private void AddEventListeners()

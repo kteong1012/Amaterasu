@@ -1,6 +1,8 @@
 using Cysharp.Threading.Tasks;
+using Game.UI.UILogin;
 using UniFramework.Event;
 using UnityEngine;
+using YIUIFramework;
 using YooAsset;
 
 #pragma warning disable LOG003 // ½ûÖ¹Ê¹ÓÃYooAssets.LoadSceneAsync
@@ -15,16 +17,23 @@ namespace Game
             await base.Init();
         }
 
-        public void ChangeToBattleScene()
+        public async UniTask ChangeToBattleScene()
         {
-            YooAssets.LoadSceneAsync("scene_battle");
+            var handle = YooAssets.LoadSceneAsync("scene_battle");
+            var tcs = new UniTaskCompletionSource();
+            handle.Completed += (sceneHandle) =>
+            {
+                tcs.TrySetResult();
+            };
+            await tcs.Task;
             MainCamera.Instance.Camera.transform.position = new Vector3(0, 20, -2);
             MainCamera.Instance.Camera.transform.rotation = Quaternion.Euler(85, 0, 0);
         }
 
-        public void ChangeToLoginScene()
+        public async UniTask ChangeToLoginScene()
         {
-            YooAssets.LoadSceneAsync("scene_login");
+            PanelMgr.Inst.OpenPanel<UILoginPanel>();
+            await YooAssets.LoadSceneAsync("scene_login");
             MainCamera.Instance.Camera.transform.position = Vector3.zero;
             MainCamera.Instance.Camera.transform.rotation = Quaternion.identity;
         }

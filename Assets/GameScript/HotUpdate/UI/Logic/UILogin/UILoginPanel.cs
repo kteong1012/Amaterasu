@@ -57,10 +57,10 @@ namespace Game.UI.UILogin
         #endregion
 
         #region Event开始
-        private void OnClickBtnEnterGame()
+        private async void OnClickBtnEnterGame()
         {
             var sceneService = GameEntry.Ins.GetService<SceneService>();
-            sceneService.ChangeToBattleScene();
+            await sceneService.ChangeToBattleScene();
             Close();
         }
 
