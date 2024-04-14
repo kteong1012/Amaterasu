@@ -71,24 +71,16 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
-    - GroupName: ugui
+    - GroupName: ui
       GroupDesc: "\u9762\u677F"
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/GameRes/UIImage
-        CollectorGUID: 30c57db62bb02a24590e7046d3a9e33a
+      - CollectPath: Assets/GameRes/UI
+        CollectorGUID: 4b625de1d20a53f4fad9a0ac4ceea14c
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
-      - CollectPath: Assets/GameRes/UIPanel
-        CollectorGUID: 12d33f33f3a55224c9c747d7bffa1c68
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackSeparately
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
@@ -112,6 +104,19 @@ MonoBehaviour:
       Collectors:
       - CollectPath: Assets/GameRes/Dll
         CollectorGUID: 287c4493edf20644d8ff51c42fc3ba27
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: ui_reddot
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/GameRes/RedDot
+        CollectorGUID: dd6d79ceaad353c449cd0db9ac27efa6
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory

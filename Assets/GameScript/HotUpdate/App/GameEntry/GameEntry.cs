@@ -6,6 +6,8 @@ using System;
 using YooAsset;
 using Cysharp.Threading.Tasks;
 using System.Threading.Tasks;
+using YIUIFramework;
+using Game.UI.UILogin;
 
 namespace Game
 {
@@ -43,7 +45,8 @@ namespace Game
             await _serviceManager.StartServices(GameServiceLifeSpan.Game);
 
             // 进入登录界面
-            _ = YooAssets.LoadSceneAsync("scene_home");
+            await YooAssets.LoadSceneAsync("scene_home");
+            PanelMgr.Inst.OpenPanel<UILoginPanel>();
         }
 
         private void AddEventListeners()

@@ -10,7 +10,7 @@ namespace Game
     {
         public static void Start()
         {
-            var go = new GameObject("G");
+            var go = new GameObject("GameEntry");
             go.AddComponent<GameEntry>();
         }
     }
