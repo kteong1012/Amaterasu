@@ -16,7 +16,7 @@ namespace GameEditor
             CheckSymbolState();
         }
 
-        [MenuItem("LogLevel/Debug")]
+        [MenuItem("Tools/LogLevel/Debug")]
         private static void SetDebugSymbol()
         {
             SetSymbolState("LOG_DEBUG");

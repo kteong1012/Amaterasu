@@ -1,7 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using Game.Log;
-using System;
-using System.Collections.Generic;
+﻿using Game.Log;
 using UnityEngine;
 
 namespace Game
