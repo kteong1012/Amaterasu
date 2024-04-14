@@ -107,5 +107,10 @@ namespace Game
 
             GameLog.ClearLogger();
         }
+
+        public T GetService<T>() where T : GameService
+        {
+            return _serviceManager.GetService<T>();
+        }
     }
 }

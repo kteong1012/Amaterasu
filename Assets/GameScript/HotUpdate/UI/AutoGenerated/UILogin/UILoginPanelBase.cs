@@ -19,7 +19,7 @@ namespace Game.UI.UILogin
         public const string PkgName = "UILogin";
         public const string ResName = "UILoginPanel";
         
-        public override EWindowOption WindowOption => EWindowOption.None;
+        public override EWindowOption WindowOption => EWindowOption.BanTween;
         public override EPanelLayer Layer => EPanelLayer.Panel;
         public override EPanelOption PanelOption => EPanelOption.None;
         public override EPanelStackOption StackOption => EPanelStackOption.VisibleTween;

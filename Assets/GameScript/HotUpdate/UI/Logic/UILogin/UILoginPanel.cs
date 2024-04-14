@@ -4,6 +4,7 @@ using YIUIFramework;
 using UnityEngine;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using YooAsset;
 
 namespace Game.UI.UILogin
 {
@@ -11,17 +12,14 @@ namespace Game.UI.UILogin
     /// Author  YIUI
     /// Date    2024.4.14
     /// </summary>
-    public sealed partial class UILoginPanel:UILoginPanelBase
+    public sealed partial class UILoginPanel : UILoginPanelBase
     {
-    
+
         #region 生命周期
-        
+
         protected override void Initialize()
         {
-            u_ComBtn_EnterGame.onClick.AddListener(() =>
-            {
-                Debug.Log("点击了 u_ComBtn_EnterGame");
-            });
+            u_ComBtn_EnterGame.onClick.AddListener(OnClickBtnEnterGame);
         }
 
         protected override void Start()
@@ -55,11 +53,16 @@ namespace Game.UI.UILogin
         {
             return await base.OnOpen(param);
         }
-        
+
         #endregion
 
         #region Event开始
-
+        private void OnClickBtnEnterGame()
+        {
+            var sceneService = GameEntry.Ins.GetService<SceneService>();
+            sceneService.ChangeToBattleScene();
+            Close();
+        }
 
         #endregion Event结束
 
