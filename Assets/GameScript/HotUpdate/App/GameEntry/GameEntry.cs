@@ -45,7 +45,9 @@ namespace Game
             await _serviceManager.StartServices(GameServiceLifeSpan.Game);
 
             // 进入登录界面
-            await YooAssets.LoadSceneAsync("scene_home");
+            var sceneService = GetService<SceneService>();
+
+
             PanelMgr.Inst.OpenPanel<UILoginPanel>();
         }
 

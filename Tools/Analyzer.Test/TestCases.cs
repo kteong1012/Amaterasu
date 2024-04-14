@@ -1,7 +1,8 @@
-﻿#define TEST_ON
+﻿//#define TEST_ON
 #if TEST_ON
 
 using Game;
+using YooAsset;
 
 namespace Analyzer.Test
 {
@@ -16,6 +17,24 @@ namespace Analyzer.Test
             }
         }
     }
+
+    public class TestSTD002
+    {
+        public int A;
+        private int b;
+
+        public int C { get; set; }
+        public int D { get; private set; }
+
+        struct TestStruct
+        {
+            public int A;
+            private int b;
+            protected int C { get; set; }
+            int D {  get; set; }
+        }
+    }
+
     public class TestLOG001
     {
         [GameService(GameServiceLifeSpan.Game)]
@@ -27,6 +46,14 @@ namespace Analyzer.Test
 
     public class TestLOG002
     {
+    }
+
+    public class TestLOG003
+    {
+        public void Test()
+        {
+            YooAsset.YooAssets.LoadSceneAsync("test");
+        }
     }
 }
 #endif
