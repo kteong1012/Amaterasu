@@ -7,9 +7,9 @@ using UnityEngine;
 using YIUIFramework;
 using YooAsset;
 
-#pragma warning disable LOG003 // 禁止使用YooAssets.LoadSceneAsync
 namespace Game
 {
+#pragma warning disable LOG003 // 禁止使用YooAssets.LoadSceneAsync
     [GameService(GameServiceLifeSpan.Game)]
     public class SceneService : GameService
     {
@@ -34,19 +34,25 @@ namespace Game
 
         public async UniTask ChangeToLoginScene()
         {
+            await ChangeScene("scene_login");
             PanelMgr.Inst.OpenPanel<UILoginPanel>();
-            await YooAssets.LoadSceneAsync("scene_login");
             MainCamera.Instance.Camera.transform.position = Vector3.zero;
             MainCamera.Instance.Camera.transform.rotation = Quaternion.identity;
         }
 
         public async UniTask ChangeToHomeScene()
         {
+            await ChangeScene("scene_home");
             PanelMgr.Inst.OpenPanel<UIHomePanel>();
-            await YooAssets.LoadSceneAsync("scene_home");
             MainCamera.Instance.Camera.transform.position = Vector3.zero;
             MainCamera.Instance.Camera.transform.rotation = Quaternion.identity;
         }
+
+        private async UniTask ChangeScene(string sceneName)
+        {
+            await YooAssets.LoadSceneAsync(sceneName);
+            await UniTask.DelayFrame(2); //等待一帧，确保场景加载完成
+        }
     }
-}
 #pragma warning restore LOG003 // 禁止使用YooAssets.LoadSceneAsync
+}

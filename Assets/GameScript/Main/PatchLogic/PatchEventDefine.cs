@@ -107,4 +107,16 @@ public class PatchEventDefine
             UniEvent.SendMessage(msg);
         }
     }
+
+    /// <summary>
+    /// 关闭更新窗口
+    /// </summary>
+    public class ClosePatchWindow : IEventMessage
+    {
+        public static void SendEventMessage()
+        {
+            var msg = new ClosePatchWindow();
+            UniEvent.SendMessage(msg);
+        }
+    }
 }

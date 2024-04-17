@@ -20,12 +20,13 @@ namespace Game
         #endregion
 
         #region Life Cycle
-        public async override UniTask Init()
+        public override async UniTask Init()
         {
             UIBindHelper.InternalGameGetUIBindVoFunc = YIUICodeGenerated.UIBindProvider.Get;
             YIUILoadDI.LoadAssetFunc = LoadAsset;
             YIUILoadDI.LoadAssetAsyncFunc = LoadAssetAsync;
             YIUILoadDI.ReleaseAction = ReleaseAction;
+
             await MgrCenter.Inst.Register(SemaphoreSlimSingleton.Inst);
             await MgrCenter.Inst.Register(CountDownMgr.Inst);
             await MgrCenter.Inst.Register(RedDotMgr.Inst);
@@ -37,8 +38,6 @@ namespace Game
             mainURPCamera.renderType = CameraRenderType.Base;
             uiURPCamera.renderType = CameraRenderType.Overlay;
             mainURPCamera.cameraStack.Add(PanelMgr.Inst.UICamera);
-
-            await base.Init();
         }
         #endregion
 

@@ -77,7 +77,9 @@ public class PatchWindow : MonoBehaviour
         _eventGroup.AddListener<PatchEventDefine.PackageVersionUpdateFailed>(OnHandleEventMessage);
         _eventGroup.AddListener<PatchEventDefine.PatchManifestUpdateFailed>(OnHandleEventMessage);
         _eventGroup.AddListener<PatchEventDefine.WebFileDownloadFailed>(OnHandleEventMessage);
+        _eventGroup.AddListener<PatchEventDefine.ClosePatchWindow>(OnHandleEventMessage);
     }
+
     void OnDestroy()
     {
         _eventGroup.RemoveAllListener();
@@ -145,6 +147,10 @@ public class PatchWindow : MonoBehaviour
                 UserEventDefine.UserTryDownloadWebFiles.SendEventMessage();
             };
             ShowMessageBox($"Failed to download file : {msg.FileName}", callback);
+        }
+        else if (message is PatchEventDefine.ClosePatchWindow)
+        {
+            Destroy(gameObject);
         }
         else
         {

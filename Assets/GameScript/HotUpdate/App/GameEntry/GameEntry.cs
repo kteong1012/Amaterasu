@@ -38,13 +38,16 @@ namespace Game
             // 初始化资源系统
             await InitResourceModule();
 
-            // 初始化服务
+            // 关闭更新窗口
+            PatchEventDefine.ClosePatchWindow.SendEventMessage();
+
+            // 初始化服务管理器
             InitServiceManager();
 
-            // 创建Game服务
+            // 启动Game服务
             await _serviceManager.StartServices(GameServiceLifeSpan.Game);
 
-            // 进入登录界面
+            // 进入登录场景
             var sceneService = GetService<SceneService>();
             sceneService.ChangeToLoginScene().Forget();
         }
@@ -111,6 +114,15 @@ namespace Game
         public T GetService<T>() where T : GameService
         {
             return _serviceManager.GetService<T>();
+        }
+
+        private void TryDestroyPatchWindow()
+        {
+            var patchWindow = GameObject.Find("PatchWindow");
+            if (patchWindow != null)
+            {
+                GameObject.Destroy(patchWindow);
+            }
         }
     }
 }
