@@ -12,8 +12,15 @@ namespace Game
 
         private void Start()
         {
+            OpenPatchWindow();
             SetApp();
             LoadDll();
+        }
+
+        private void OpenPatchWindow()
+        {
+            var go = Resources.Load<GameObject>("PatchWindow/PatchWindow");
+            GameObject.Instantiate(go);
         }
 
         private void SetApp()
