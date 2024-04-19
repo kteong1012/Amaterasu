@@ -4,7 +4,7 @@ namespace YIUICodeGenerated
 {
     /// <summary>
     /// 由YIUI工具自动创建 请勿手动修改
-    /// 用法: UIBindHelper.InternalGameGetUIBindVoFunc = YIUICodeGenerated.UIBindProvider.Get;
+    /// 用法: UIBindHelper.InternalGameGetUIBindVoFunc = YIUICodeGenerated.UIBindProvider.GetNumericObject;
     /// </summary>
     public static class UIBindProvider
     {

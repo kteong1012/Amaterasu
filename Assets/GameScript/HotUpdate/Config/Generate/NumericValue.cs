@@ -17,7 +17,7 @@ public sealed partial class NumericValue : Luban.BeanBase
     public NumericValue(ByteBuf _buf) 
     {
         Type = (NumericValueType)_buf.ReadInt();
-        Value = _buf.ReadFloat();
+        Value = _buf.ReadLong();
     }
 
     public static NumericValue DeserializeNumericValue(ByteBuf _buf)
@@ -32,7 +32,7 @@ public sealed partial class NumericValue : Luban.BeanBase
     /// <summary>
     /// 数值
     /// </summary>
-    public readonly float Value;
+    public readonly long Value;
    
     public const int __ID__ = -1988576636;
     public override int GetTypeId() => __ID__;

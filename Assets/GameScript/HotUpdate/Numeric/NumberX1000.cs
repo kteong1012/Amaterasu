@@ -5,46 +5,50 @@
     /// </summary>
     public struct NumberX1000
     {
-        private long _valueX100;
+        private long _valueX1000;
         private const int SCALE = 1000;
         private const float SCALEf = 1000f;
         private const double SCALEd = 1000d;
 
-        public static NumberX1000 Zero = new NumberX1000 { _valueX100 = 0 };
-        public static readonly NumberX1000 One = new NumberX1000 { _valueX100 = SCALE * 1 };
+        public static NumberX1000 Zero = new NumberX1000 { _valueX1000 = 0 };
+        public static readonly NumberX1000 One = new NumberX1000 { _valueX1000 = SCALE * 1 };
+        public static NumberX1000 CreateFromX1000Value(long value)
+        {
+            return new NumberX1000 { _valueX1000 = value };
+        }
 
         #region Implicit Operator & Explicit Operator
         public static implicit operator long(NumberX1000 number)
         {
-            return number._valueX100 / SCALE;
+            return number._valueX1000 / SCALE;
         }
         public static implicit operator NumberX1000(long number)
         {
-            return new NumberX1000 { _valueX100 = number * SCALE };
+            return new NumberX1000 { _valueX1000 = number * SCALE };
         }
         public static explicit operator int(NumberX1000 number)
         {
-            return (int)(number._valueX100 / SCALE);
+            return (int)(number._valueX1000 / SCALE);
         }
         public static explicit operator NumberX1000(int number)
         {
-            return new NumberX1000 { _valueX100 = number * SCALE };
+            return new NumberX1000 { _valueX1000 = number * SCALE };
         }
         public static explicit operator float(NumberX1000 number)
         {
-            return number._valueX100 / SCALEf;
+            return number._valueX1000 / SCALEf;
         }
         public static explicit operator NumberX1000(float number)
         {
-            return new NumberX1000 { _valueX100 = (long)(number * SCALE) };
+            return new NumberX1000 { _valueX1000 = (long)(number * SCALE) };
         }
         public static explicit operator double(NumberX1000 number)
         {
-            return number._valueX100 / SCALEd;
+            return number._valueX1000 / SCALEd;
         }
         public static explicit operator NumberX1000(double number)
         {
-            return new NumberX1000 { _valueX100 = (long)(number * SCALE) };
+            return new NumberX1000 { _valueX1000 = (long)(number * SCALE) };
         }
         #endregion
 
@@ -52,327 +56,327 @@
         // operator +
         public static NumberX1000 operator +(NumberX1000 a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 + b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 + b._valueX1000 };
         }
         public static NumberX1000 operator +(NumberX1000 a, long b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 + b * SCALE };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 + b * SCALE };
         }
         public static NumberX1000 operator +(long a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a * SCALE + b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a * SCALE + b._valueX1000 };
         }
         public static NumberX1000 operator +(NumberX1000 a, int b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 + b * SCALE };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 + b * SCALE };
         }
         public static NumberX1000 operator +(int a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a * SCALE + b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a * SCALE + b._valueX1000 };
         }
         public static NumberX1000 operator +(NumberX1000 a, float b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 + (long)(b * SCALE) };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 + (long)(b * SCALE) };
         }
         public static NumberX1000 operator +(float a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a * SCALE) + b._valueX100 };
+            return new NumberX1000 { _valueX1000 = (long)(a * SCALE) + b._valueX1000 };
         }
         public static NumberX1000 operator +(NumberX1000 a, double b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 + (long)(b * SCALE) };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 + (long)(b * SCALE) };
         }
         public static NumberX1000 operator +(double a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a * SCALE) + b._valueX100 };
+            return new NumberX1000 { _valueX1000 = (long)(a * SCALE) + b._valueX1000 };
         }
 
         // operator -
         public static NumberX1000 operator -(NumberX1000 a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 - b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 - b._valueX1000 };
         }
         public static NumberX1000 operator -(NumberX1000 a, long b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 - b * SCALE };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 - b * SCALE };
         }
         public static NumberX1000 operator -(long a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a * SCALE - b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a * SCALE - b._valueX1000 };
         }
         public static NumberX1000 operator -(NumberX1000 a, int b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 - b * SCALE };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 - b * SCALE };
         }
         public static NumberX1000 operator -(int a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a * SCALE - b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a * SCALE - b._valueX1000 };
         }
         public static NumberX1000 operator -(NumberX1000 a, float b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 - (long)(b * SCALE) };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 - (long)(b * SCALE) };
         }
         public static NumberX1000 operator -(float a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a * SCALE) - b._valueX100 };
+            return new NumberX1000 { _valueX1000 = (long)(a * SCALE) - b._valueX1000 };
         }
         public static NumberX1000 operator -(NumberX1000 a, double b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 - (long)(b * SCALE) };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 - (long)(b * SCALE) };
         }
         public static NumberX1000 operator -(double a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a * SCALE) - b._valueX100 };
+            return new NumberX1000 { _valueX1000 = (long)(a * SCALE) - b._valueX1000 };
         }
 
         // operator *
         public static NumberX1000 operator *(NumberX1000 a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 * b._valueX100 / SCALE };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 * b._valueX1000 / SCALE };
         }
         public static NumberX1000 operator *(NumberX1000 a, long b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 * b };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 * b };
         }
         public static NumberX1000 operator *(long a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a * b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a * b._valueX1000 };
         }
         public static NumberX1000 operator *(NumberX1000 a, int b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 * b };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 * b };
         }
         public static NumberX1000 operator *(int a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a * b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a * b._valueX1000 };
         }
         public static NumberX1000 operator *(NumberX1000 a, float b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a._valueX100 * b) };
+            return new NumberX1000 { _valueX1000 = (long)(a._valueX1000 * b) };
         }
         public static NumberX1000 operator *(float a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a * b._valueX100) };
+            return new NumberX1000 { _valueX1000 = (long)(a * b._valueX1000) };
         }
         public static NumberX1000 operator *(NumberX1000 a, double b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a._valueX100 * b) };
+            return new NumberX1000 { _valueX1000 = (long)(a._valueX1000 * b) };
         }
         public static NumberX1000 operator *(double a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a * b._valueX100) };
+            return new NumberX1000 { _valueX1000 = (long)(a * b._valueX1000) };
         }
 
         // operator /
         public static NumberX1000 operator /(NumberX1000 a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 * SCALE / b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 * SCALE / b._valueX1000 };
         }
         public static NumberX1000 operator /(NumberX1000 a, long b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 / b };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 / b };
         }
         public static NumberX1000 operator /(long a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a * SCALE / b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a * SCALE / b._valueX1000 };
         }
         public static NumberX1000 operator /(NumberX1000 a, int b)
         {
-            return new NumberX1000 { _valueX100 = a._valueX100 / b };
+            return new NumberX1000 { _valueX1000 = a._valueX1000 / b };
         }
         public static NumberX1000 operator /(int a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = a * SCALE / b._valueX100 };
+            return new NumberX1000 { _valueX1000 = a * SCALE / b._valueX1000 };
         }
         public static NumberX1000 operator /(NumberX1000 a, float b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a._valueX100 / b) };
+            return new NumberX1000 { _valueX1000 = (long)(a._valueX1000 / b) };
         }
         public static NumberX1000 operator /(float a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a * SCALE / b._valueX100) };
+            return new NumberX1000 { _valueX1000 = (long)(a * SCALE / b._valueX1000) };
         }
         public static NumberX1000 operator /(NumberX1000 a, double b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a._valueX100 / b) };
+            return new NumberX1000 { _valueX1000 = (long)(a._valueX1000 / b) };
         }
         public static NumberX1000 operator /(double a, NumberX1000 b)
         {
-            return new NumberX1000 { _valueX100 = (long)(a * SCALE / b._valueX100) };
+            return new NumberX1000 { _valueX1000 = (long)(a * SCALE / b._valueX1000) };
         }
 
         // operator == & operator !=
         public static bool operator ==(NumberX1000 a, NumberX1000 b)
         {
-            return a._valueX100 == b._valueX100;
+            return a._valueX1000 == b._valueX1000;
         }
         public static bool operator !=(NumberX1000 a, NumberX1000 b)
         {
-            return a._valueX100 != b._valueX100;
+            return a._valueX1000 != b._valueX1000;
         }
         public static bool operator ==(NumberX1000 a, long b)
         {
-            return a._valueX100 == b * SCALE;
+            return a._valueX1000 == b * SCALE;
         }
         public static bool operator !=(NumberX1000 a, long b)
         {
-            return a._valueX100 != b * SCALE;
+            return a._valueX1000 != b * SCALE;
         }
         public static bool operator ==(long a, NumberX1000 b)
         {
-            return a * SCALE == b._valueX100;
+            return a * SCALE == b._valueX1000;
         }
         public static bool operator !=(long a, NumberX1000 b)
         {
-            return a * SCALE != b._valueX100;
+            return a * SCALE != b._valueX1000;
         }
         public static bool operator ==(NumberX1000 a, int b)
         {
-            return a._valueX100 == b * SCALE;
+            return a._valueX1000 == b * SCALE;
         }
         public static bool operator !=(NumberX1000 a, int b)
         {
-            return a._valueX100 != b * SCALE;
+            return a._valueX1000 != b * SCALE;
         }
         public static bool operator ==(int a, NumberX1000 b)
         {
-            return a * SCALE == b._valueX100;
+            return a * SCALE == b._valueX1000;
         }
         public static bool operator !=(int a, NumberX1000 b)
         {
-            return a * SCALE != b._valueX100;
+            return a * SCALE != b._valueX1000;
         }
         public static bool operator ==(NumberX1000 a, float b)
         {
-            return a._valueX100 == (long)(b * SCALE);
+            return a._valueX1000 == (long)(b * SCALE);
         }
         public static bool operator !=(NumberX1000 a, float b)
         {
-            return a._valueX100 != (long)(b * SCALE);
+            return a._valueX1000 != (long)(b * SCALE);
         }
         public static bool operator ==(float a, NumberX1000 b)
         {
-            return (long)(a * SCALE) == b._valueX100;
+            return (long)(a * SCALE) == b._valueX1000;
         }
         public static bool operator !=(float a, NumberX1000 b)
         {
-            return (long)(a * SCALE) != b._valueX100;
+            return (long)(a * SCALE) != b._valueX1000;
         }
         public static bool operator ==(NumberX1000 a, double b)
         {
-            return a._valueX100 == (long)(b * SCALE);
+            return a._valueX1000 == (long)(b * SCALE);
         }
         public static bool operator !=(NumberX1000 a, double b)
         {
-            return a._valueX100 != (long)(b * SCALE);
+            return a._valueX1000 != (long)(b * SCALE);
         }
         public static bool operator ==(double a, NumberX1000 b)
         {
-            return (long)(a * SCALE) == b._valueX100;
+            return (long)(a * SCALE) == b._valueX1000;
         }
         public static bool operator !=(double a, NumberX1000 b)
         {
-            return (long)(a * SCALE) != b._valueX100;
+            return (long)(a * SCALE) != b._valueX1000;
         }
 
         // operator > & operator <
         public static bool operator >(NumberX1000 a, NumberX1000 b)
         {
-            return a._valueX100 > b._valueX100;
+            return a._valueX1000 > b._valueX1000;
         }
         public static bool operator <(NumberX1000 a, NumberX1000 b)
         {
-            return a._valueX100 < b._valueX100;
+            return a._valueX1000 < b._valueX1000;
         }
         public static bool operator >(NumberX1000 a, long b)
         {
-            return a._valueX100 > b * SCALE;
+            return a._valueX1000 > b * SCALE;
         }
         public static bool operator <(NumberX1000 a, long b)
         {
-            return a._valueX100 < b * SCALE;
+            return a._valueX1000 < b * SCALE;
         }
         public static bool operator >(long a, NumberX1000 b)
         {
-            return a * SCALE > b._valueX100;
+            return a * SCALE > b._valueX1000;
         }
         public static bool operator <(long a, NumberX1000 b)
         {
-            return a * SCALE < b._valueX100;
+            return a * SCALE < b._valueX1000;
         }
         public static bool operator >(NumberX1000 a, int b)
         {
-            return a._valueX100 > b * SCALE;
+            return a._valueX1000 > b * SCALE;
         }
         public static bool operator <(NumberX1000 a, int b)
         {
-            return a._valueX100 < b * SCALE;
+            return a._valueX1000 < b * SCALE;
         }
         public static bool operator >(int a, NumberX1000 b)
         {
-            return a * SCALE > b._valueX100;
+            return a * SCALE > b._valueX1000;
         }
         public static bool operator <(int a, NumberX1000 b)
         {
-            return a * SCALE < b._valueX100;
+            return a * SCALE < b._valueX1000;
         }
         public static bool operator >(NumberX1000 a, float b)
         {
-            return a._valueX100 > (long)(b * SCALE);
+            return a._valueX1000 > (long)(b * SCALE);
         }
         public static bool operator <(NumberX1000 a, float b)
         {
-            return a._valueX100 < (long)(b * SCALE);
+            return a._valueX1000 < (long)(b * SCALE);
         }
         public static bool operator >(float a, NumberX1000 b)
         {
-            return (long)(a * SCALE) > b._valueX100;
+            return (long)(a * SCALE) > b._valueX1000;
         }
         public static bool operator <(float a, NumberX1000 b)
         {
-            return (long)(a * SCALE) < b._valueX100;
+            return (long)(a * SCALE) < b._valueX1000;
         }
         public static bool operator >(NumberX1000 a, double b)
         {
-            return a._valueX100 > (long)(b * SCALE);
+            return a._valueX1000 > (long)(b * SCALE);
         }
         public static bool operator <(NumberX1000 a, double b)
         {
-            return a._valueX100 < (long)(b * SCALE);
+            return a._valueX1000 < (long)(b * SCALE);
         }
         public static bool operator >(double a, NumberX1000 b)
         {
-            return (long)(a * SCALE) > b._valueX100;
+            return (long)(a * SCALE) > b._valueX1000;
         }
         public static bool operator <(double a, NumberX1000 b)
         {
-            return (long)(a * SCALE) < b._valueX100;
+            return (long)(a * SCALE) < b._valueX1000;
         }
         #endregion
 
         public int ToInt()
         {
-            return (int)(_valueX100 / SCALE);
+            return (int)(_valueX1000 / SCALE);
         }
         public long ToLong()
         {
-            return _valueX100 / SCALE;
+            return _valueX1000 / SCALE;
         }
         public float ToFloat()
         {
-            return _valueX100 / SCALEf;
+            return _valueX1000 / SCALEf;
         }
         public double ToDouble()
         {
-            return _valueX100 / SCALEd;
+            return _valueX1000 / SCALEd;
         }
         public override string ToString()
         {
-            return (_valueX100 / SCALE).ToString();
+            return (_valueX1000 / SCALE).ToString();
         }
         public string ToFloatString()
         {
-            return (_valueX100 / SCALEf).ToString();
+            return (_valueX1000 / SCALEf).ToString();
         }
 
         public override bool Equals(object obj)
@@ -390,7 +394,7 @@
         }
         public override int GetHashCode()
         {
-            return _valueX100.GetHashCode();
+            return _valueX1000.GetHashCode();
         }
     }
 }

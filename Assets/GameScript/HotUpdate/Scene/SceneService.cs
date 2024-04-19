@@ -14,9 +14,9 @@ namespace Game
     public class SceneService : GameService
     {
         private EventGroup _eventGroup = new EventGroup();
-        public override async UniTask Init()
+        protected override async UniTask OnInit()
         {
-            await base.Init();
+            await base.OnInit();
         }
 
         public async UniTask ChangeToBattleScene()
@@ -28,7 +28,7 @@ namespace Game
                 tcs.TrySetResult();
             };
             await tcs.Task;
-            MainCamera.Instance.Camera.transform.position = new Vector3(0, 20, -2);
+            MainCamera.Instance.Camera.transform.position = new Vector3(0, 40, -4);
             MainCamera.Instance.Camera.transform.rotation = Quaternion.Euler(85, 0, 0);
         }
 

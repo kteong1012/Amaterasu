@@ -66,7 +66,7 @@ namespace TMPro.Examples
 
                     go.transform.position = m_Transform.position + new Vector3(ratio * -orthoSize * 0.975f, orthoSize * 0.975f - lineHeight, 1);
                                        
-                    TextMesh textMesh = go.AddComponent<TextMesh>();
+                    TextMesh textMesh = go.AddUnitComponent<TextMesh>();
                     textMesh.font = Resources.Load("Fonts/ARIAL", typeof(Font)) as Font;
                     textMesh.renderer.sharedMaterial = textMesh.font.material;
                     textMesh.anchor = TextAnchor.MiddleLeft;

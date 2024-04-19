@@ -13,26 +13,33 @@ namespace Game
         private Dictionary<int, UnitController> _battleUnits = new Dictionary<int, UnitController>();
         private ConfigService _configService;
 
-        public override UniTask Init()
+        protected override async UniTask OnInit()
         {
             _instanceId = 1000;
-            return base.Init();
+
+            var unit1 = CreateBattleUnit(1001, 10, UnitCamp.Red);
+            unit1.transform.position = new Vector3(20, unit1.transform.position.y, 20);
+            var unit2 = CreateBattleUnit(1001, 10, UnitCamp.Blue);
+            unit2.transform.position = new Vector3(-20, unit2.transform.position.y, -20);
+
+            await UniTask.CompletedTask;
         }
-        public void CreateBattleUnit(int unitId, UnitCamp unitCamp)
+        public UnitController CreateBattleUnit(int unitId, int level, UnitCamp unitCamp)
         {
             var unitData = _configService.TbUnitData.GetOrDefault(unitId);
             if (unitData == null)
             {
                 GameLog.Error($"UnitData 表中没有找到Id为{unitId}的数据");
-                return;
+                return null;
             }
             var instanceId = ++_instanceId;
             var go = new GameObject();
             go.name = $"Unit_{unitData.Name}_{unitCamp}_{instanceId}";
-            var battleUnit = go.GetOrAddComponent<UnitController>();
-            battleUnit.Init(instanceId, unitData, unitCamp);
+            var battleUnit = go.GetOrAddComponent<CharacterUnit>();
+            battleUnit.Init(instanceId, unitData, level, unitCamp);
 
             _battleUnits.Add(instanceId, battleUnit);
+            return battleUnit;
         }
         public void RemoveBattleUnit(int unitId)
         {

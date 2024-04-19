@@ -8,7 +8,7 @@ set CONF_ROOT=.
 
 dotnet %LUBAN_DLL% ^
     --conf %CONF_ROOT%\luban.conf ^
-    -t all ^
+    -t client ^
     -x forceLoadDatas=1
 
 echo.

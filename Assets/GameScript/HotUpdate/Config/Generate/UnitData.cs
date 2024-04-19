@@ -20,7 +20,7 @@ public sealed partial class UnitData : Luban.BeanBase
         Name = _buf.ReadString();
         Desc = _buf.ReadString();
         ModelPath = _buf.ReadString();
-        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);Attributes = new System.Collections.Generic.List<Unit.UnitAttrData>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { Unit.UnitAttrData _e0;  _e0 = Unit.UnitAttrData.DeserializeUnitAttrData(_buf); Attributes.Add(_e0);}}
+        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);AttributesX1000 = new System.Collections.Generic.List<Unit.UnitAttrData>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { Unit.UnitAttrData _e0;  _e0 = Unit.UnitAttrData.DeserializeUnitAttrData(_buf); AttributesX1000.Add(_e0);}}
         {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);SkillIds = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); SkillIds.Add(_e0);}}
     }
 
@@ -45,7 +45,7 @@ public sealed partial class UnitData : Luban.BeanBase
     /// 模型路径
     /// </summary>
     public readonly string ModelPath;
-    public readonly System.Collections.Generic.List<Unit.UnitAttrData> Attributes;
+    public readonly System.Collections.Generic.List<Unit.UnitAttrData> AttributesX1000;
     public readonly System.Collections.Generic.List<int> SkillIds;
    
     public const int __ID__ = -228507794;
@@ -57,7 +57,7 @@ public sealed partial class UnitData : Luban.BeanBase
         
         
         
-        foreach (var _e in Attributes) { _e?.ResolveRef(tables); }
+        foreach (var _e in AttributesX1000) { _e?.ResolveRef(tables); }
         
     }
 
@@ -68,7 +68,7 @@ public sealed partial class UnitData : Luban.BeanBase
         + "name:" + Name + ","
         + "desc:" + Desc + ","
         + "modelPath:" + ModelPath + ","
-        + "attributes:" + Luban.StringUtil.CollectionToString(Attributes) + ","
+        + "attributesX1000:" + Luban.StringUtil.CollectionToString(AttributesX1000) + ","
         + "skillIds:" + Luban.StringUtil.CollectionToString(SkillIds) + ","
         + "}";
     }

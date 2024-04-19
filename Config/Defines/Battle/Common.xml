@@ -1,7 +1,7 @@
 <module name="">
     <bean name="NumericValue">
         <var name="type" type="NumericValueType" comment="数值类别"/>
-        <var name="value" type="float" comment="数值"/>
+        <var name="value" type="long" comment="数值"/>
     </bean>
     <enum name="NumericValueType">
         <var name="Base" alias="B"/>

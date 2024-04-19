@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Game
 {
-    public class Numeric
+    public class NumericObject
     {
         public NumericId Id { get; set; }
         public NumberX1000 Base { get; set; }
@@ -15,6 +15,11 @@ namespace Game
         public NumberX1000 BaseMul { get; set; }
         public NumberX1000 FinalAdd { get; set; }
         public NumberX1000 FinalMul { get; set; }
+
+        public NumericObject(NumericId id)
+        {
+            Id = id;
+        }
 
         public NumberX1000 GetValue()
         {
@@ -43,6 +48,11 @@ namespace Game
                 default:
                     break;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, Base: {Base}, BaseAdd: {BaseAdd}, BaseMul: {BaseMul}, FinalAdd: {FinalAdd}, FinalMul: {FinalMul}";
         }
     }
 }

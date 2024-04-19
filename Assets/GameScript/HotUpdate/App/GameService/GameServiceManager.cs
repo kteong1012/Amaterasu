@@ -93,12 +93,21 @@ namespace Game
                     }
 
                     var fieldType = member.GetFieldType();
-                    if (!serviceDict.ContainsKey(fieldType))
+                    GameService value = null;
+                    foreach (var serviceType in _services.Values)
+                    {
+                        if (serviceType.ContainsKey(fieldType))
+                        {
+                            value = serviceType[fieldType];
+                            member.SetValue(service, value);
+                            break;
+                        }
+                    }
+                    if (value == null)
                     {
                         throw new Exception($"GameService {service.GetType().Name} 的 {member.Name} 字段类型 {fieldType.Name} 没有找到对应的服务");
                     }
 
-                    var value = _services[lifeSpan][fieldType];
                     member.SetValue(service, value);
                 }
             }

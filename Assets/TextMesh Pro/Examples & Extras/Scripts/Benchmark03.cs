@@ -26,7 +26,7 @@ namespace TMPro.Examples
         {
             TMP_FontAsset fontAsset = null;
 
-            // Create Dynamic Font Asset for the given font file.
+            // CreateFromX1000Value Dynamic Font Asset for the given font file.
             switch (Benchmark)
             {
                 case BenchmarkType.TMP_SDF_MOBILE:

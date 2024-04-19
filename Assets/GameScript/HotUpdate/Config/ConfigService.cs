@@ -12,7 +12,7 @@ namespace Game.Cfg
     public partial class ConfigService : GameService
     {
         private List<AssetHandle> _assetHandles = new List<AssetHandle>();
-        public override async UniTask Init()
+        protected override async UniTask OnInit()
         {
             GameLog.Info("====≥ı ºªØ≈‰÷√====");
             await LoadAll(Loader);

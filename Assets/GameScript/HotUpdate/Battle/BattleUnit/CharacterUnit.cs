@@ -7,7 +7,9 @@ namespace Game
     {
         protected override void AddComponents()
         {
-            AddComponent<UnitNavigationComponent>();
+            AddUnitComponent<UnitModelComponent>();
+            AddUnitComponent<UnitAttributesComponent>();
+            AddUnitComponent<UnitNavigationComponent>();
         }
     }
 }

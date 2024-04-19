@@ -1,37 +1,37 @@
 [
   {
-    "id": 10001,
+    "id": 1001,
     "name": "小明",
     "desc": "一个小明",
     "model_path": "XiaoMing",
-    "attributes": [
+    "attributes_x1000": [
       {
         "id": 1,
         "base_value": {
           "type": 0,
-          "value": 500
+          "value": 500000
         },
         "grow_value": {
           "type": 0,
-          "value": 50
+          "value": 5000
         }
       },
       {
         "id": 3,
         "base_value": {
           "type": 0,
-          "value": 200
+          "value": 200000
         },
         "grow_value": {
           "type": 0,
-          "value": 15
+          "value": 1500
         }
       },
       {
         "id": 4,
         "base_value": {
           "type": 0,
-          "value": 105
+          "value": 6000
         },
         "grow_value": {
           "type": 0,
@@ -42,18 +42,18 @@
         "id": 5,
         "base_value": {
           "type": 0,
-          "value": 80
+          "value": 80000
         },
         "grow_value": {
           "type": 0,
-          "value": 6
+          "value": 600
         }
       },
       {
         "id": 6,
         "base_value": {
           "type": 0,
-          "value": 10
+          "value": 10000
         },
         "grow_value": {
           "type": 0,
@@ -64,7 +64,7 @@
         "id": 7,
         "base_value": {
           "type": 0,
-          "value": 50
+          "value": 50000
         },
         "grow_value": {
           "type": 0,
@@ -75,11 +75,11 @@
         "id": 8,
         "base_value": {
           "type": 0,
-          "value": 150
+          "value": 50000
         },
         "grow_value": {
           "type": 0,
-          "value": 15
+          "value": 600
         }
       }
     ],

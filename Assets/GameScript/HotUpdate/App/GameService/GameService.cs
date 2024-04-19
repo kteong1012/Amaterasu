@@ -17,7 +17,12 @@ namespace Game
     public abstract class GameService
     {
         public GameServiceLifeSpan LifeSpan => GetType().GetCustomAttribute<GameServiceAttribute>().LifeSpan;
-        public virtual UniTask Init()
+        public UniTask Init()
+        {
+            GameLog.Debug($"GameService {GetType().Name} Init, LifeSpan: {LifeSpan}");
+            return OnInit();
+        }
+        protected virtual UniTask OnInit()
         {
             GameLog.Debug($"GameService {GetType().Name} Init, LifeSpan: {LifeSpan}");
             return UniTask.CompletedTask;
@@ -27,9 +32,13 @@ namespace Game
         {
         }
 
-        public virtual void Release()
+        public void Release()
         {
             GameLog.Debug($"GameService {GetType().Name} Release, LifeSpan: {LifeSpan}");
+            OnRelease();
+        }
+        protected virtual void OnRelease()
+        {
         }
     }
 }

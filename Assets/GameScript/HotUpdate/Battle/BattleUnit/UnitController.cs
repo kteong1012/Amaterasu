@@ -22,6 +22,8 @@ namespace Game
         /// </summary>
         public UnitData UnitData { get; private set; }
 
+        public int Level { get; private set; }
+
         /// <summary>
         /// 阵营
         /// </summary>
@@ -29,10 +31,11 @@ namespace Game
         #endregion
 
         #region Life Cycle
-        public void Init(int instanceId, UnitData unitData,UnitCamp unitCamp)
+        public void Init(int instanceId, UnitData unitData, int level, UnitCamp unitCamp)
         {
             this.InstanceId = instanceId;
             this.UnitData = unitData;
+            this.Level = level;
             this.Camp = unitCamp;
 
             AddComponents();
@@ -45,7 +48,7 @@ namespace Game
         #endregion
 
         #region Public Methods
-        public T AddComponent<T>() where T : UnitComponent
+        public T AddUnitComponent<T>() where T : UnitComponent
         {
             if (gameObject.GetComponent<T>() != null)
             {
@@ -53,8 +56,13 @@ namespace Game
                 return null;
             }
             T component = gameObject.AddComponent<T>();
-            //component.Init(this);
+            //component.OnInit(this);
             return component;
+        }
+
+        public T GetUnitComponent<T>() where T : UnitComponent
+        {
+            return gameObject.GetComponent<T>();
         }
         #endregion
 
