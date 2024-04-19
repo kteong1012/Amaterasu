@@ -114,14 +114,5 @@ namespace Game
         {
             return _serviceManager.GetService<T>();
         }
-
-        private void TryDestroyPatchWindow()
-        {
-            var patchWindow = GameObject.Find("PatchWindow");
-            if (patchWindow != null)
-            {
-                GameObject.Destroy(patchWindow);
-            }
-        }
     }
 }
