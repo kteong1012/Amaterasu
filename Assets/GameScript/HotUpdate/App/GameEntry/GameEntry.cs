@@ -107,6 +107,8 @@ namespace Game
 
             _eventGroup?.RemoveAllListener();
 
+            YooAssets.Destroy();
+
             GameLog.ClearLogger();
         }
 

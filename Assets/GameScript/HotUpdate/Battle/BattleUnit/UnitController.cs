@@ -13,11 +13,6 @@ namespace Game
         public int InstanceId { get; private set; }
 
         /// <summary>
-        /// 配置表Id
-        /// </summary>
-        public int UnitId => UnitData.Id;
-
-        /// <summary>
         /// 配置数据
         /// </summary>
         public UnitData UnitData { get; private set; }
@@ -44,6 +39,7 @@ namespace Game
             {
                 unitComponent.Init(this);
             }
+            OnInit();
         }
         #endregion
 
@@ -71,6 +67,7 @@ namespace Game
         /// 这个是为了方便子类添加组件，子类只需要调用base.AddComponents()，减少重复代码
         /// </summary>
         protected abstract void AddComponents();
+        protected virtual void OnInit() { }
         #endregion
     }
 }

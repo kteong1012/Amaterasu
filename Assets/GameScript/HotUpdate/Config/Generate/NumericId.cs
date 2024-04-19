@@ -52,6 +52,10 @@ namespace Game.Cfg
         /// 攻击力
         /// </summary>
         Attack = 8,
+        /// <summary>
+        /// 攻击距离
+        /// </summary>
+        AttackRange = 9,
     }
 
 } 

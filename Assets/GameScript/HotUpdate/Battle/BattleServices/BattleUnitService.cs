@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using Game.Cfg;
 using Game.Log;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -58,6 +59,26 @@ namespace Game
         public IEnumerable<UnitController> GetBattleUnits()
         {
             return _battleUnits.Values;
+        }
+
+        public UnitController GetNearestEnemy(UnitController controller)
+        {
+            var minDistance = float.MaxValue;
+            UnitController nearestEnemy = null;
+            foreach (var unit in _battleUnits.Values)
+            {
+                if (unit.Camp == controller.Camp)
+                {
+                    continue;
+                }
+                var distance = Vector3.Distance(unit.transform.position, controller.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestEnemy = unit;
+                }
+            }
+            return nearestEnemy;
         }
     }
 }

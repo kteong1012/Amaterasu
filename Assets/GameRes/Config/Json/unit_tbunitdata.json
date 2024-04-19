@@ -81,6 +81,17 @@
           "type": 0,
           "value": 600
         }
+      },
+      {
+        "id": 9,
+        "base_value": {
+          "type": 0,
+          "value": 3000
+        },
+        "grow_value": {
+          "type": 0,
+          "value": 0
+        }
       }
     ],
     "skill_ids": []

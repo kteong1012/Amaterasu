@@ -9,7 +9,12 @@ namespace Game
     {
         private NavMeshAgent _navMeshAgent;
         private UnitAttributesComponent _attributes;
-        private EventGroup _eventGroup = new EventGroup();
+
+        public float Radius { get => _navMeshAgent.radius; set => _navMeshAgent.radius = value; }
+        public float Speed { get => _navMeshAgent.speed; set => _navMeshAgent.speed = value; }
+        public Vector3 Destination { get => _navMeshAgent.destination; set => _navMeshAgent.destination = value; }
+        public float StopDistance { get => _navMeshAgent.stoppingDistance; set => _navMeshAgent.stoppingDistance = value; }
+        public bool IsStopped { get => _navMeshAgent.isStopped; set => _navMeshAgent.isStopped = value; }
 
         protected override void OnInit()
         {
@@ -20,11 +25,9 @@ namespace Game
             _navMeshAgent.Warp(transform.position);
 
             _attributes = _controller.GetUnitComponent<UnitAttributesComponent>();
-
-            _eventGroup.AddListener<UnitAttributeChangeEvent>(OnUnitAttributeChange);
         }
 
-        public void Update()
+        private void Update()
         {
             if (_attributes.IsDead())
             {
@@ -39,28 +42,6 @@ namespace Game
             _navMeshAgent.radius = radius;
             _navMeshAgent.height = height;
             _navMeshAgent.speed = speed;
-
-            _navMeshAgent.SetDestination(Vector3.zero);
-        }
-
-        private void OnUnitAttributeChange(IEventMessage message)
-        {
-            var msg = message as UnitAttributeChangeEvent;
-            if (msg.InstanceId != _controller.InstanceId)
-            {
-                return;
-            }
-            if (msg.NumericId == Cfg.NumericId.Hp)
-            {
-                if (msg.OldValue > 0 && msg.NewValue <= 0)
-                {
-                    _navMeshAgent.isStopped = true;
-                }
-                else if (msg.OldValue <= 0 && msg.NewValue > 0)
-                {
-                    _navMeshAgent.isStopped = false;
-                }
-            }
         }
     }
 }

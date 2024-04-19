@@ -10,6 +10,13 @@ namespace Game
             AddUnitComponent<UnitModelComponent>();
             AddUnitComponent<UnitAttributesComponent>();
             AddUnitComponent<UnitNavigationComponent>();
+            AddUnitComponent<UnitAIComponent>();
+        }
+
+        protected override void OnInit()
+        {
+            var aiComponent = GetUnitComponent<UnitAIComponent>();
+            aiComponent.SetAI<UnitAI_XiaoMing>();
         }
     }
 }

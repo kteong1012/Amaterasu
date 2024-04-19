@@ -9,7 +9,7 @@ namespace TMPro.Examples
     {
 
 
-        //[Range(0, 100)]
+        //[StopDistance(0, 100)]
         //public int RevealSpeed = 50;
 
         private string label01 = "Example <sprite=2> of using <sprite=7> <#ffa000>Graphics Inline</color> <sprite=5> with Text in <font=\"Bangers SDF\" material=\"Bangers SDF - Drop Shadow\">TextMesh<#40a0ff>Pro</color></font><sprite=0> and Unity<sprite=1>";

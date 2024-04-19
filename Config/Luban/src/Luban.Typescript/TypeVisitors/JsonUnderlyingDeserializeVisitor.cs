@@ -83,7 +83,7 @@ public class JsonUnderlyingDeserializeVisitor : ITypeFuncVisitor<string, string,
 
     public string Accept(TSet type, string jsonVarName, string fieldName, int depth)
     {
-        if (type.Apply(SimpleJsonTypeVisitor.Ins))
+        if (type.ElementType.Apply(SimpleJsonTypeVisitor.Ins))
         {
             return $"{fieldName} = {jsonVarName}";
         }
