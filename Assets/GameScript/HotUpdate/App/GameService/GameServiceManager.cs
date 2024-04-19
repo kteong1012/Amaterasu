@@ -3,6 +3,7 @@ using Game.Log;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -143,9 +144,10 @@ namespace Game
 
         public void Release()
         {
-            foreach (var services in _services.Values)
+            var orderedServices = _services.OrderByDescending(s => (int)s.Key);
+            foreach (var services in orderedServices)
             {
-                foreach (var service in services.Values)
+                foreach (var service in services.Value.Values)
                 {
                     service.Release();
                 }

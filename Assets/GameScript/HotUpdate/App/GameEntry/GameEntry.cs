@@ -103,7 +103,6 @@ namespace Game
 
         private void OnDestroy()
         {
-            _serviceManager?.StopServices(GameServiceLifeSpan.Game);
             _serviceManager?.Release();
 
             _eventGroup?.RemoveAllListener();
