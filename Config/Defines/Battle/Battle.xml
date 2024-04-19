@@ -1,0 +1,3 @@
+<module name="Battle">
+    <table name="TbBattleSettings"  value="BattleSettings" mode="one" input="BattleSettings.xlsx" readSchemaFromFile="1"/>
+</module>

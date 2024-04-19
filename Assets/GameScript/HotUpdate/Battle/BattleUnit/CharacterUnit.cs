@@ -5,12 +5,9 @@ namespace Game
 {
     public class CharacterUnit : UnitController
     {
-        protected override void InitComponents()
+        protected override void AddComponents()
         {
-            AddComponent<UnitGameObjectComponent>();
-            AddComponent<UnitAnimationComponent>();
-            AddComponent<UnitMoveComponent>();
-            gameObject.AddComponent<UnitGameObjectComponent>();
+            AddComponent<UnitNavigationComponent>();
         }
     }
 }

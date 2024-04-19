@@ -3,6 +3,7 @@
     "id": 10001,
     "name": "小明",
     "desc": "一个小明",
+    "model_path": "XiaoMing",
     "attributes": [
       {
         "id": 1,

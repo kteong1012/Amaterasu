@@ -10,16 +10,18 @@
 using Luban;
 using Cysharp.Threading.Tasks;
 
-namespace cfg
+namespace Game.Cfg
 {
-public partial class Tables
+public partial class ConfigService
 {
+    public Battle.TbBattleSettings TbBattleSettings {get; private set; }
     public Unit.TbUnitData TbUnitData {get; private set; }
 
     public async UniTask LoadAll(System.Func<string, UniTask<ByteBuf>> loader)
     {
         var tasks = new UniTask[]
         {      
+            UniTask.Create(async () => TbBattleSettings = new Battle.TbBattleSettings(await loader("battle_tbbattlesettings"))),
             UniTask.Create(async () => TbUnitData = new Unit.TbUnitData(await loader("unit_tbunitdata"))),
         };
         await UniTask.WhenAll(tasks);
@@ -28,6 +30,7 @@ public partial class Tables
     
     private void ResolveRef()
     {
+        TbBattleSettings.ResolveRef(this);
         TbUnitData.ResolveRef(this);
     }
 }

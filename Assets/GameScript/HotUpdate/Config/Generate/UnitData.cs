@@ -10,7 +10,7 @@
 using Luban;
 
 
-namespace cfg
+namespace Game.Cfg
 {
 public sealed partial class UnitData : Luban.BeanBase
 {
@@ -19,6 +19,7 @@ public sealed partial class UnitData : Luban.BeanBase
         Id = _buf.ReadInt();
         Name = _buf.ReadString();
         Desc = _buf.ReadString();
+        ModelPath = _buf.ReadString();
         {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);Attributes = new System.Collections.Generic.List<Unit.UnitAttrData>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { Unit.UnitAttrData _e0;  _e0 = Unit.UnitAttrData.DeserializeUnitAttrData(_buf); Attributes.Add(_e0);}}
         {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);SkillIds = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); SkillIds.Add(_e0);}}
     }
@@ -40,14 +41,19 @@ public sealed partial class UnitData : Luban.BeanBase
     /// 描述
     /// </summary>
     public readonly string Desc;
+    /// <summary>
+    /// 模型路径
+    /// </summary>
+    public readonly string ModelPath;
     public readonly System.Collections.Generic.List<Unit.UnitAttrData> Attributes;
     public readonly System.Collections.Generic.List<int> SkillIds;
    
     public const int __ID__ = -228507794;
     public override int GetTypeId() => __ID__;
 
-    public  void ResolveRef(Tables tables)
+    public  void ResolveRef(ConfigService tables)
     {
+        
         
         
         
@@ -61,6 +67,7 @@ public sealed partial class UnitData : Luban.BeanBase
         + "id:" + Id + ","
         + "name:" + Name + ","
         + "desc:" + Desc + ","
+        + "modelPath:" + ModelPath + ","
         + "attributes:" + Luban.StringUtil.CollectionToString(Attributes) + ","
         + "skillIds:" + Luban.StringUtil.CollectionToString(SkillIds) + ","
         + "}";

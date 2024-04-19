@@ -1,10 +1,8 @@
 ﻿namespace Game
 {
-    internal class UnitMoveComponent : UnitComponent
+    public class UnitNavigationComponent : UnitComponent
     {
-        public void Init(UnitController battleUnit)
-        {
-        }
+        private UnitController _battleUnit;
 
         public void Release()
         {

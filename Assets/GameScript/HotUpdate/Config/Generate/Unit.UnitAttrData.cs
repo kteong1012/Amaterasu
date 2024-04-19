@@ -10,7 +10,7 @@
 using Luban;
 
 
-namespace cfg.Unit
+namespace Game.Cfg.Unit
 {
 public sealed partial class UnitAttrData : Luban.BeanBase
 {
@@ -42,7 +42,7 @@ public sealed partial class UnitAttrData : Luban.BeanBase
     public const int __ID__ = -765996279;
     public override int GetTypeId() => __ID__;
 
-    public  void ResolveRef(Tables tables)
+    public  void ResolveRef(ConfigService tables)
     {
         
         BaseValue?.ResolveRef(tables);

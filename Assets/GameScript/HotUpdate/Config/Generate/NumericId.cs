@@ -9,7 +9,7 @@
 
 
 
-namespace cfg
+namespace Game.Cfg
 { 
     /// <summary>
     /// 数值类型

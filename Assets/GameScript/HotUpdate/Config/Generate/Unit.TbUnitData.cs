@@ -10,7 +10,7 @@
 using Luban;
 
 
-namespace cfg.Unit
+namespace Game.Cfg.Unit
 {
 public partial class TbUnitData
 {
@@ -38,7 +38,7 @@ public partial class TbUnitData
     public UnitData Get(int key) => _dataMap[key];
     public UnitData this[int key] => _dataMap[key];
 
-    public void ResolveRef(Tables tables)
+    public void ResolveRef(ConfigService tables)
     {
         foreach(var _v in _dataList)
         {

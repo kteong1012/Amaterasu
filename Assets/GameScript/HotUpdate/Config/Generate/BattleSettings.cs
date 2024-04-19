@@ -12,42 +12,32 @@ using Luban;
 
 namespace Game.Cfg
 {
-public sealed partial class NumericValue : Luban.BeanBase
+public sealed partial class BattleSettings : Luban.BeanBase
 {
-    public NumericValue(ByteBuf _buf) 
+    public BattleSettings(ByteBuf _buf) 
     {
-        Type = (NumericValueType)_buf.ReadInt();
-        Value = _buf.ReadFloat();
+        Test = _buf.ReadInt();
     }
 
-    public static NumericValue DeserializeNumericValue(ByteBuf _buf)
+    public static BattleSettings DeserializeBattleSettings(ByteBuf _buf)
     {
-        return new NumericValue(_buf);
+        return new BattleSettings(_buf);
     }
 
-    /// <summary>
-    /// 数值类别
-    /// </summary>
-    public readonly NumericValueType Type;
-    /// <summary>
-    /// 数值
-    /// </summary>
-    public readonly float Value;
+    public readonly int Test;
    
-    public const int __ID__ = -1988576636;
+    public const int __ID__ = 1984693531;
     public override int GetTypeId() => __ID__;
 
     public  void ResolveRef(ConfigService tables)
     {
-        
         
     }
 
     public override string ToString()
     {
         return "{ "
-        + "type:" + Type + ","
-        + "value:" + Value + ","
+        + "test:" + Test + ","
         + "}";
     }
 }

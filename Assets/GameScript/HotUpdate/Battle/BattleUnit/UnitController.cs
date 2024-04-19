@@ -1,4 +1,5 @@
-﻿using Game.Log;
+﻿using Game.Cfg;
+using Game.Log;
 using UnityEngine;
 
 namespace Game
@@ -6,15 +7,40 @@ namespace Game
     public abstract class UnitController : MonoBehaviour
     {
         #region Fields & Properties
-        public int UnitId { get; set; }
-        public UnitCamp Camp { get; set; }
+        /// <summary>
+        /// 运行时的实例Id
+        /// </summary>
+        public int InstanceId { get; private set; }
 
+        /// <summary>
+        /// 配置表Id
+        /// </summary>
+        public int UnitId => UnitData.Id;
+
+        /// <summary>
+        /// 配置数据
+        /// </summary>
+        public UnitData UnitData { get; private set; }
+
+        /// <summary>
+        /// 阵营
+        /// </summary>
+        public UnitCamp Camp { get; private set; }
         #endregion
 
         #region Life Cycle
-        protected virtual void Awake()
+        public void Init(int instanceId, UnitData unitData,UnitCamp unitCamp)
         {
-            InitComponents();
+            this.InstanceId = instanceId;
+            this.UnitData = unitData;
+            this.Camp = unitCamp;
+
+            AddComponents();
+            var unitComponents = GetComponents<UnitComponent>();
+            foreach (var unitComponent in unitComponents)
+            {
+                unitComponent.Init(this);
+            }
         }
         #endregion
 
@@ -34,9 +60,9 @@ namespace Game
 
         #region Private & Protected Methods
         /// <summary>
-        /// 这个是为了方便子类添加组件，子类只需要调用base.InitComponents()，减少重复代码
+        /// 这个是为了方便子类添加组件，子类只需要调用base.AddComponents()，减少重复代码
         /// </summary>
-        protected abstract void InitComponents();
+        protected abstract void AddComponents();
         #endregion
     }
 }

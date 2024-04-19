@@ -1,4 +1,3 @@
-using cfg;
 using Cysharp.Threading.Tasks;
 using Game.Log;
 using Luban;
@@ -6,19 +5,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using YooAsset;
 
-namespace Game
+namespace Game.Cfg
 {
 
     [GameService(GameServiceLifeSpan.Game)]
-    public class ConfigService : GameService
+    public partial class ConfigService : GameService
     {
-        public Tables Tables { get; private set; }
         private List<AssetHandle> _assetHandles = new List<AssetHandle>();
         public override async UniTask Init()
         {
             GameLog.Info("====初始化配置====");
-            Tables = new Tables();
-            await Tables.LoadAll(Loader);
+            await LoadAll(Loader);
             _assetHandles.ForEach(handle => handle.Release());
             GameLog.Info("====初始化配置完成====");
         }

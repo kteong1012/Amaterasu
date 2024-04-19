@@ -9,7 +9,7 @@
 
 
 
-namespace cfg
+namespace Game.Cfg
 { 
     public enum NumericValueType
     {
