@@ -11,6 +11,7 @@ namespace Game
         private UnitAttributesComponent _attributesComponent;
         private UnitNavigationComponent _navigationComponent;
         private UnitSkillComponent _skillComponent;
+        private UnitModelComponent _modelComponent;
 
 
 
@@ -28,6 +29,7 @@ namespace Game
             _attributesComponent = GetComponent<UnitAttributesComponent>();
             _navigationComponent = GetComponent<UnitNavigationComponent>();
             _skillComponent = GetComponent<UnitSkillComponent>();
+            _modelComponent = GetComponent<UnitModelComponent>();
             GetUnitComponent<UnitAIComponent>().SetAI<UnitAI_XiaoMing>();
 
             _attributesComponent.onAttributeChange += OnAttributeChange;
@@ -38,35 +40,29 @@ namespace Game
         /// </summary>
         public void NormalAttack(UnitController target)
         {
+            _navigationComponent.IsStopped = true;
             _skillComponent.NormalAttack(target);
         }
 
         public void MoveTo(Vector3 targetPosition)
         {
-            var navigationComponent = GetUnitComponent<UnitNavigationComponent>();
-            var modelComponent = GetUnitComponent<UnitModelComponent>();
-
-            navigationComponent.IsStopped = false;
-            navigationComponent.Destination = targetPosition;
-            modelComponent.PlayAnimation("XiaoMingAnim_Move");
+            _navigationComponent.IsStopped = false;
+            _navigationComponent.Destination = targetPosition;
+            _modelComponent.PlayAnimation("XiaoMingAnim_Move");
         }
 
         public void StopMove()
         {
-            var navigationComponent = GetUnitComponent<UnitNavigationComponent>();
-            var modelComponent = GetUnitComponent<UnitModelComponent>();
-
-            navigationComponent.IsStopped = true;
-            modelComponent.PlayAnimation("XiaoMingAnim_Idle");
+            _navigationComponent.IsStopped = true;
+            _modelComponent.PlayAnimation("XiaoMingAnim_Idle");
         }
 
         public void Die()
         {
             // 播放死亡动画
-            var modelComponent = GetUnitComponent<UnitModelComponent>();
             var animationName = "XiaoMingAnim_Die";
-            modelComponent.PlayAnimation(animationName);
-            modelComponent.ThrowModelAway(modelComponent.GetAnimationClipDuration(animationName));
+            _modelComponent.PlayAnimation(animationName);
+            _modelComponent.ThrowModelAway(3f);
 
             // 从BattleUnitService移除自己
             var battleUnitService = GameEntry.Ins.GetService<BattleUnitService>();

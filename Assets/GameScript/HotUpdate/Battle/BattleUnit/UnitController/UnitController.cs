@@ -28,6 +28,11 @@ namespace Game
         /// </summary>
         public UnitCamp Camp { get; private set; }
 
+        /// <summary>
+        /// 逻辑坐标
+        /// </summary>
+        public Vector3 LogicPosition => transform.position.ToLogic();
+
         private Dictionary<System.Type, UnitComponent> _components = new Dictionary<System.Type, UnitComponent>();
         #endregion
 

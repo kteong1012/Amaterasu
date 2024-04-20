@@ -10,16 +10,17 @@ namespace Game
         private NavMeshAgent _navMeshAgent;
         private UnitAttributesComponent _attributes;
 
-        public float Radius { get => _navMeshAgent.radius; set => _navMeshAgent.radius = value; }
-        public float Speed { get => _navMeshAgent.speed; set => _navMeshAgent.speed = value; }
-        public Vector3 Destination { get => _navMeshAgent.destination; set => _navMeshAgent.destination = value; }
-        public float StopDistance { get => _navMeshAgent.stoppingDistance; set => _navMeshAgent.stoppingDistance = value; }
+        public NumberX1000 Radius { get => _navMeshAgent.radius.ToLogic(); set => _navMeshAgent.radius = value.ToScene(); }
+        public NumberX1000 Speed { get => _navMeshAgent.speed.ToLogic(); set => _navMeshAgent.speed = value.ToScene(); }
+        public NumberX1000 StopDistance { get => _navMeshAgent.stoppingDistance.ToLogic(); set => _navMeshAgent.stoppingDistance = value.ToScene(); }
+
+        public Vector3 Destination { get => _navMeshAgent.destination.ToLogic(); set => _navMeshAgent.destination = value.ToScene(); }
         public bool IsStopped { get => _navMeshAgent.isStopped; set => _navMeshAgent.isStopped = value; }
 
         protected override void OnInit()
         {
             _navMeshAgent = gameObject.GetOrAddComponent<NavMeshAgent>();
-            _navMeshAgent.radius = 1f;
+            _navMeshAgent.radius = (NumberX1000.One * 0.5f).ToScene();
             _navMeshAgent.height = 2f;
             _navMeshAgent.acceleration = float.MaxValue;
             _navMeshAgent.autoBraking = true;
@@ -36,14 +37,9 @@ namespace Game
                 _navMeshAgent.isStopped = true;
                 return;
             }
-            var radius = 1f;
-            var height = 2f;
             var speed = _attributes.GetValue(Cfg.NumericId.Speed).ToFloat();
 
-
-            _navMeshAgent.radius = radius;
-            _navMeshAgent.height = height;
-            _navMeshAgent.speed = speed;
+            Speed = speed;
         }
 
         public void RotateTo(Vector3 targetPosition)

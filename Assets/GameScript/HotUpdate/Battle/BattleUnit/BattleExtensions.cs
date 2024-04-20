@@ -4,14 +4,34 @@ namespace Game
 {
     public static class BattleExtensions
     {
-        public static Vector2 XZ(this Vector3 v)
+        public static Vector3 ToLogic(this Vector3 vector)
         {
-            return new Vector2(v.x, v.z);
+            return vector / BattleConstants.BattleSceneLogicToSceneScale;
         }
 
-        public static Vector3 ToScenePoint(this Vector2 v)
+        public static Vector3 ToScene(this Vector3 vector)
         {
-            return new Vector3(v.x, 0, v.y);
+            return vector * BattleConstants.BattleSceneLogicToSceneScale;
+        }
+
+        public static NumberX1000 ToLogic(this NumberX1000 number)
+        {
+            return number / BattleConstants.BattleSceneLogicToSceneScale;
+        }
+
+        public static NumberX1000 ToScene(this NumberX1000 number)
+        {
+            return number * BattleConstants.BattleSceneLogicToSceneScale;
+        }
+
+        public static NumberX1000 ToLogic(this float number)
+        {
+            return ((NumberX1000)number).ToLogic();
+        }
+
+        public static NumberX1000 ToScene(this float number)
+        {
+            return ((NumberX1000)number).ToScene();
         }
 
         public static Color GetColor(this UnitCamp camp)

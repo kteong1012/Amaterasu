@@ -86,7 +86,7 @@
         "id": 9,
         "base_value": {
           "type": 0,
-          "value": 3000
+          "value": 1000
         },
         "grow_value": {
           "type": 0,

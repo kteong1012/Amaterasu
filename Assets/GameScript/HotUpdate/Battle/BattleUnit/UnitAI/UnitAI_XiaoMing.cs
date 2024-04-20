@@ -19,7 +19,7 @@ namespace Game
         }
         public override void Tick(UnitAIComponent aIComponent)
         {
-            var range = _attributesComponent.GetValue(Cfg.NumericId.AttackRange).ToFloat();
+            var range = _attributesComponent.GetValue(Cfg.NumericId.AttackRange);
             _navigationComponent.StopDistance = range * _stopDistanceToRangeRatio;
             var currentTarget = _battleUnitService.GetBattleUnit(_currentTargetId);
             // 如果当前目标为空或者死亡, 重新选择目标
@@ -31,8 +31,8 @@ namespace Game
             else
             {
                 //如果当前目标在_outOfRangeTimes * range范围外, 重新选择目标, 否则追击或者攻击
-                var distance = Vector3.Distance(aIComponent.Controller.transform.position, currentTarget.transform.position);
-                if (distance > _outOfRangeTimes * range)
+                var distanceLogic = Vector3.Distance(aIComponent.Controller.LogicPosition, currentTarget.LogicPosition);
+                if (distanceLogic > _outOfRangeTimes * range)
                 {
                     RepickTarget(aIComponent, range);
                 }
@@ -44,21 +44,21 @@ namespace Game
 
         }
 
-        private void ChaseOrAttack(UnitController selfUnit, UnitController targetUnit, float range)
+        private void ChaseOrAttack(UnitController selfUnit, UnitController targetUnit, NumberX1000 range)
         {
             if (selfUnit is not BattleUnitController battleUnitController)
             {
                 return;
             }
             _currentTargetId = targetUnit.InstanceId;
-            var distance = Vector3.Distance(selfUnit.transform.position, targetUnit.transform.position);
-            if (distance <= range)
+            var distanceLogic = Vector3.Distance(selfUnit.LogicPosition, targetUnit.LogicPosition);
+            if (distanceLogic <= range)
             {
                 battleUnitController.NormalAttack(targetUnit);
             }
             else
             {
-                battleUnitController.MoveTo(targetUnit.transform.position);
+                battleUnitController.MoveTo(targetUnit.LogicPosition);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Game
             {
                 // 没有敌人，说明游戏结束, 原地不动
                 _currentTargetId = 0;
-                _navigationComponent.Destination = aIComponent.Controller.transform.position;
+                _navigationComponent.Destination = aIComponent.Controller.LogicPosition;
             }
             else
             {
