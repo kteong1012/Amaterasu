@@ -24,7 +24,7 @@ namespace Game
 
         }
 
-        private void OnDestroy()
+        public void Release()
         {
             OnRelease();
         }

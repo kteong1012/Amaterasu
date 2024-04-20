@@ -1,5 +1,6 @@
 ﻿using Game.Cfg;
 using Game.Cfg.Unit;
+using Game.Log;
 using log4net.Core;
 using System.Collections.Generic;
 using UniFramework.Event;
@@ -8,19 +9,25 @@ using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 namespace Game
 {
 
-    public class UnitAttributesComponent : UnitComponent
+    public class UnitAttributesComponent : UnitComponent, INumericReader, INumericWriter
     {
         #region Fields & Properties
-        private Dictionary<NumericId, NumericObject> _attributesMap = new Dictionary<NumericId, NumericObject>();
-        private Dictionary<NumericId, NumericObject> _surplusAttributesMap = new Dictionary<NumericId, NumericObject>();
+        private Dictionary<NumericId, NumericObject> _attributesMap;
+        private Dictionary<NumericId, NumericObject> _surplusAttributesMap;
+
+        public event AttributeChangeHandler onAttributeChange;
         #endregion
 
         #region Life Cycle
         protected override void OnInit()
         {
             var level = _controller.Level;
-            var attributes = CalculateAttributes(level);
-            _attributesMap = attributes;
+            _attributesMap = CalculateAttributes(level);
+            GameLog.Debug($"{name}，等级：{level}，属性初始化完成：\n{GetAttributesString(_attributesMap)}");
+        }
+        protected override void OnRelease()
+        {
+            onAttributeChange = null;
         }
         #endregion
 
@@ -77,6 +84,7 @@ namespace Game
             if (changed)
             {
                 UnitAttributeChangeEvent.SendMsg(_controller.InstanceId, id, oldValue, numeric.GetValue());
+                onAttributeChange?.Invoke(id, oldValue, numeric.GetValue());
             }
         }
 
@@ -140,6 +148,31 @@ namespace Game
         #endregion
 
         #region Private & Protected Methods
+
+        NumberX1000 INumericReader.GetBase(NumericId id)
+        {
+            return GetNumericObject(id).Base;
+        }
+
+        NumberX1000 INumericReader.GetBaseAdd(NumericId id)
+        {
+            return GetNumericObject(id).BaseAdd;
+        }
+
+        NumberX1000 INumericReader.GetBaseMul(NumericId id)
+        {
+            return GetNumericObject(id).BaseMul;
+        }
+
+        NumberX1000 INumericReader.GetFinalAdd(NumericId id)
+        {
+            return GetNumericObject(id).FinalAdd;
+        }
+
+        NumberX1000 INumericReader.GetFinalMul(NumericId id)
+        {
+            return GetNumericObject(id).FinalMul;
+        }
         /// <summary>
         /// 计算属性，只会在角色进入战斗时调用一次
         /// </summary>
@@ -194,6 +227,16 @@ namespace Game
 
             return attributes;
         }
+
+        private static string GetAttributesString(Dictionary<NumericId, NumericObject> attributes)
+        {
+            var sb = new System.Text.StringBuilder();
+            foreach (var attr in attributes.Values)
+            {
+                sb.AppendLine($"{attr.Id}: {attr.GetValue()}");
+            }
+            return sb.ToString();
+        }
         #endregion
     }
 
@@ -219,5 +262,7 @@ namespace Game
             UniEvent.SendMessage(msg);
         }
     }
+
+    public delegate void AttributeChangeHandler(NumericId id, NumberX1000 oldValue, NumberX1000 newValue);
     #endregion
 }

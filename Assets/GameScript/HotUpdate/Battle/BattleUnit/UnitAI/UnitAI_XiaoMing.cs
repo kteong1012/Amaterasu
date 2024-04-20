@@ -8,7 +8,6 @@ namespace Game
         private BattleUnitService _battleUnitService;
         private UnitAttributesComponent _attributesComponent;
         private UnitNavigationComponent _navigationComponent;
-        private UnitModelComponent _modelComponent;
         private int _currentTargetId;
         private float _outOfRangeTimes = 1.5f;
 
@@ -17,7 +16,6 @@ namespace Game
             _battleUnitService = GameEntry.Ins.GetService<BattleUnitService>();
             _attributesComponent = aIComponent.Controller.GetUnitComponent<UnitAttributesComponent>();
             _navigationComponent = aIComponent.Controller.GetUnitComponent<UnitNavigationComponent>();
-            _modelComponent = aIComponent.Controller.GetUnitComponent<UnitModelComponent>();
         }
         public override void Tick(UnitAIComponent aIComponent)
         {
@@ -48,18 +46,19 @@ namespace Game
 
         private void ChaseOrAttack(UnitController selfUnit, UnitController targetUnit, float range)
         {
+            if (selfUnit is not BattleUnitController battleUnitController)
+            {
+                return;
+            }
             _currentTargetId = targetUnit.InstanceId;
             var distance = Vector3.Distance(selfUnit.transform.position, targetUnit.transform.position);
             if (distance <= range)
             {
-                _navigationComponent.IsStopped = true;
-                _modelComponent.PlayAnimation("XiaoMingAnim_Attack");
+                battleUnitController.NormalAttack(targetUnit);
             }
             else
             {
-                _navigationComponent.IsStopped = false;
-                _navigationComponent.Destination = targetUnit.transform.position;
-                _modelComponent.PlayAnimation("XiaoMingAnim_Move");
+                battleUnitController.MoveTo(targetUnit.transform.position);
             }
         }
 

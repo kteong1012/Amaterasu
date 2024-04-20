@@ -42,18 +42,18 @@
         "id": 5,
         "base_value": {
           "type": 0,
-          "value": 80000
+          "value": 3000
         },
         "grow_value": {
           "type": 0,
-          "value": 600
+          "value": 20
         }
       },
       {
         "id": 6,
         "base_value": {
           "type": 0,
-          "value": 10000
+          "value": 300
         },
         "grow_value": {
           "type": 0,
@@ -64,7 +64,7 @@
         "id": 7,
         "base_value": {
           "type": 0,
-          "value": 50000
+          "value": 500
         },
         "grow_value": {
           "type": 0,
@@ -87,6 +87,28 @@
         "base_value": {
           "type": 0,
           "value": 3000
+        },
+        "grow_value": {
+          "type": 0,
+          "value": 0
+        }
+      },
+      {
+        "id": 10,
+        "base_value": {
+          "type": 0,
+          "value": 1400
+        },
+        "grow_value": {
+          "type": 0,
+          "value": 0
+        }
+      },
+      {
+        "id": 11,
+        "base_value": {
+          "type": 0,
+          "value": 100000
         },
         "grow_value": {
           "type": 0,

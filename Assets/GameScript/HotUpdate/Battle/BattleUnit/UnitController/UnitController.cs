@@ -1,5 +1,6 @@
 ﻿using Game.Cfg;
 using Game.Log;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -17,12 +18,17 @@ namespace Game
         /// </summary>
         public UnitData UnitData { get; private set; }
 
+        /// <summary>
+        /// 等级
+        /// </summary>
         public int Level { get; private set; }
 
         /// <summary>
         /// 阵营
         /// </summary>
         public UnitCamp Camp { get; private set; }
+
+        private Dictionary<System.Type, UnitComponent> _components = new Dictionary<System.Type, UnitComponent>();
         #endregion
 
         #region Life Cycle
@@ -41,6 +47,16 @@ namespace Game
             }
             OnInit();
         }
+
+        public void Release()
+        {
+            OnRelease();
+            foreach (var component in _components.Values)
+            {
+                component.Release();
+            }
+            _components.Clear();
+        }
         #endregion
 
         #region Public Methods
@@ -52,13 +68,17 @@ namespace Game
                 return null;
             }
             T component = gameObject.AddComponent<T>();
-            //component.OnInit(this);
+            _components.Add(typeof(T), component);
             return component;
         }
 
         public T GetUnitComponent<T>() where T : UnitComponent
         {
-            return gameObject.GetComponent<T>();
+            if (_components.TryGetValue(typeof(T), out var component))
+            {
+                return component as T;
+            }
+            return null;
         }
         #endregion
 
@@ -68,6 +88,7 @@ namespace Game
         /// </summary>
         protected abstract void AddComponents();
         protected virtual void OnInit() { }
+        protected virtual void OnRelease() { }
         #endregion
     }
 }

@@ -4,6 +4,7 @@ using Game.Log;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using YIUIFramework;
 
 namespace Game
 {
@@ -36,15 +37,20 @@ namespace Game
             var instanceId = ++_instanceId;
             var go = new GameObject();
             go.name = $"Unit_{unitData.Name}_{unitCamp}_{instanceId}";
-            var battleUnit = go.GetOrAddComponent<CharacterUnit>();
+            var battleUnit = go.GetOrAddComponent<BattleUnitController>();
             battleUnit.Init(instanceId, unitData, level, unitCamp);
 
             _battleUnits.Add(instanceId, battleUnit);
             return battleUnit;
         }
-        public void RemoveBattleUnit(int unitId)
+        public void DestroyBattleUnit(int unitId)
         {
-            _battleUnits.Remove(unitId);
+            if (_battleUnits.TryGetValue(unitId, out var battleUnit))
+            {
+                battleUnit.Release();
+                UnityEngine.Object.Destroy(battleUnit.gameObject);
+                _battleUnits.Remove(unitId);
+            }
         }
 
         public UnitController GetBattleUnit(int unitId)

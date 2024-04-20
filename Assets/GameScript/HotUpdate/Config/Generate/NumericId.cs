@@ -39,15 +39,15 @@ namespace Game.Cfg
         /// <summary>
         /// 防御
         /// </summary>
-        Defence = 5,
+        Defense = 5,
         /// <summary>
         /// 暴击率
         /// </summary>
-        CraticalRate = 6,
+        CriticalRate = 6,
         /// <summary>
         /// 暴击伤害
         /// </summary>
-        CraticalDamage = 7,
+        CriticalDamage = 7,
         /// <summary>
         /// 攻击力
         /// </summary>
@@ -56,6 +56,14 @@ namespace Game.Cfg
         /// 攻击距离
         /// </summary>
         AttackRange = 9,
+        /// <summary>
+        /// 攻击间隔
+        /// </summary>
+        AttackInterval = 10,
+        /// <summary>
+        /// 攻击速度
+        /// </summary>
+        AttackSpeed = 11,
     }
 
 } 

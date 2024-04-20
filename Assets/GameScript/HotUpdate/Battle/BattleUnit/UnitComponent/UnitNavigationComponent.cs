@@ -22,6 +22,8 @@ namespace Game
             _navMeshAgent.radius = 1f;
             _navMeshAgent.height = 2f;
             _navMeshAgent.acceleration = float.MaxValue;
+            _navMeshAgent.autoBraking = true;
+            _navMeshAgent.angularSpeed = 360f;
             _navMeshAgent.Warp(transform.position);
 
             _attributes = _controller.GetUnitComponent<UnitAttributesComponent>();
@@ -42,6 +44,15 @@ namespace Game
             _navMeshAgent.radius = radius;
             _navMeshAgent.height = height;
             _navMeshAgent.speed = speed;
+        }
+
+        public void RotateTo(Vector3 targetPosition)
+        {
+            var direction = targetPosition - transform.position;
+
+            // 根据角速度旋转
+            var rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, _navMeshAgent.angularSpeed * Time.deltaTime);
         }
     }
 }

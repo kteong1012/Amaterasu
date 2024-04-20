@@ -26,27 +26,27 @@
         {
             return new NumberX1000 { _valueX1000 = number * SCALE };
         }
-        public static explicit operator int(NumberX1000 number)
+        public static implicit operator int(NumberX1000 number)
         {
             return (int)(number._valueX1000 / SCALE);
         }
-        public static explicit operator NumberX1000(int number)
+        public static implicit operator NumberX1000(int number)
         {
             return new NumberX1000 { _valueX1000 = number * SCALE };
         }
-        public static explicit operator float(NumberX1000 number)
+        public static implicit operator float(NumberX1000 number)
         {
             return number._valueX1000 / SCALEf;
         }
-        public static explicit operator NumberX1000(float number)
+        public static implicit operator NumberX1000(float number)
         {
             return new NumberX1000 { _valueX1000 = (long)(number * SCALE) };
         }
-        public static explicit operator double(NumberX1000 number)
+        public static implicit operator double(NumberX1000 number)
         {
             return number._valueX1000 / SCALEd;
         }
-        public static explicit operator NumberX1000(double number)
+        public static implicit operator NumberX1000(double number)
         {
             return new NumberX1000 { _valueX1000 = (long)(number * SCALE) };
         }
@@ -362,6 +362,7 @@
         {
             return _valueX1000 / SCALE;
         }
+
         public float ToFloat()
         {
             return _valueX1000 / SCALEf;
@@ -370,13 +371,21 @@
         {
             return _valueX1000 / SCALEd;
         }
+        /// <summary>
+        /// 输出浮点数字符串，默认保留3位小数
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
-            return (_valueX1000 / SCALE).ToString();
+            return ToString("F3");
         }
-        public string ToFloatString()
+        public string ToString(string format)
         {
-            return (_valueX1000 / SCALEf).ToString();
+            return (_valueX1000 / SCALEf).ToString(format);
+        }
+        public string ToIntegerString()
+        {
+            return (_valueX1000 / SCALE).ToString();
         }
 
         public override bool Equals(object obj)
