@@ -44,7 +44,7 @@ namespace Game
 
         public void RotateTo(Vector3 targetPosition)
         {
-            var direction = targetPosition - transform.position;
+            var direction = targetPosition - _controller.LogicPosition;
 
             // 根据角速度旋转
             var rotation = Quaternion.LookRotation(direction);

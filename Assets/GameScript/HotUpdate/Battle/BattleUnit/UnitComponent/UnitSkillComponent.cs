@@ -23,12 +23,12 @@ namespace Game
             var baseAttackInterval = _attributesComponent.GetValue(Cfg.NumericId.AttackInterval).ToFloat();
             var attackSpeed = _attributesComponent.GetValue(Cfg.NumericId.AttackSpeed).ToFloat();
             var finalAttackInterval = BattleCalculator.CalculateAttackInterval(baseAttackInterval, attackSpeed);
+            _navigationComponent.RotateTo(target.LogicPosition);
+
             if (_lastAttackTime != null && Time.time - _lastAttackTime < finalAttackInterval)
             {
                 return;
             }
-
-            _navigationComponent.RotateTo(target.transform.position);
             _lastAttackTime = Time.time;
             _modelComponent.PlayAnimation("XiaoMingAnim_Attack");
 
