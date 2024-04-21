@@ -1,18 +1,22 @@
 ﻿using Game.Log;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Game
 {
     public class UnitAIComponent : UnitComponent
     {
         #region Fields & Properties
-        public Dictionary<string, object> BlackBoard = new Dictionary<string, object>();
-        private UnitAI _ai;
+        public BattleUnitController battleUnit;
 
-        public UnitController Controller => _controller;
+        private UnitAI _ai;
         #endregion
 
         #region Life Cycle
+        protected override void OnInit()
+        {
+            battleUnit = _controller as BattleUnitController;
+        }
         private void Update()
         {
             if (_ai != null)
@@ -24,7 +28,6 @@ namespace Game
         protected override void OnRelease()
         {
             _ai = null;
-            BlackBoard.Clear();
         }
         #endregion
 

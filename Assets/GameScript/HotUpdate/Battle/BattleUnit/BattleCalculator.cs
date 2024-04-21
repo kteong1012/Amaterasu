@@ -1,5 +1,6 @@
 ﻿using Game.Cfg;
 using System;
+using UnityEngine;
 
 namespace Game
 {
@@ -18,13 +19,13 @@ namespace Game
             return damageTaken;
         }
 
-        public static NumberX1000 CalculateFinalDamage(NumberX1000 rawDamage, INumericReader reader, out bool isCritical)
+        public static NumberX1000 CalculateFinalDamage(NumberX1000 rawDamage, INumericGetter reader, out bool isCritical)
         {
             // 最终伤害 = 原始伤害乘区 * 暴击乘区
 
             // 计算暴击乘区
-            var criticalRate = reader.GetValue(NumericId.CriticalRate);
-            var criticalDamage = reader.GetValue(NumericId.CriticalDamage);
+            var criticalRate = reader.GetValue(NumericId.CritRate);
+            var criticalDamage = reader.GetValue(NumericId.CritDMG);
             var criticalMultiArea = CalculateCriticalMultiArea(criticalRate, criticalDamage, out isCritical);
 
             // 计算最终伤害
@@ -46,14 +47,33 @@ namespace Game
         }
 
         /// <summary>
-        /// 计算攻击间隔，公式：基础攻击间隔 / (攻击速度 * 0.01) 
+        /// 计算行动间隔，公式：基础行动间隔 / (行动速度 * 0.01) 
         /// </summary>
         /// <param name="baseInterval"></param>
-        /// <param name="attackSpeed"></param>
+        /// <param name="ACTSPD"></param>
         /// <returns></returns>
-        public static float CalculateAttackInterval(float baseInterval, float attackSpeed)
+        public static NumberX1000 CalculateACTITV(NumberX1000 baseInterval, NumberX1000 ACTSPD)
         {
-            return baseInterval / (attackSpeed * 0.01f);
+            //修正后的行动速度
+            var max = BattleConstants.MaxACTSPED;
+            var min = BattleConstants.MinACTSPED;
+            ACTSPD = Mathf.Clamp(ACTSPD, min, max);
+            return baseInterval / (ACTSPD * NumberX1000.CreateFromX1000Value(10));
+        }
+
+        public static NumberX1000 CalculateNavigationStopDistance(UnitController self, UnitController target, NumberX1000 range)
+        {
+            //selfRadius + targetRadius + range
+            var selfRadius = NumberX1000.CreateFromX1000Value(self.UnitData.RadiusX1000);
+            var targetRadius = NumberX1000.CreateFromX1000Value(target.UnitData.RadiusX1000);
+            return selfRadius + targetRadius + range;
+        }
+
+        public static bool IsInAttackRange(UnitController self, UnitController target, NumberX1000 range)
+        {
+            var distanceLogic = Vector3.Distance(self.LogicPosition, target.LogicPosition);
+            var stopDistance = CalculateNavigationStopDistance(self, target, range);
+            return distanceLogic <= stopDistance;
         }
     }
 }

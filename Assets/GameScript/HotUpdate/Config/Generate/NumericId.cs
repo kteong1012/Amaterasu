@@ -19,51 +19,127 @@ namespace Game.Cfg
         /// <summary>
         /// 生命值
         /// </summary>
-        Hp = 0,
+        HP = 1,
+        /// <summary>
+        /// 能量值
+        /// </summary>
+        Energy = 2,
         /// <summary>
         /// 生命上限
         /// </summary>
-        HpMax = 1,
+        MaxHP = 1001,
         /// <summary>
-        /// 魔力值
+        /// 移动速度
         /// </summary>
-        Mp = 2,
+        MoveSPD = 1003,
         /// <summary>
-        /// 魔力上限
+        /// 防御力
         /// </summary>
-        MpMax = 3,
-        /// <summary>
-        /// 速度
-        /// </summary>
-        Speed = 4,
-        /// <summary>
-        /// 防御
-        /// </summary>
-        Defense = 5,
-        /// <summary>
-        /// 暴击率
-        /// </summary>
-        CriticalRate = 6,
-        /// <summary>
-        /// 暴击伤害
-        /// </summary>
-        CriticalDamage = 7,
+        DEF = 1004,
         /// <summary>
         /// 攻击力
         /// </summary>
-        Attack = 8,
+        ATK = 1005,
         /// <summary>
-        /// 攻击距离
+        /// 行动间隔
         /// </summary>
-        AttackRange = 9,
+        ACTITV = 2001,
         /// <summary>
-        /// 攻击间隔
+        /// 行动速度
         /// </summary>
-        AttackInterval = 10,
+        ACTSPD = 2002,
         /// <summary>
-        /// 攻击速度
+        /// 嘲讽值
         /// </summary>
-        AttackSpeed = 11,
+        Taunt = 2003,
+        /// <summary>
+        /// 暴击率
+        /// </summary>
+        CritRate = 2004,
+        /// <summary>
+        /// 暴击伤害
+        /// </summary>
+        CritDMG = 2005,
+        /// <summary>
+        /// 击破特攻
+        /// </summary>
+        BreakEffect = 2006,
+        /// <summary>
+        /// 治疗量加成
+        /// </summary>
+        OutgoingHealingBoost = 2007,
+        /// <summary>
+        /// 能量上限
+        /// </summary>
+        MaxEnergy = 2008,
+        /// <summary>
+        /// 能量恢复效率
+        /// </summary>
+        EnergyRegenerationRate = 2009,
+        /// <summary>
+        /// 效果命中
+        /// </summary>
+        EffectHitRate = 2010,
+        /// <summary>
+        /// 效果抵抗
+        /// </summary>
+        EffectRES = 2011,
+        /// <summary>
+        /// 物理属性伤害提高
+        /// </summary>
+        PhysicalDMGBoost = 3001,
+        /// <summary>
+        /// 火属性伤害提高
+        /// </summary>
+        FireDMGBoost = 3002,
+        /// <summary>
+        /// 冰属性伤害提高
+        /// </summary>
+        IceDMGBoost = 3003,
+        /// <summary>
+        /// 雷属性伤害提高
+        /// </summary>
+        LightningDMGBoost = 3004,
+        /// <summary>
+        /// 风属性伤害提高
+        /// </summary>
+        WindDMGBoost = 3005,
+        /// <summary>
+        /// 量子属性伤害提高
+        /// </summary>
+        QuantumDMGBoost = 3006,
+        /// <summary>
+        /// 虚数属性伤害提高
+        /// </summary>
+        ImaginaryDMGBoost = 3007,
+        /// <summary>
+        /// 物理属性抗性提高
+        /// </summary>
+        PhysicalRESBoost = 3008,
+        /// <summary>
+        /// 火属性抗性提高
+        /// </summary>
+        FireRESBoost = 3009,
+        /// <summary>
+        /// 冰属性抗性提高
+        /// </summary>
+        IceRESBoost = 3010,
+        /// <summary>
+        /// 雷属性抗性提高
+        /// </summary>
+        LightningRESBoost = 3011,
+        /// <summary>
+        /// 风属性抗性提高
+        /// </summary>
+        WindRESBoost = 3012,
+        /// <summary>
+        /// 量子属性抗性提高
+        /// </summary>
+        QuantumRESBoost = 3013,
+        /// <summary>
+        /// 虚数属性抗性提高
+        /// </summary>
+        ImaginaryRESBoost = 3014,
     }
 
 } 

@@ -20,8 +20,10 @@ public sealed partial class UnitData : Luban.BeanBase
         Name = _buf.ReadString();
         Desc = _buf.ReadString();
         ModelPath = _buf.ReadString();
-        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);AttributesX1000 = new System.Collections.Generic.List<Unit.UnitAttrData>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { Unit.UnitAttrData _e0;  _e0 = Unit.UnitAttrData.DeserializeUnitAttrData(_buf); AttributesX1000.Add(_e0);}}
-        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);SkillIds = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); SkillIds.Add(_e0);}}
+        ControllerName = _buf.ReadString();
+        RadiusX1000 = _buf.ReadLong();
+        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);BaseStatsX1000 = new System.Collections.Generic.Dictionary<NumericId, long>(n0 * 3 / 2);for(var i0 = 0 ; i0 < n0 ; i0++) { NumericId _k0;  _k0 = (NumericId)_buf.ReadInt(); long _v0;  _v0 = _buf.ReadLong();     BaseStatsX1000.Add(_k0, _v0);}}
+        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);LevelGrowthStatsX1000 = new System.Collections.Generic.Dictionary<NumericId, long>(n0 * 3 / 2);for(var i0 = 0 ; i0 < n0 ; i0++) { NumericId _k0;  _k0 = (NumericId)_buf.ReadInt(); long _v0;  _v0 = _buf.ReadLong();     LevelGrowthStatsX1000.Add(_k0, _v0);}}
     }
 
     public static UnitData DeserializeUnitData(ByteBuf _buf)
@@ -29,24 +31,20 @@ public sealed partial class UnitData : Luban.BeanBase
         return new UnitData(_buf);
     }
 
-    /// <summary>
-    /// 这是id
-    /// </summary>
     public readonly int Id;
-    /// <summary>
-    /// 名字
-    /// </summary>
     public readonly string Name;
-    /// <summary>
-    /// 描述
-    /// </summary>
     public readonly string Desc;
-    /// <summary>
-    /// 模型路径
-    /// </summary>
     public readonly string ModelPath;
-    public readonly System.Collections.Generic.List<Unit.UnitAttrData> AttributesX1000;
-    public readonly System.Collections.Generic.List<int> SkillIds;
+    public readonly string ControllerName;
+    public readonly long RadiusX1000;
+    /// <summary>
+    /// 基础属性
+    /// </summary>
+    public readonly System.Collections.Generic.Dictionary<NumericId, long> BaseStatsX1000;
+    /// <summary>
+    /// 成长属性
+    /// </summary>
+    public readonly System.Collections.Generic.Dictionary<NumericId, long> LevelGrowthStatsX1000;
    
     public const int __ID__ = -228507794;
     public override int GetTypeId() => __ID__;
@@ -57,7 +55,9 @@ public sealed partial class UnitData : Luban.BeanBase
         
         
         
-        foreach (var _e in AttributesX1000) { _e?.ResolveRef(tables); }
+        
+        
+        
         
     }
 
@@ -68,8 +68,10 @@ public sealed partial class UnitData : Luban.BeanBase
         + "name:" + Name + ","
         + "desc:" + Desc + ","
         + "modelPath:" + ModelPath + ","
-        + "attributesX1000:" + Luban.StringUtil.CollectionToString(AttributesX1000) + ","
-        + "skillIds:" + Luban.StringUtil.CollectionToString(SkillIds) + ","
+        + "controllerName:" + ControllerName + ","
+        + "radiusX1000:" + RadiusX1000 + ","
+        + "baseStatsX1000:" + Luban.StringUtil.CollectionToString(BaseStatsX1000) + ","
+        + "levelGrowthStatsX1000:" + Luban.StringUtil.CollectionToString(LevelGrowthStatsX1000) + ","
         + "}";
     }
 }

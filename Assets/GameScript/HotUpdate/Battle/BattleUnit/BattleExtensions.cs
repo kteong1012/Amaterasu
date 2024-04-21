@@ -6,22 +6,22 @@ namespace Game
     {
         public static Vector3 ToLogic(this Vector3 vector)
         {
-            return vector / BattleConstants.BattleSceneLogicToSceneScale;
+            return vector / BattleConstants.LogicToSceneScale;
         }
 
         public static Vector3 ToScene(this Vector3 vector)
         {
-            return vector * BattleConstants.BattleSceneLogicToSceneScale;
+            return vector * BattleConstants.LogicToSceneScale;
         }
 
         public static NumberX1000 ToLogic(this NumberX1000 number)
         {
-            return number / BattleConstants.BattleSceneLogicToSceneScale;
+            return number / BattleConstants.LogicToSceneScale;
         }
 
         public static NumberX1000 ToScene(this NumberX1000 number)
         {
-            return number * BattleConstants.BattleSceneLogicToSceneScale;
+            return number * BattleConstants.LogicToSceneScale;
         }
 
         public static NumberX1000 ToLogic(this float number)

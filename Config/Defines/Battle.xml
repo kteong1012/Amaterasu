@@ -1,0 +1,22 @@
+<module name="Battle">
+    <enum name="Path" group="*" comment="命途">
+        <var name="Abundance" alias="1" comment="丰饶"/>
+        <var name="Destruction" alias="2" comment="毁灭"/>
+        <var name="TheHunt" alias="3" comment="巡猎"/>
+        <var name="Erudition" alias="4" comment="智识"/>
+        <var name="Harmony" alias="5" comment="同谐"/>
+        <var name="Nihility" alias="6" comment="虚无"/>
+        <var name="Preservation" alias="7" comment="存护"/>
+    </enum>
+    <enum name="CombatType" group="*" comment="战斗属性">
+        <var name="Physical" alias="1" comment="物理"/>
+        <var name="Fire" alias="2" comment="火"/>
+        <var name="Ice" alias="3" comment="冰"/>
+        <var name="Lightning" alias="4" comment="雷"/>
+        <var name="Wind" alias="5" comment="风"/>
+        <var name="Quantum" alias="6" comment="量子"/>
+        <var name="Imaginary" alias="7" comment="虚数"/>
+    </enum>
+
+    <table name="TbBattleSettings"  value="BattleSettings" mode="one" input="BattleSettings.xlsx" readSchemaFromFile="1"/>
+</module>

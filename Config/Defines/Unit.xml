@@ -1,0 +1,10 @@
+<module name="Unit">
+    <bean name="UnitAttrData">
+        <var name="base_value" type="long" comment="基础值"/>
+        <var name="grow_value" type="long" comment="成长值"/>
+    </bean>
+
+    <!-- Tables -->
+    <table name="TbUnitData" value="UnitData" input="Unit@Unit.xlsx" readSchemaFromFile="1"/>
+    <!-- <table name="TbUnitLevel" value="UnitLevel" input="UnitLevel.xlsx" readSchemaFromFile="1"/> -->
+</module>

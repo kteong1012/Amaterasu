@@ -9,25 +9,25 @@ using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 namespace Game
 {
 
-    public class UnitAttributesComponent : UnitComponent, INumericReader, INumericWriter
+    public class UnitStatsComponent : UnitComponent, INumericGetter, INumericSetter
     {
         #region Fields & Properties
-        private Dictionary<NumericId, NumericObject> _attributesMap;
-        private Dictionary<NumericId, NumericObject> _surplusAttributesMap;
+        private Dictionary<NumericId, NumericObject> _statsMap;
+        private Dictionary<NumericId, NumericObject> _surplusStatsMap;
 
-        public event AttributeChangeHandler onAttributeChange;
+        public event StatsChangeHandler onStatsChange;
         #endregion
 
         #region Life Cycle
         protected override void OnInit()
         {
             var level = _controller.Level;
-            _attributesMap = CalculateAttributes(level);
-            GameLog.Debug($"{name}，等级：{level}，属性初始化完成：\n{GetAttributesString(_attributesMap)}");
+            _statsMap = InitializeStats(level);
+            GameLog.Debug($"{name}，等级：{level}，属性初始化完成：\n{GetStatsListString(_statsMap)}");
         }
         protected override void OnRelease()
         {
-            onAttributeChange = null;
+            onStatsChange = null;
         }
         #endregion
 
@@ -83,30 +83,30 @@ namespace Game
             }
             if (changed)
             {
-                UnitAttributeChangeEvent.SendMsg(_controller.InstanceId, id, oldValue, numeric.GetValue());
-                onAttributeChange?.Invoke(id, oldValue, numeric.GetValue());
+                UnitStatsChangeEvent.SendMsg(_controller.InstanceId, id, oldValue, numeric.GetValue());
+                onStatsChange?.Invoke(id, oldValue, numeric.GetValue());
             }
         }
 
         private NumericObject GetNumericObject(NumericId id)
         {
-            if (_attributesMap.TryGetValue(id, out var numeric))
+            if (_statsMap.TryGetValue(id, out var numeric))
             {
                 return numeric;
             }
             else
             {
                 var newNumeric = new NumericObject(id);
-                _attributesMap.Add(id, newNumeric);
+                _statsMap.Add(id, newNumeric);
                 return newNumeric;
             }
         }
 
         public void Remove(NumericId id)
         {
-            if (_attributesMap.ContainsKey(id))
+            if (_statsMap.ContainsKey(id))
             {
-                _attributesMap.Remove(id);
+                _statsMap.Remove(id);
             }
         }
 
@@ -132,16 +132,16 @@ namespace Game
             SetNumericField(id, NumericValueType.FinalMul, value);
         }
 
-        public void AddSurplusAttribute(NumericId id, int value, NumericValueType valueType)
+        public void AddSurplusStats(NumericId id, int value, NumericValueType valueType)
         {
-            if (_surplusAttributesMap == null)
+            if (_surplusStatsMap == null)
             {
-                _surplusAttributesMap = new Dictionary<NumericId, NumericObject>();
+                _surplusStatsMap = new Dictionary<NumericId, NumericObject>();
             }
-            if (!_surplusAttributesMap.TryGetValue(id, out var numeric))
+            if (!_surplusStatsMap.TryGetValue(id, out var numeric))
             {
                 numeric = new NumericObject(id);
-                _surplusAttributesMap.Add(id, numeric);
+                _surplusStatsMap.Add(id, numeric);
             }
             numeric.LinearAdd(valueType, value);
         }
@@ -149,27 +149,27 @@ namespace Game
 
         #region Private & Protected Methods
 
-        NumberX1000 INumericReader.GetBase(NumericId id)
+        NumberX1000 INumericGetter.GetBase(NumericId id)
         {
             return GetNumericObject(id).Base;
         }
 
-        NumberX1000 INumericReader.GetBaseAdd(NumericId id)
+        NumberX1000 INumericGetter.GetBaseAdd(NumericId id)
         {
             return GetNumericObject(id).BaseAdd;
         }
 
-        NumberX1000 INumericReader.GetBaseMul(NumericId id)
+        NumberX1000 INumericGetter.GetBaseMul(NumericId id)
         {
             return GetNumericObject(id).BaseMul;
         }
 
-        NumberX1000 INumericReader.GetFinalAdd(NumericId id)
+        NumberX1000 INumericGetter.GetFinalAdd(NumericId id)
         {
             return GetNumericObject(id).FinalAdd;
         }
 
-        NumberX1000 INumericReader.GetFinalMul(NumericId id)
+        NumberX1000 INumericGetter.GetFinalMul(NumericId id)
         {
             return GetNumericObject(id).FinalMul;
         }
@@ -178,31 +178,37 @@ namespace Game
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        private Dictionary<NumericId, NumericObject> CalculateAttributes(int level)
+        private Dictionary<NumericId, NumericObject> InitializeStats(int level)
         {
-            var attributes = new Dictionary<NumericId, NumericObject>();
-            foreach (var attr in _controller.UnitData.AttributesX1000)
+            var stats = new Dictionary<NumericId, NumericObject>();
+            foreach (var (id, attr) in _controller.UnitData.BaseStatsX1000)
             {
-                if (!attributes.TryGetValue(attr.Id, out var numeric))
+                if (!stats.TryGetValue(id, out var numeric))
                 {
-                    numeric = new NumericObject(attr.Id);
-                    attributes.Add(attr.Id, numeric);
+                    numeric = new NumericObject(id);
+                    stats.Add(id, numeric);
                 }
-                // 配置表中的属性值是实际值X1000
-                var baseValue = NumberX1000.CreateFromX1000Value(attr.BaseValue.Value);
-                var growValue = NumberX1000.CreateFromX1000Value(attr.GrowValue.Value);
-                numeric.LinearAdd(attr.BaseValue.Type, baseValue);
-                numeric.LinearAdd(attr.GrowValue.Type, growValue, level - 1);
+                var baseValue = NumberX1000.CreateFromX1000Value(attr);
+                numeric.LinearAdd(NumericValueType.Base, baseValue);
             }
-
-            if (_surplusAttributesMap != null)
+            foreach (var (id, attr) in _controller.UnitData.LevelGrowthStatsX1000)
             {
-                foreach (var (id, numeric) in _surplusAttributesMap)
+                if (!stats.TryGetValue(id, out var numeric))
                 {
-                    if (!attributes.TryGetValue(id, out var attr))
+                    numeric = new NumericObject(id);
+                    stats.Add(id, numeric);
+                }
+                var growValue = NumberX1000.CreateFromX1000Value(attr);
+                numeric.LinearAdd(NumericValueType.Base, growValue, level - 1);
+            }
+            if (_surplusStatsMap != null)
+            {
+                foreach (var (id, numeric) in _surplusStatsMap)
+                {
+                    if (!stats.TryGetValue(id, out var attr))
                     {
                         attr = new NumericObject(id);
-                        attributes.Add(id, attr);
+                        stats.Add(id, attr);
                     }
                     attr.Base += numeric.Base;
                     attr.BaseAdd += numeric.BaseAdd;
@@ -212,26 +218,29 @@ namespace Game
                 }
             }
 
-            if (!attributes.ContainsKey(NumericId.Hp) && attributes.TryGetValue(NumericId.HpMax, out var hpMax))
+            // 初始化HP,一般是MaxHP的值
+            if (!stats.ContainsKey(NumericId.HP) && stats.TryGetValue(NumericId.MaxHP, out var hpMax))
             {
-                var hp = new NumericObject(NumericId.Hp);
+                var hp = new NumericObject(NumericId.HP);
                 hp.LinearAdd(NumericValueType.Base, hpMax.GetValue());
-                attributes.Add(NumericId.Hp, hp);
-            }
-            if (!attributes.ContainsKey(NumericId.Mp) && attributes.TryGetValue(NumericId.MpMax, out var mpMax))
-            {
-                var mp = new NumericObject(NumericId.Mp);
-                mp.LinearAdd(NumericValueType.Base, mpMax.GetValue());
-                attributes.Add(NumericId.Mp, mp);
+                stats.Add(NumericId.HP, hp);
             }
 
-            return attributes;
+            // 初始化Energy，一般是MaxEnergy的一半
+            if (!stats.ContainsKey(NumericId.Energy) && stats.TryGetValue(NumericId.MaxEnergy, out var energyMax))
+            {
+                var energy = new NumericObject(NumericId.Energy);
+                energy.LinearAdd(NumericValueType.Base, energyMax.GetValue() / 2);
+                stats.Add(NumericId.Energy, energy);
+            }
+
+            return stats;
         }
 
-        private static string GetAttributesString(Dictionary<NumericId, NumericObject> attributes)
+        private static string GetStatsListString(Dictionary<NumericId, NumericObject> stats)
         {
             var sb = new System.Text.StringBuilder();
-            foreach (var attr in attributes.Values)
+            foreach (var attr in stats.Values)
             {
                 sb.AppendLine($"{attr.Id}: {attr.GetValue()}");
             }
@@ -241,14 +250,14 @@ namespace Game
     }
 
     #region Other Classes
-    public class UnitAttributeChangeEvent : IEventMessage
+    public class UnitStatsChangeEvent : IEventMessage
     {
         public int InstanceId { get; }
         public NumericId NumericId { get; }
         public NumberX1000 OldValue { get; }
         public NumberX1000 NewValue { get; }
 
-        public UnitAttributeChangeEvent(int instanceId, NumericId numericId, NumberX1000 oldValue, NumberX1000 newValue)
+        public UnitStatsChangeEvent(int instanceId, NumericId numericId, NumberX1000 oldValue, NumberX1000 newValue)
         {
             InstanceId = instanceId;
             NumericId = numericId;
@@ -258,11 +267,11 @@ namespace Game
 
         public static void SendMsg(int instanceId, NumericId numericId, NumberX1000 oldValue, NumberX1000 newValue)
         {
-            var msg = new UnitAttributeChangeEvent(instanceId, numericId, oldValue, newValue);
+            var msg = new UnitStatsChangeEvent(instanceId, numericId, oldValue, newValue);
             UniEvent.SendMessage(msg);
         }
     }
 
-    public delegate void AttributeChangeHandler(NumericId id, NumberX1000 oldValue, NumberX1000 newValue);
+    public delegate void StatsChangeHandler(NumericId id, NumberX1000 oldValue, NumberX1000 newValue);
     #endregion
 }

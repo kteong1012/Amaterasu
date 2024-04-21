@@ -1,9 +1,5 @@
 <module name="">
-    <bean name="NumericValue">
-        <var name="type" type="NumericValueType" comment="数值类别"/>
-        <var name="value" type="long" comment="数值"/>
-    </bean>
-    <enum name="NumericValueType">
+    <enum name="NumericValueType" group="*">
         <var name="Base" alias="B"/>
         <var name="BaseAdd" alias="BA"/>
         <var name="BaseMul" alias="BM"/>

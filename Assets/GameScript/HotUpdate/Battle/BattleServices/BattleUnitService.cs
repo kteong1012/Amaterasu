@@ -3,30 +3,33 @@ using Game.Cfg;
 using Game.Log;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using YIUIFramework;
 
 namespace Game
 {
     [GameService(GameServiceLifeSpan.Battle)]
     public class BattleUnitService : GameService
     {
+        private Dictionary<string, Type> _unitControllerTypeMaps = new Dictionary<string, Type>();
         private int _instanceId;
-        private Dictionary<int, UnitController> _battleUnits = new Dictionary<int, UnitController>();
+        private Dictionary<int, UnitController> _Units = new Dictionary<int, UnitController>();
         private ConfigService _configService;
 
         protected override async UniTask OnInit()
         {
             _instanceId = 1000;
 
-            var unit1 = CreateBattleUnit(1001, 10, UnitCamp.Red);
+            CollectUnitControllerTypes();
+
+            var unit1 = CreateUnit(1001, 10, UnitCamp.Red);
             unit1.transform.position = new Vector3(20, unit1.transform.position.y, 20);
-            var unit2 = CreateBattleUnit(1001, 10, UnitCamp.Blue);
+            var unit2 = CreateUnit(1001, 10, UnitCamp.Blue);
             unit2.transform.position = new Vector3(-20, unit2.transform.position.y, -20);
 
             await UniTask.CompletedTask;
         }
-        public UnitController CreateBattleUnit(int unitId, int level, UnitCamp unitCamp)
+        public UnitController CreateUnit(int unitId, int level, UnitCamp unitCamp)
         {
             var unitData = _configService.TbUnitData.GetOrDefault(unitId);
             if (unitData == null)
@@ -34,57 +37,80 @@ namespace Game
                 GameLog.Error($"UnitData 表中没有找到Id为{unitId}的数据");
                 return null;
             }
+            var controllerType = GetUnitControllerType(unitData.ControllerName);
+            if (controllerType == null)
+            {
+                GameLog.Error($"没有找到名为{unitData.ControllerName}的UnitController");
+                return null;
+            }
             var instanceId = ++_instanceId;
             var go = new GameObject();
             go.name = $"Unit_{unitData.Name}_{unitCamp}_{instanceId}";
-            var battleUnit = go.GetOrAddComponent<BattleUnitController>();
-            battleUnit.Init(instanceId, unitData, level, unitCamp);
+            var unit = go.GetOrAddComponent(controllerType) as UnitController;
+            unit.Init(instanceId, unitData, level, unitCamp);
 
-            _battleUnits.Add(instanceId, battleUnit);
-            return battleUnit;
+            _Units.Add(instanceId, unit);
+            return unit;
         }
-        public void DestroyBattleUnit(int unitId)
+        public void DestroyUnit(int unitId)
         {
-            if (_battleUnits.TryGetValue(unitId, out var battleUnit))
+            if (_Units.TryGetValue(unitId, out var unit))
             {
-                battleUnit.Release();
-                UnityEngine.Object.Destroy(battleUnit.gameObject);
-                _battleUnits.Remove(unitId);
+                unit.Release();
+                UnityEngine.Object.Destroy(unit.gameObject);
+                _Units.Remove(unitId);
             }
         }
 
-        public UnitController GetBattleUnit(int unitId)
+        public UnitController GetUnit(int unitId)
         {
-            if (_battleUnits.TryGetValue(unitId, out var battleUnit))
+            if (_Units.TryGetValue(unitId, out var unit))
             {
-                return battleUnit;
+                return unit;
             }
             return null;
         }
 
-        public IEnumerable<UnitController> GetBattleUnits()
+        public IEnumerable<UnitController> GetUnits()
         {
-            return _battleUnits.Values;
+            return _Units.Values;
         }
 
         public UnitController GetNearestEnemy(UnitController controller)
         {
-            var minDistance = float.MaxValue;
-            UnitController nearestEnemy = null;
-            foreach (var unit in _battleUnits.Values)
+            float Selector(UnitController unit)
             {
-                if (unit.Camp == controller.Camp)
+                var distance = Vector3.Distance(unit.LogicPosition, controller.LogicPosition);
+                var targetRadius = NumberX1000.CreateFromX1000Value(unit.UnitData.RadiusX1000);
+                var distanceMinusRadius = distance - targetRadius;
+                return distanceMinusRadius;
+            }
+
+            return _Units.Values.Where(unit => unit.Camp != controller.Camp)
+                .OrderBy(Selector)
+                .FirstOrDefault();
+        }
+
+        private void CollectUnitControllerTypes()
+        {
+            var types = TypeManager.Instance.GetTypes();
+            foreach (var type in types)
+            {
+                if (!type.IsAbstract && type.IsSubclassOf(typeof(UnitController)))
                 {
-                    continue;
-                }
-                var distance = Vector3.Distance(unit.transform.position, controller.transform.position);
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    nearestEnemy = unit;
+                    var name = type.Name;
+                    _unitControllerTypeMaps.Add(name, type);
                 }
             }
-            return nearestEnemy;
+        }
+
+        private Type GetUnitControllerType(string name)
+        {
+            if (_unitControllerTypeMaps.TryGetValue(name, out var type))
+            {
+                return type;
+            }
+            return null;
         }
     }
 }
