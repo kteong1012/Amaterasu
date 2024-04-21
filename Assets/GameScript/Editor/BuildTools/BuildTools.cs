@@ -1,6 +1,7 @@
 using Game;
 using HybridCLR.Editor;
 using HybridCLR.Editor.Commands;
+using HybridCLR.Editor.HotUpdate;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -16,11 +17,18 @@ namespace GameEditor
             CompileDllCommand.CompileDll(target);
 
             var hotUpdateDllDir = SettingsUtil.GetHotUpdateDllsOutputDirByTarget(target);
+
+
             var srcPath = $"{hotUpdateDllDir}/{AppSettings.HotUpdateDllName}";
             var destPath = AppSettings.HotUpdateDllAssetPath;
             FileUtil.ReplaceFile(srcPath, destPath);
             AssetDatabase.Refresh();
             Debug.Log("CompileDllAndCopyToGameRes Done!");
+
+
+            var aotDir = $"{SettingsUtil.AssembliesPostIl2CppStripDir}/{target}";
+            var checker = new MissingMetadataChecker(aotDir, new string[] { });
+            checker.Check(srcPath);
         }
 
         [MenuItem("BuildTools/CopyAotDllsToResources")]
@@ -45,5 +53,21 @@ namespace GameEditor
             AssetDatabase.Refresh();
             Debug.Log("CopyAotDllsToResources Done!");
         }
+
+#if UNITY_ANDROID
+        [MenuItem("BuildTools/BuildPlayer")]
+        public static void BuildAndroid()
+        {
+            var options = BuildOptions.None;
+            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions
+            {
+                locationPathName = "Builds/base.apk",
+                options = options
+            };
+            buildPlayerOptions.scenes = new[] { "Assets/Scenes/Launch.unity" };
+            buildPlayerOptions.target = BuildTarget.Android;
+            BuildPipeline.BuildPlayer(buildPlayerOptions);
+        }
+#endif
     }
 }

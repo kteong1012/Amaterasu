@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <assembly fullname="UnityEngine.AIModule" preserve="all"/>
+  <assembly fullname="Unity.AI.Navigation" preserve="all"/>
+  <assembly fullname="Main" preserve="all"/>
+</linker>

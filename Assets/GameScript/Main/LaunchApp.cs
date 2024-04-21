@@ -71,7 +71,7 @@ namespace Game
         {
             PatchEventDefine.PatchStatesChange.SendEventMessage("加载逻辑资源");
             // 加载HotUpdate程序集
-#if UNITY_EDITOR
+#if !UNITY_EDITOR
 
             // 补充Aot泛型元数据
             var aotDllNames = AOTGenericReferences.PatchedAOTAssemblyList;
@@ -98,6 +98,7 @@ namespace Game
             var dllPath = AppSettings.HotUpdateDllAssetPath;
             var handle = YooAssets.LoadAssetSync<TextAsset>(dllPath);
             var dllBytes = handle.GetAssetObject<TextAsset>().bytes;
+            GameLog.Debug($"加载HotUpdate程序集: {dllPath}, {dllBytes.Length} bytes");
             Assembly hotUpdateAss = Assembly.Load(dllBytes);
             handle.Release();
 #else
