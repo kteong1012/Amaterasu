@@ -34,11 +34,7 @@ namespace Game
         //  HotUpdate
         public static string HotUpdateAssemblyName => "HotUpdate";
         public static string HotUpdateDllName => $"{HotUpdateAssemblyName}.dll";
-        private static string _dllPath => $"Dlls/{HotUpdateDllName}.bytes";
-        public static string PersistentDllPath => $"{PersistentAssetsSourcePath}/{_dllPath}";
-        public static string StreamingDllPath => $"{StreamingAssetsSourcePath}/{PlatformName}/{_dllPath}";
-        public static string HotUpdateDllPath => System.IO.File.Exists(PersistentDllPath) ? PersistentDllPath : StreamingDllPath;
-
+        public static string HotUpdateDllAssetPath => $"Assets/GameRes/Dlls/{HotUpdateDllName}.bytes";
 
         //  YooAssets
         public static EPlayMode PlayMode { get; internal set; }
