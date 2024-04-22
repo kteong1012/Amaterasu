@@ -14,15 +14,15 @@ namespace Game.Cfg
         private List<AssetHandle> _assetHandles = new List<AssetHandle>();
         protected override async UniTask OnInit()
         {
-            GameLog.Info("====³õÊ¼»¯ÅäÖÃ====");
+            GameLog.Info("====åˆå§‹åŒ–é…ç½®====");
             await LoadAll(Loader);
             _assetHandles.ForEach(handle => handle.Release());
-            GameLog.Info("====³õÊ¼»¯ÅäÖÃÍê³É====");
+            GameLog.Info("====åˆå§‹åŒ–é…ç½®å®Œæˆ====");
         }
 
         private async UniTask<ByteBuf> Loader(string tableName)
         {
-            GameLog.Debug($"¼ÓÔØÅäÖÃ±í {tableName}");
+            GameLog.Debug($"åŠ è½½é…ç½®è¡¨ {tableName}");
             var handle = YooAssets.LoadAssetAsync($"{tableName}");
             await handle.ToUniTask();
             var textAsset = handle.GetAssetObject<TextAsset>();

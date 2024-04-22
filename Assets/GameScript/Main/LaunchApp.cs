@@ -16,17 +16,17 @@ namespace Game
 
         private async void Start()
         {
-            // ´ò¿ª²¹¶¡´°¿Ú
+            // æ‰“å¼€è¡¥ä¸çª—å£
             OpenPatchWindow();
-            // ÉèÖÃApp³£Á¿
+            // è®¾ç½®Appå¸¸é‡
             SetApp();
-            // ³õÊ¼»¯Log
+            // åˆå§‹åŒ–Log
             SetGameLog();
-            // ³õÊ¼»¯ÊÂ¼şÏµÍ³
+            // åˆå§‹åŒ–äº‹ä»¶ç³»ç»Ÿ
             InitUniEvent();
-            // ³õÊ¼»¯×ÊÔ´Ä£¿é
+            // åˆå§‹åŒ–èµ„æºæ¨¡å—
             await InitResourceModule();
-            // ¼ÓÔØHotUpdate³ÌĞò¼¯
+            // åŠ è½½HotUpdateç¨‹åºé›†
             LoadDll();
         }
 
@@ -56,24 +56,24 @@ namespace Game
         {
             YooAssets.Initialize(UnityConsoleLog.Instance);
 
-            // ¿ªÊ¼²¹¶¡¸üĞÂÁ÷³Ì
+            // å¼€å§‹è¡¥ä¸æ›´æ–°æµç¨‹
             PatchOperation operation = new PatchOperation(AppSettings.YooAssetPackageName, EDefaultBuildPipeline.BuiltinBuildPipeline.ToString(), AppSettings.PlayMode);
             YooAssets.StartOperation(operation);
 
             await operation.ToUniTask();
 
-            // ÉèÖÃÄ¬ÈÏµÄ×ÊÔ´°ü
+            // è®¾ç½®é»˜è®¤çš„èµ„æºåŒ…
             var gamePackage = YooAssets.GetPackage(AppSettings.YooAssetPackageName);
             YooAssets.SetDefaultPackage(gamePackage);
         }
 
         private void LoadDll()
         {
-            PatchEventDefine.PatchStatesChange.SendEventMessage("¼ÓÔØÂß¼­×ÊÔ´");
-            // ¼ÓÔØHotUpdate³ÌĞò¼¯
+            PatchEventDefine.PatchStatesChange.SendEventMessage("åŠ è½½é€»è¾‘èµ„æº");
+            // åŠ è½½HotUpdateç¨‹åºé›†
 #if !UNITY_EDITOR
 
-            // ²¹³äAot·ºĞÍÔªÊı¾İ
+            // è¡¥å……Aotæ³›å‹å…ƒæ•°æ®
             var aotDllNames = AOTGenericReferences.PatchedAOTAssemblyList;
             foreach (var dllName in aotDllNames)
             {
@@ -87,26 +87,26 @@ namespace Game
                 var ret = HybridCLR.RuntimeApi.LoadMetadataForAOTAssembly(bytes, HybridCLR.HomologousImageMode.SuperSet);
                 if (ret == HybridCLR.LoadImageErrorCode.OK)
                 {
-                    GameLog.Debug($"¼ÓÔØAOTÔªÊı¾İ³É¹¦: {dllName}");
+                    GameLog.Debug($"åŠ è½½AOTå…ƒæ•°æ®æˆåŠŸ: {dllName}");
                 }
                 else
                 {
-                    GameLog.Error($"¼ÓÔØAOTÔªÊı¾İÊ§°Ü: {dllName}. {ret}");
+                    GameLog.Error($"åŠ è½½AOTå…ƒæ•°æ®å¤±è´¥: {dllName}. {ret}");
                 }
             }
 
             var dllPath = AppSettings.HotUpdateDllAssetPath;
             var handle = YooAssets.LoadAssetSync<TextAsset>(dllPath);
             var dllBytes = handle.GetAssetObject<TextAsset>().bytes;
-            GameLog.Debug($"¼ÓÔØHotUpdate³ÌĞò¼¯: {dllPath}, {dllBytes.Length} bytes");
+            GameLog.Debug($"åŠ è½½HotUpdateç¨‹åºé›†: {dllPath}, {dllBytes.Length} bytes");
             Assembly hotUpdateAss = Assembly.Load(dllBytes);
             handle.Release();
 #else
-            // EditorÏÂÎŞĞè¼ÓÔØ£¬Ö±½Ó²éÕÒ»ñµÃHotUpdate³ÌĞò¼¯
-            GameLog.Debug("Editor»·¾³ÏÂÎŞĞè¼ÓÔØHotUpdate³ÌĞò¼¯");
+            // Editorä¸‹æ— éœ€åŠ è½½ï¼Œç›´æ¥æŸ¥æ‰¾è·å¾—HotUpdateç¨‹åºé›†
+            GameLog.Debug("Editorç¯å¢ƒä¸‹æ— éœ€åŠ è½½HotUpdateç¨‹åºé›†");
             Assembly hotUpdateAss = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "HotUpdate");
 #endif
-            // µ÷ÓÃHotUpdate³ÌĞò¼¯µÄStartGame.Start·½·¨
+            // è°ƒç”¨HotUpdateç¨‹åºé›†çš„StartGame.Startæ–¹æ³•
             var typeStartGame = hotUpdateAss.GetType("Game.StartGame");
             var methodStart = typeStartGame.GetMethod("Start", BindingFlags.Static | BindingFlags.Public);
             methodStart.Invoke(null, null);

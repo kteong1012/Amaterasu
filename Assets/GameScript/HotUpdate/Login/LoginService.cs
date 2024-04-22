@@ -52,15 +52,15 @@ namespace Game
         #region Public Methods
         public async UniTask Login(LoginChannel loginChannel, string playerId)
         {
-            // ¸øLoginChannelºÍPlayerId¸³Öµ
+            // ç»™LoginChannelå’ŒPlayerIdèµ‹å€¼
             LoginChannel = loginChannel;
             PlayerId = playerId;
             GameLog.Info($"LoginService Login, LoginChannel: {LoginChannel}, PlayerId: {PlayerId}");
 
-            // ¿ªÆôLoginService
+            // å¼€å¯LoginService
             await GameEntry.Ins.StartServices(GameServiceLifeSpan.Login);
 
-            // ·¢ËÍµÇÂ¼ÊÂ¼ş
+            // å‘é€ç™»å½•äº‹ä»¶
             GameEntryEventsDefine.LoginSuccess.SendEventMessage(LoginChannel, playerId);
 
             await _sceneService.ChangeToHomeScene();
@@ -68,13 +68,13 @@ namespace Game
 
         public void Logout()
         {
-            // ·¢ËÍµÇ³öÊÂ¼ş
+            // å‘é€ç™»å‡ºäº‹ä»¶
             GameEntryEventsDefine.LogoutSuccess.SendEventMessage(LoginChannel, PlayerId);
 
-            // ¹Ø±ÕLoginService
+            // å…³é—­LoginService
             GameEntry.Ins.StopServices(GameServiceLifeSpan.Login);
 
-            // ·µ»ØµÇÂ¼½çÃæ
+            // è¿”å›ç™»å½•ç•Œé¢
             _sceneService.ChangeToLoginScene().Forget();
         }
         #endregion

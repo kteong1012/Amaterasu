@@ -29,12 +29,12 @@ namespace Game
                     var attribute = type.GetCustomAttribute<GameServiceAttribute>();
                     if (attribute == null)
                     {
-                        throw new Exception($"GameService {type.Name} ±ØĞëÌí¼Ó GameServiceAttribute ÊôĞÔ");
+                        throw new Exception($"GameService {type.Name} å¿…é¡»æ·»åŠ  GameServiceAttribute å±æ€§");
                     }
 
                     if (attribute.LifeSpan == GameServiceLifeSpan.None)
                     {
-                        throw new Exception($"GameService {type.Name} µÄ LifeSpan ²»ÄÜÎª None");
+                        throw new Exception($"GameService {type.Name} çš„ LifeSpan ä¸èƒ½ä¸º None");
                     }
 
                     if (!_serviceTypes.ContainsKey(attribute.LifeSpan))
@@ -52,16 +52,16 @@ namespace Game
             var types = GetServiceTypes(lifeSpan);
             if (types == null)
             {
-                GameLog.Info($"Ã»ÓĞÕÒµ½ {lifeSpan} µÄ·şÎñ");
+                GameLog.Info($"æ²¡æœ‰æ‰¾åˆ° {lifeSpan} çš„æœåŠ¡");
                 return;
             }
 
             if (_services.TryGetValue(lifeSpan, out var services))
             {
-                GameLog.Warning($"ÒÑ¾­´æÔÚ {lifeSpan} µÄ·şÎñ");
+                GameLog.Warning($"å·²ç»å­˜åœ¨ {lifeSpan} çš„æœåŠ¡");
                 return;
             }
-            GameLog.Debug($"´´½¨ {lifeSpan} µÄ·şÎñ");
+            GameLog.Debug($"åˆ›å»º {lifeSpan} çš„æœåŠ¡");
 
             var serviceDict = new Dictionary<Type, GameService>();
 
@@ -72,7 +72,7 @@ namespace Game
             }
             _services.Add(lifeSpan, serviceDict);
 
-            // ×¢ÈëGameServiceÀàĞÍµÄ×Ö¶ÎºÍÊôĞÔ
+            // æ³¨å…¥GameServiceç±»å‹çš„å­—æ®µå’Œå±æ€§
             foreach (var service in serviceDict.Values)
             {
                 var members = service.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -87,10 +87,10 @@ namespace Game
                     {
                         continue;
                     }
-                    // ´Ë´¦ÌØÊâÅĞ¶Ï
+                    // æ­¤å¤„ç‰¹æ®Šåˆ¤æ–­
                     if (lifeSpan == GameServiceLifeSpan.Game && attribute.LifeSpan == GameServiceLifeSpan.Login)
                     {
-                        throw new Exception($"GameService {service.GetType().Name}.{member.Name} Game ²»ÄÜÒÀÀµÓÚ Login ÉúÃüÖÜÆÚµÄ·şÎñ");
+                        throw new Exception($"GameService {service.GetType().Name}.{member.Name} Game ä¸èƒ½ä¾èµ–äº Login ç”Ÿå‘½å‘¨æœŸçš„æœåŠ¡");
                     }
 
                     var fieldType = member.GetFieldType();
@@ -106,7 +106,7 @@ namespace Game
                     }
                     if (value == null)
                     {
-                        throw new Exception($"GameService {service.GetType().Name} µÄ {member.Name} ×Ö¶ÎÀàĞÍ {fieldType.Name} Ã»ÓĞÕÒµ½¶ÔÓ¦µÄ·şÎñ");
+                        throw new Exception($"GameService {service.GetType().Name} çš„ {member.Name} å­—æ®µç±»å‹ {fieldType.Name} æ²¡æœ‰æ‰¾åˆ°å¯¹åº”çš„æœåŠ¡");
                     }
 
                     member.SetValue(service, value);

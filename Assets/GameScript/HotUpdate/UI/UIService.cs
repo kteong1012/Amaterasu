@@ -32,7 +32,7 @@ namespace Game
             await MgrCenter.Inst.Register(RedDotMgr.Inst);
             await MgrCenter.Inst.Register(PanelMgr.Inst);
 
-            //URPÏà¹ØÉèÖÃ
+            //URPç›¸å…³è®¾ç½®
             var mainURPCamera = MainCamera.Instance.Camera.GetUniversalAdditionalCameraData();
             var uiURPCamera = PanelMgr.Inst.UICamera.GetUniversalAdditionalCameraData();
             mainURPCamera.renderType = CameraRenderType.Base;
@@ -77,7 +77,7 @@ namespace Game
             }
             else
             {
-                GameLog.Error("ÊÔÍ¼ÊÍ·ÅÒ»¸ö²»´æÔÚµÄ×ÊÔ´");
+                GameLog.Error("è¯•å›¾é‡Šæ”¾ä¸€ä¸ªä¸å­˜åœ¨çš„èµ„æº");
             }
         }
         #endregion
