@@ -11,7 +11,7 @@ namespace Game
         {
             _battleUnitService = GameEntry.Ins.GetService<BattleUnitService>();
         }
-        public override void Tick(UnitAIComponent aIComponent)
+        public override void Act(UnitAIComponent aIComponent)
         {
             var battleUnitController = aIComponent.battleUnit;
             //TODO 计算一番拿到行动范围,现在暂定是一个近战普通攻击的距离0
@@ -27,11 +27,6 @@ namespace Game
             {
                 _currentTargetId = currentTarget.InstanceId;
                 ChaseOrAttack(battleUnitController, currentTarget, range);
-            }
-            else
-            {
-                _currentTargetId = 0;
-                battleUnitController.StopMove();
             }
         }
 

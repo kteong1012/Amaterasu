@@ -10,7 +10,6 @@ namespace Game
     {
         #region Fields & Properties
         private Dictionary<NumericId, NumericObject> _statsMap;
-        private Dictionary<NumericId, NumericObject> _surplusStatsMap;
 
         public event StatsChangeHandler onStatsChange;
         #endregion
@@ -129,18 +128,10 @@ namespace Game
             SetNumericField(id, NumericValueType.FinalMul, value);
         }
 
-        public void AddSurplusStats(NumericId id, int value, NumericValueType valueType)
+        public void LinearAdd(NumericId id, NumericValueType valueType, NumberX1000 addValue, int times = 1)
         {
-            if (_surplusStatsMap == null)
-            {
-                _surplusStatsMap = new Dictionary<NumericId, NumericObject>();
-            }
-            if (!_surplusStatsMap.TryGetValue(id, out var numeric))
-            {
-                numeric = new NumericObject(id);
-                _surplusStatsMap.Add(id, numeric);
-            }
-            numeric.LinearAdd(valueType, value);
+            var numeric = GetNumericObject(id);
+            numeric.LinearAdd(valueType, addValue, times);
         }
         #endregion
 
@@ -197,22 +188,6 @@ namespace Game
                 }
                 var growValue = NumberX1000.CreateFromX1000Value(attr);
                 numeric.LinearAdd(NumericValueType.Base, growValue, level - 1);
-            }
-            if (_surplusStatsMap != null)
-            {
-                foreach (var (id, numeric) in _surplusStatsMap)
-                {
-                    if (!stats.TryGetValue(id, out var attr))
-                    {
-                        attr = new NumericObject(id);
-                        stats.Add(id, attr);
-                    }
-                    attr.Base += numeric.Base;
-                    attr.BaseAdd += numeric.BaseAdd;
-                    attr.BaseMul += numeric.BaseMul;
-                    attr.FinalAdd += numeric.FinalAdd;
-                    attr.FinalMul += numeric.FinalMul;
-                }
             }
 
             // 初始化HP,一般是MaxHP的值

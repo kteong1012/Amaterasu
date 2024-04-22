@@ -23,10 +23,10 @@ namespace Game
 
         public NumberX1000 GetValue()
         {
-            return Base * (NumberX1000.One + BaseAdd) * (NumberX1000.One + BaseMul) + FinalAdd + FinalMul;
+            return (((Base + BaseAdd) * (NumberX1000.One + BaseMul)) + FinalAdd) * (NumberX1000.One + FinalMul);
         }
 
-        public void LinearAdd(NumericValueType type, float value, int times = 1)
+        public void LinearAdd(NumericValueType type, NumberX1000 value, int times = 1)
         {
             switch (type)
             {

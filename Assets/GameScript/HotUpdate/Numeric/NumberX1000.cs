@@ -371,6 +371,25 @@
         {
             return _valueX1000 / SCALEd;
         }
+
+        public NumberX1000 AbsTo(NumberX1000 other)
+        {
+            if (this > other)
+            {
+                return this - other;
+            }
+            else
+            {
+                return other - this;
+            }
+        }
+
+        public bool ApproximatelyTo(NumberX1000 other)
+        {
+            var tolerance = CreateFromX1000Value(20);
+            return AbsTo(other) < tolerance;
+        }
+
         /// <summary>
         /// 输出浮点数字符串，默认保留3位小数
         /// </summary>

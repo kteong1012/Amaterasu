@@ -57,8 +57,7 @@ namespace Game
 
         public void StopMove()
         {
-            _navMeshAgent.isStopped = true;
-            _navMeshAgent.ResetPath();
+            IsStopped = true;
         }
 
         /// <summary>

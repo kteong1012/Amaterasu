@@ -43,21 +43,17 @@ namespace Game
             // 停止移动
             _navigationComponent.StopMove();
             // 释放技能
-            _skillComponent.Act(target);
+            _skillComponent.CastSkill(target);
         }
 
         public void MoveToPlace(Vector3 targetPosition, NumberX1000 stopDistance)
         {
-            _skillComponent.StopAct();
-            
             _navigationComponent.MoveToPlace(targetPosition, stopDistance);
             PlayAnimation("XiaoMingAnim_Move");
         }
 
         public void ChaseUnit(UnitController targetUnit, NumberX1000 stopDistance)
         {
-            _skillComponent.StopAct();
-
             _navigationComponent.ChaseUnit(targetUnit, stopDistance);
             PlayAnimation("XiaoMingAnim_Move");
         }

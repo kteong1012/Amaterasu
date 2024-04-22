@@ -9,7 +9,6 @@ namespace Game
 {
     public class UnitSkillComponent : UnitComponent
     {
-        private float? _lastActTime;
         private BattleUnitController _battleUnit;
         private TweenerCore<Quaternion, Quaternion, NoOptions> _tweener;
 
@@ -23,7 +22,7 @@ namespace Game
             _tweener?.Kill();
         }
 
-        public void Act(UnitController target)
+        public void CastSkill(UnitController target)
         {
             if (_battleUnit.IsDead())
             {
@@ -33,16 +32,6 @@ namespace Game
             {
                 return;
             }
-
-            var ACTITV = _battleUnit.GetStatsValue(Cfg.NumericId.ACTITV).ToFloat();
-            var ACTSPD = _battleUnit.GetStatsValue(Cfg.NumericId.ACTSPD).ToFloat();
-            var finalACTITV = BattleCalculator.CalculateACTITV(ACTITV, ACTSPD);
-
-            if (_lastActTime != null && Time.time - _lastActTime < finalACTITV)
-            {
-                return;
-            }
-            _lastActTime = Time.time;
 
             // 面向目标
             RotateToTarget(target);
@@ -58,11 +47,6 @@ namespace Game
                 GameLog.Debug($"<color={_controller.Camp.GetColor().ToHex()}>{name}发动普通攻击, 造成{damage}点伤害, 是否暴击: {isCritical}</color>");
                 targetBattleUnit.TakeDamage(damage);
             }
-        }
-
-        public void StopAct()
-        {
-            _lastActTime = null;
         }
 
         private void RotateToTarget(UnitController target)

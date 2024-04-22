@@ -5,6 +5,6 @@ namespace Game
         public virtual void Init(UnitAIComponent aIComponent)
         {
         }
-        public abstract void Tick(UnitAIComponent aIComponent);
+        public abstract void Act(UnitAIComponent aIComponent);
     }
 }

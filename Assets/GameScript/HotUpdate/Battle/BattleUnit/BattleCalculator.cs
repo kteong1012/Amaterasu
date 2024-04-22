@@ -49,16 +49,16 @@ namespace Game
         /// <summary>
         /// 计算行动间隔，公式：基础行动间隔 / (行动速度 * 0.01) 
         /// </summary>
-        /// <param name="baseInterval"></param>
+        /// <param name="ACTITV"></param>
         /// <param name="ACTSPD"></param>
         /// <returns></returns>
-        public static NumberX1000 CalculateACTITV(NumberX1000 baseInterval, NumberX1000 ACTSPD)
+        public static NumberX1000 CalculateFinalACTITV(NumberX1000 ACTITV, NumberX1000 ACTSPD)
         {
             //修正后的行动速度
             var max = BattleConstants.MaxACTSPED;
             var min = BattleConstants.MinACTSPED;
             ACTSPD = Mathf.Clamp(ACTSPD, min, max);
-            return baseInterval / (ACTSPD * NumberX1000.CreateFromX1000Value(10));
+            return ACTITV / (ACTSPD * NumberX1000.CreateFromX1000Value(10));
         }
 
         public static NumberX1000 CalculateNavigationStopDistance(UnitController self, UnitController target, NumberX1000 range)
@@ -71,9 +71,14 @@ namespace Game
 
         public static bool IsInAttackRange(UnitController self, UnitController target, NumberX1000 range)
         {
-            var distanceLogic = Vector3.Distance(self.LogicPosition, target.LogicPosition);
+            var distanceLogic = (NumberX1000)Vector3.Distance(self.LogicPosition, target.LogicPosition);
             var stopDistance = CalculateNavigationStopDistance(self, target, range);
-            return distanceLogic <= stopDistance;
+            // 如果近似则视为相等，在攻击范围内
+            if (distanceLogic.ApproximatelyTo(stopDistance))
+            {
+                return true;
+            }
+            return distanceLogic < stopDistance;
         }
     }
 }
