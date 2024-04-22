@@ -6,6 +6,7 @@ namespace Game
     {
         public static MainCamera Instance { get; private set; }
         public Camera Camera { get; private set; }
+        public Canvas worldCanvas;
         private void Awake()
         {
             if (Instance == null)
