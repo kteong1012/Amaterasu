@@ -15,22 +15,44 @@ namespace Game
         private UnitNavigationComponent _navigationComponent;
         private UnitAIComponent _aiComponent;
         private UnitSkillComponent _skillComponent;
+        private UnitHudComponent _unitHudComponent;
+
+        public event StatsChangeHandler OnStatsChangeEvent
+        {
+            add { _statsComponent.onStatsChangeEvent += value; }
+            remove { _statsComponent.onStatsChangeEvent -= value; }
+        }
         #endregion
 
         #region Life Cycle
-        protected override void AddComponents()
-        {
-            _modelComponent = AddUnitComponent<UnitModelComponent>();
-            _statsComponent = AddUnitComponent<UnitStatsComponent>();
-            _navigationComponent = AddUnitComponent<UnitNavigationComponent>();
-            _aiComponent = AddUnitComponent<UnitAIComponent>();
-            _skillComponent = AddUnitComponent<UnitSkillComponent>();
-        }
 
         protected override void OnInit()
         {
+            _modelComponent = AddUnitComponent<UnitModelComponent>();
+            _modelComponent.Init(this);
+
+            _statsComponent = AddUnitComponent<UnitStatsComponent>();
+            _statsComponent.Init(this);
+
+            _navigationComponent = AddUnitComponent<UnitNavigationComponent>();
+            _navigationComponent.Init(this);
+
+            _aiComponent = AddUnitComponent<UnitAIComponent>();
+            _aiComponent.Init(this);
+
+            _skillComponent = AddUnitComponent<UnitSkillComponent>();
+            _skillComponent.Init(this);
+
+            _unitHudComponent = AddUnitComponent<UnitHudComponent>();
+            _unitHudComponent.Init(this);
+
             _aiComponent.SetAI<UnitAI_XiaoMing>();
-            _statsComponent.onStatsChange += OnStatsChange;
+            _statsComponent.onStatsChangeEvent += OnStatsChange;
+        }
+
+        protected override void OnRelease()
+        {
+            _statsComponent.onStatsChangeEvent -= OnStatsChange;
         }
         #endregion
 

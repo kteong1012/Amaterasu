@@ -11,7 +11,7 @@ namespace Game
         #region Fields & Properties
         private Dictionary<NumericId, NumericObject> _statsMap;
 
-        public event StatsChangeHandler onStatsChange;
+        public event StatsChangeHandler onStatsChangeEvent;
         #endregion
 
         #region Life Cycle
@@ -23,7 +23,7 @@ namespace Game
         }
         protected override void OnRelease()
         {
-            onStatsChange = null;
+            onStatsChangeEvent = null;
         }
         #endregion
 
@@ -80,7 +80,7 @@ namespace Game
             if (changed)
             {
                 UnitStatsChangeEvent.SendMsg(_controller.InstanceId, id, oldValue, numeric.GetValue());
-                onStatsChange?.Invoke(id, oldValue, numeric.GetValue());
+                onStatsChangeEvent?.Invoke(id, oldValue, numeric.GetValue());
             }
         }
 

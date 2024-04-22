@@ -43,13 +43,6 @@ namespace Game
             this.UnitData = unitData;
             this.Level = level;
             this.Camp = unitCamp;
-
-            AddComponents();
-            var unitComponents = GetComponents<UnitComponent>();
-            foreach (var unitComponent in unitComponents)
-            {
-                unitComponent.Init(this);
-            }
             OnInit();
         }
 
@@ -88,10 +81,6 @@ namespace Game
         #endregion
 
         #region Private & Protected Methods
-        /// <summary>
-        /// 这个是为了方便子类添加组件，子类只需要调用base.AddComponents()，减少重复代码
-        /// </summary>
-        protected abstract void AddComponents();
         protected virtual void OnInit() { }
         protected virtual void OnRelease() { }
         #endregion

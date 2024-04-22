@@ -390,6 +390,32 @@
             return AbsTo(other) < tolerance;
         }
 
+        public NumberX1000 Ceil()
+        {
+            var remainder = _valueX1000 % SCALE;
+            if (remainder == 0)
+            {
+                return this;
+            }
+            else
+            {
+                return new NumberX1000 { _valueX1000 = _valueX1000 + SCALE - remainder };
+            }
+        }
+
+        public NumberX1000 Floor()
+        {
+            var remainder = _valueX1000 % SCALE;
+            if (remainder == 0)
+            {
+                return this;
+            }
+            else
+            {
+                return new NumberX1000 { _valueX1000 = _valueX1000 - remainder };
+            }
+        }
+
         /// <summary>
         /// 输出浮点数字符串，默认保留3位小数
         /// </summary>

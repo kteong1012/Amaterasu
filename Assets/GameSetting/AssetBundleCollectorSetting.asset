@@ -84,6 +84,14 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+      - CollectPath: Assets/GameRes/UI3D
+        CollectorGUID: c3c3e4dc0e5a6424abd2e9cffe833028
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
     - GroupName: config
       GroupDesc: 
       AssetTags: 
