@@ -10,26 +10,27 @@ namespace Game
 {
     public class UI3D_DamageText : MonoBehaviour
     {
-        private AssetHandle _handle;
+        private static AssetHandle _handle;
         public TextMeshProUGUI text;
 
         public static async void Create(Transform parent, string text)
         {
-            var handle = YooAssets.LoadAssetSync<GameObject>("UI3D_DamageText");
-            var go = handle.InstantiateSync(parent);
+            if (_handle == null)
+            {
+                _handle = YooAssets.LoadAssetSync<GameObject>("UI3D_DamageText");
+            }
+
+            var go = _handle.InstantiateSync(parent);
+            go.transform.localPosition = Vector3.zero;
             go.name = $"UI3D_DamageText_{text}";
             var damageText = go.GetComponent<UI3D_DamageText>();
-            damageText._handle = handle;
             damageText.text.text = text;
 
-            //dotween
-            await go.transform.DOLocalMoveY(150f, 1).SetEase(Ease.OutQuad).ToUniTask();
+            //become to a wild panel and play animation
+            var newParent = MainCamera.Instance.worldCanvasRoot;
+            go.transform.SetParent(newParent, true);
+            await go.transform.DOLocalMoveY(go.transform.localPosition.y + 150f, 1).SetEase(Ease.OutQuad).ToUniTask();
             Destroy(go);
-        }
-
-        private void OnDestroy()
-        {
-            _handle.Release();
         }
     }
 }

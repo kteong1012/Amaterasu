@@ -20,7 +20,7 @@ namespace Game
         #endregion
 
         #region Life Cycle
-        protected override async UniTask OnInit()
+        protected override async UniTask Awake()
         {
             UIBindHelper.InternalGameGetUIBindVoFunc = YIUICodeGenerated.UIBindProvider.Get;
             YIUILoadDI.LoadAssetFunc = LoadAsset;

@@ -32,20 +32,18 @@ namespace Game
         private Dictionary<Type, PlayerData> _cachePlayerDataMap = new();
 
         private SceneService _sceneService;
-
-        private EventGroup _eventGroup;
         #endregion
 
         #region Life Cycle
-        protected override UniTask OnInit()
+        protected override UniTask Awake()
         {
-            return base.OnInit();
+            return base.Awake();
         }
 
-        protected override void OnRelease()
+        protected override void OnDestroy()
         {
             _cachePlayerDataMap.Clear();
-            base.OnRelease();
+            base.OnDestroy();
         }
         #endregion
 

@@ -1,7 +1,13 @@
 using Cysharp.Threading.Tasks;
+using Game.Cfg;
+using Game.Log;
+using Game.UI.UIBattleEnd;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniFramework.Event;
 using UnityEngine;
+using YIUIFramework;
 
 namespace Game
 {
@@ -13,9 +19,43 @@ namespace Game
         #endregion
 
         #region Override Methods
+        protected override async UniTask Awake()
+        {
+            AddEventListener<BattleEvent.BattleEndEvent>(OnBattleEnd);
+
+            await UniTask.CompletedTask;
+        }
+
+        protected override UniTask Start()
+        {
+            CreateDemo();
+            return UniTask.CompletedTask;
+        }
         #endregion
 
         #region Public Methods
+        #endregion
+
+        #region Private Methods
+        public void CreateDemo()
+        {
+            _battleUnitService.DestroyAllUnits();
+            var unit1 = _battleUnitService.CreateUnit(1001, 10, UnitCamp.Enemy);
+            unit1.transform.position = new Vector3(20, unit1.transform.position.y, 20);
+            var unit2 = _battleUnitService.CreateUnit(1001, 10, UnitCamp.Player);
+            unit2.transform.position = new Vector3(-20, unit2.transform.position.y, -20);
+            unit2.GetUnitComponent<UnitStatsComponent>().LinearAdd(NumericId.ACTSPD, NumericValueType.BaseAdd, NumberX1000.One * 50);
+        }
+        #endregion
+
+        #region Event Methods
+        private async void OnBattleEnd(IEventMessage message)
+        {
+            var battleEndEvent = message as BattleEvent.BattleEndEvent;
+            GameLog.Info("战斗结束, 胜利方: " + battleEndEvent.winnerCamp);
+            var uiBattleEndPanel = await PanelMgr.Inst.OpenPanelAsync<UIBattleEndPanel>();
+            uiBattleEndPanel.SetWinnerCamp(battleEndEvent.winnerCamp);
+        }
         #endregion
     }
 }

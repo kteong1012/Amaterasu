@@ -38,9 +38,9 @@ namespace Game
         {
             switch (camp)
             {
-                case UnitCamp.Blue:
+                case UnitCamp.Player:
                     return Color.cyan;
-                case UnitCamp.Red:
+                case UnitCamp.Enemy:
                     return Color.red;
                 default:
                     return Color.white;

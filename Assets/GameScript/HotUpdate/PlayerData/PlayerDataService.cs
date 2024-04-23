@@ -24,10 +24,10 @@ namespace Game
         #endregion
 
         #region Life Cycle
-        protected override void OnRelease()
+        protected override void OnDestroy()
         {
             _cachePlayerDataMap.Clear();
-            base.OnRelease();
+            base.OnDestroy();
         }
         #endregion
 

@@ -9,14 +9,13 @@ using YooAsset;
 
 namespace Game
 {
-#pragma warning disable LOG003 // 禁止使用YooAssets.LoadSceneAsync
+#pragma warning disable LOG003 // 绂佹浣跨敤YooAssets.LoadSceneAsync
     [GameService(GameServiceLifeSpan.Game)]
     public class SceneService : GameService
     {
-        private EventGroup _eventGroup = new EventGroup();
-        protected override async UniTask OnInit()
+        protected override async UniTask Awake()
         {
-            await base.OnInit();
+            await base.Awake();
         }
 
         public async UniTask ChangeToBattleScene()
@@ -51,8 +50,8 @@ namespace Game
         private async UniTask ChangeScene(string sceneName)
         {
             await YooAssets.LoadSceneAsync(sceneName);
-            await UniTask.DelayFrame(2); //等待一帧，确保场景加载完成
+            await UniTask.DelayFrame(2); //绛夊緟涓�甯э紝纭繚鍦烘櫙鍔犺浇瀹屾垚
         }
     }
-#pragma warning restore LOG003 // 禁止使用YooAssets.LoadSceneAsync
+#pragma warning restore LOG003 // 绂佹浣跨敤YooAssets.LoadSceneAsync
 }

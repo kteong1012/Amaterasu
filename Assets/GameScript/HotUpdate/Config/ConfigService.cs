@@ -12,7 +12,7 @@ namespace Game.Cfg
     public partial class ConfigService : GameService
     {
         private List<AssetHandle> _assetHandles = new List<AssetHandle>();
-        protected override async UniTask OnInit()
+        protected override async UniTask Awake()
         {
             GameLog.Info("====初始化配置====");
             await LoadAll(Loader);

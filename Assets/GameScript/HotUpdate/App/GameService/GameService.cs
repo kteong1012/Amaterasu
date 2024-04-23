@@ -2,6 +2,7 @@
 using Game.Log;
 using System;
 using System.Reflection;
+using UniFramework.Event;
 
 namespace Game
 {
@@ -17,14 +18,24 @@ namespace Game
     public abstract class GameService
     {
         public GameServiceLifeSpan LifeSpan => GetType().GetCustomAttribute<GameServiceAttribute>().LifeSpan;
+        protected EventGroup _eventGroup;
+
         public UniTask Init()
         {
             GameLog.Debug($"GameService {GetType().Name} Init, LifeSpan: {LifeSpan}");
-            return OnInit();
+            return Awake();
         }
-        protected virtual UniTask OnInit()
+        public UniTask PostInit()
         {
-            GameLog.Debug($"GameService {GetType().Name} Init, LifeSpan: {LifeSpan}");
+            GameLog.Debug($"GameService {GetType().Name} PostInit, LifeSpan: {LifeSpan}");
+            return Start();
+        }
+        protected virtual UniTask Awake()
+        {
+            return UniTask.CompletedTask;
+        }
+        protected virtual UniTask Start()
+        {
             return UniTask.CompletedTask;
         }
 
@@ -32,13 +43,27 @@ namespace Game
         {
         }
 
-        public void Release()
+        public void Destroy()
         {
-            GameLog.Debug($"GameService {GetType().Name} Release, LifeSpan: {LifeSpan}");
-            OnRelease();
+            GameLog.Debug($"GameService {GetType().Name} Destroy, LifeSpan: {LifeSpan}");
+            OnDestroy();
         }
-        protected virtual void OnRelease()
+        protected virtual void OnDestroy()
         {
+        }
+
+        protected void AddEventListener<T>(Action<IEventMessage> action) where T : IEventMessage
+        {
+            if(_eventGroup == null)
+            {
+                _eventGroup = new EventGroup();
+            }
+            _eventGroup.AddListener<T>(action);
+        }
+
+        protected void RemoveAllListener()
+        {
+            _eventGroup?.RemoveAllListener();
         }
     }
 }

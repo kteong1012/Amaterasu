@@ -17,19 +17,19 @@ namespace Game
         private Dictionary<int, UnitController> _Units = new Dictionary<int, UnitController>();
         private ConfigService _configService;
 
-        protected override async UniTask OnInit()
+        protected override async UniTask Awake()
         {
             _instanceId = 1000;
 
             CollectUnitControllerTypes();
-
-            var unit1 = CreateUnit(1001, 10, UnitCamp.Red);
-            unit1.transform.position = new Vector3(20, unit1.transform.position.y, 20);
-            var unit2 = CreateUnit(1001, 10, UnitCamp.Blue);
-            unit2.transform.position = new Vector3(-20, unit2.transform.position.y, -20);
-            unit2.GetUnitComponent<UnitStatsComponent>().LinearAdd(NumericId.ACTSPD, NumericValueType.BaseAdd, NumberX1000.One);
             await UniTask.CompletedTask;
         }
+
+        override protected void OnDestroy()
+        {
+            DestroyAllUnits();
+        }
+
         public UnitController CreateUnit(int unitId, int level, UnitCamp unitCamp)
         {
             var unitData = _configService.TbUnitData.GetOrDefault(unitId);
@@ -61,6 +61,24 @@ namespace Game
                 UnityEngine.Object.Destroy(unit.gameObject);
                 _Units.Remove(unitId);
             }
+            // 若其中一方没有单位了，结束战斗
+            var groups = _Units.Values.GroupBy(unit => unit.Camp);
+            if (groups.Count() == 1)
+            {
+                GameLog.Info($"战斗结束，胜利方为{groups.First().Key}");
+                var winCamp = groups.First().Key;
+                BattleEvent.BattleEndEvent.SendMsg(winCamp);
+            }
+        }
+
+        public void DestroyAllUnits()
+        {
+            foreach (var unit in _Units.Values)
+            {
+                unit.Release();
+                UnityEngine.Object.Destroy(unit.gameObject);
+            }
+            _Units.Clear();
         }
 
         public UnitController GetUnit(int unitId)

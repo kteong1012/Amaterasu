@@ -114,6 +114,7 @@ namespace Game
             }
 
             await UniTask.WhenAll(serviceDict.Values.Select(service => service.Init()));
+            await UniTask.WhenAll(serviceDict.Values.Select(service => service.PostInit()));
         }
 
         public void StopServices(GameServiceLifeSpan lifeSpan)
@@ -125,7 +126,7 @@ namespace Game
 
             foreach (var service in services.Values)
             {
-                service.Release();
+                service.Destroy();
             }
             services.Clear();
             _services.Remove(lifeSpan);
@@ -149,7 +150,7 @@ namespace Game
             {
                 foreach (var service in services.Value.Values)
                 {
-                    service.Release();
+                    service.Destroy();
                 }
             }
             _services.Clear();

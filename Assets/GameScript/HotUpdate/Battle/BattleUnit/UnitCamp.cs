@@ -3,7 +3,7 @@
     public enum UnitCamp
     {
         Neutral,
-        Blue,
-        Red,
+        Player,
+        Enemy,
     }
 }
