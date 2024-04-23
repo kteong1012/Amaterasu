@@ -53,6 +53,7 @@ namespace Game
         {
             var battleEndEvent = message as BattleEvent.BattleEndEvent;
             GameLog.Info("战斗结束, 胜利方: " + battleEndEvent.winnerCamp);
+            await UniTask.Delay(3000);
             var uiBattleEndPanel = await PanelMgr.Inst.OpenPanelAsync<UIBattleEndPanel>();
             uiBattleEndPanel.SetWinnerCamp(battleEndEvent.winnerCamp);
         }

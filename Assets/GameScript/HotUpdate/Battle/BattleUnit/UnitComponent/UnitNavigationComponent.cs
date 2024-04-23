@@ -21,7 +21,7 @@ namespace Game
         private UnitController _targetUnit;
 
         // 重置路径的距离,即目标移动超过这个距离时,重新计算路径
-        private NumberX1000 _resetPathDistance = NumberX1000.CreateFromX1000Value(50);
+        private NumberX1000 _resetPathDistance = NumberX1000.CreateFromX1000Value(200);
 
         protected override void OnInit()
         {
@@ -46,12 +46,6 @@ namespace Game
             if (_targetUnit != null)
             {
                 var targetPosition = _targetUnit.LogicPosition;
-                // 如果距离接近stopDistance,则停止移动
-                if (Vector3.Distance(_controller.LogicPosition, targetPosition) <= _resetPathDistance)
-                {
-                    IsStopped = true;
-                }
-
                 // 目标可能移动，所以要实时更新目标位置
                 if (Vector3.Distance(Destination, targetPosition) > _resetPathDistance)
                 {

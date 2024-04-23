@@ -19,7 +19,7 @@ namespace Game.UI.UIBattleEnd
         public const string PkgName = "UIBattleEnd";
         public const string ResName = "UIBattleEndPanel";
         
-        public override EWindowOption WindowOption => EWindowOption.BanTween;
+        public override EWindowOption WindowOption => EWindowOption.None;
         public override EPanelLayer Layer => EPanelLayer.Panel;
         public override EPanelOption PanelOption => EPanelOption.None;
         public override EPanelStackOption StackOption => EPanelStackOption.VisibleTween;

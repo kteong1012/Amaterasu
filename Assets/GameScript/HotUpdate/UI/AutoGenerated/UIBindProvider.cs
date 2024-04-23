@@ -13,7 +13,7 @@ namespace YIUICodeGenerated
             var BasePanel     = typeof(BasePanel);
             var BaseView      = typeof(BaseView);
             var BaseComponent = typeof(BaseComponent);
-            var list          = new UIBindVo[2];
+            var list          = new UIBindVo[3];
             list[0] = new UIBindVo
             {
                 PkgName     = Game.UI.UILogin.UILoginPanelBase.PkgName,
@@ -29,6 +29,14 @@ namespace YIUICodeGenerated
                 CodeType    = BasePanel,
                 BaseType    = typeof(Game.UI.UIHome.UIHomePanelBase),
                 CreatorType = typeof(Game.UI.UIHome.UIHomePanel),
+            };
+            list[2] = new UIBindVo
+            {
+                PkgName     = Game.UI.UIBattleEnd.UIBattleEndPanelBase.PkgName,
+                ResName     = Game.UI.UIBattleEnd.UIBattleEndPanelBase.ResName,
+                CodeType    = BasePanel,
+                BaseType    = typeof(Game.UI.UIBattleEnd.UIBattleEndPanelBase),
+                CreatorType = typeof(Game.UI.UIBattleEnd.UIBattleEndPanel),
             };
 
             return list;
