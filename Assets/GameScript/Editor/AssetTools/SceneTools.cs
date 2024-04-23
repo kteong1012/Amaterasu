@@ -6,7 +6,7 @@ namespace Game
 {
     public static class SceneTools
     {
-        [MenuItem("场景/打开游戏")]
+        [MenuItem("鍦烘櫙/鎵撳紑娓告垙")]
         public static void OpenGame()
         {
             if (EditorApplication.isPlaying)
