@@ -71,7 +71,6 @@ namespace Game
         {
 
             _eventGroup?.RemoveAllListener();
-            YooAssets.Destroy();
             GameLog.ClearLogger();
         }
         private void OnApplicationQuit()

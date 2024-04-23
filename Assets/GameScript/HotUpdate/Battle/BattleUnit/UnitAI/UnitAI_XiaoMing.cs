@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Game.Cfg;
+using UnityEngine;
 
 namespace Game
 {
@@ -26,7 +27,15 @@ namespace Game
             if (currentTarget != null)
             {
                 _currentTargetId = currentTarget.InstanceId;
-                ChaseOrAttack(battleUnitController, currentTarget, range);
+                // 血量低于50%时,逃跑
+                if (battleUnitController.GetStatsValue(NumericId.HP) < battleUnitController.GetStatsValue(NumericId.MaxHP) / 2)
+                {
+                    Escape(battleUnitController, currentTarget);
+                }
+                else
+                {
+                    ChaseOrAttack(battleUnitController, currentTarget, range);
+                }
             }
         }
 
@@ -41,6 +50,20 @@ namespace Game
                 var stopDistance = BattleCalculator.CalculateNavigationStopDistance(selfUnit, targetUnit, range);
                 selfUnit.ChaseUnit(targetUnit, stopDistance);
             }
+        }
+
+        public void Escape(BattleUnitController selfUnit, UnitController targetUnit)
+        {
+            // move distance equals to move speed * actitv
+            var moveSpeed = selfUnit.GetStatsValue(NumericId.MoveSPD);
+            var ACTITV = selfUnit.GetStatsValue(NumericId.ACTITV);
+            var ACTSPD = selfUnit.GetStatsValue(NumericId.ACTSPD);
+            var finalACTITV = BattleCalculator.CalculateFinalACTITV(ACTITV, ACTSPD);
+            var moveDistance = moveSpeed * finalACTITV;
+
+            var direction = selfUnit.transform.position - targetUnit.transform.position;
+            var targetPosition = selfUnit.transform.position + direction.normalized * moveDistance;
+            selfUnit.MoveToPlace(targetPosition, NumberX1000.Zero);
         }
     }
 }

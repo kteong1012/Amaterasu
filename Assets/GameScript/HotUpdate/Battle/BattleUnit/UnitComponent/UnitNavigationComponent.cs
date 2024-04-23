@@ -45,8 +45,14 @@ namespace Game
         {
             if (_targetUnit != null)
             {
-                // 目标可能移动，所以要实时更新目标位置
                 var targetPosition = _targetUnit.LogicPosition;
+                // 如果距离接近stopDistance,则停止移动
+                if (Vector3.Distance(_controller.LogicPosition, targetPosition) <= _resetPathDistance)
+                {
+                    IsStopped = true;
+                }
+
+                // 目标可能移动，所以要实时更新目标位置
                 if (Vector3.Distance(Destination, targetPosition) > _resetPathDistance)
                 {
                     Destination = targetPosition;
