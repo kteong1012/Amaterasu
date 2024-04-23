@@ -7,4 +7,4 @@
     <!-- Tables -->
     <table name="TbUnitData" value="UnitData" input="Unit@Unit.xlsx" readSchemaFromFile="1"/>
     <!-- <table name="TbUnitLevel" value="UnitLevel" input="UnitLevel.xlsx" readSchemaFromFile="1"/> -->
-</module></module>
+</module>

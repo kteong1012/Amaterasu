@@ -3,7 +3,7 @@ set PROJECT_ROOT=..
 set GAME_CLIENT_ROOT=%PROJECT_ROOT%\GameClient
 set GAME_SERVER_ROOT=%PROJECT_ROOT%\GameServer
 set CONFIG_ROOT=%PROJECT_ROOT%\Config
-set LUBAN_DLL=%CONFIG_ROOT%\Luban\src\Luban\bin\Debug\net7.0\Luban.dll
+set LUBAN_DLL=%CONFIG_ROOT%\Luban\src\Luban\bin\Debug\net8.0\Luban.dll
 set CONF_ROOT=.
 
 dotnet %LUBAN_DLL% ^
