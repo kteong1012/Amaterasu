@@ -7,7 +7,7 @@ using YooAsset;
 
 namespace Game
 {
-    [GameService(GameServiceLifeSpan.Game)]
+    [GameService(GameServiceDomain.Game)]
     public class ResourceService : GameService
     {
         private const float UNLOAD_UNUSED_ASSETS_INTERVAL = 15f;

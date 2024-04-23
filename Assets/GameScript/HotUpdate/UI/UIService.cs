@@ -12,7 +12,7 @@ using YooAsset;
 
 namespace Game
 {
-    [GameService(GameServiceLifeSpan.Game)]
+    [GameService(GameServiceDomain.Game)]
     public class UIService : GameService
     {
         #region Fields & Properties

@@ -8,7 +8,7 @@ using YooAsset;
 namespace Game.Cfg
 {
 
-    [GameService(GameServiceLifeSpan.Game)]
+    [GameService(GameServiceDomain.Game)]
     public partial class ConfigService : GameService
     {
         private List<AssetHandle> _assetHandles = new List<AssetHandle>();

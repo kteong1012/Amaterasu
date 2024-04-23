@@ -9,7 +9,7 @@ using YIUIFramework;
 
 namespace Game
 {
-    [GameService(GameServiceLifeSpan.Battle)]
+    [GameService(GameServiceDomain.Battle)]
     public class BattleUnitService : GameService
     {
         private Dictionary<string, Type> _unitControllerTypeMaps = new Dictionary<string, Type>();

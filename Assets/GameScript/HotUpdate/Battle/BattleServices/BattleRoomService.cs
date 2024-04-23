@@ -11,7 +11,7 @@ using YIUIFramework;
 
 namespace Game
 {
-    [GameService(GameServiceLifeSpan.Battle)]
+    [GameService(GameServiceDomain.Battle)]
     public class BattleRoomService : GameService
     {
         #region Fields & Properties

@@ -11,8 +11,8 @@ namespace Game
 {
     public class GameServiceManager
     {
-        private Dictionary<GameServiceLifeSpan, List<Type>> _serviceTypes = new Dictionary<GameServiceLifeSpan, List<Type>>();
-        private Dictionary<GameServiceLifeSpan, Dictionary<Type, GameService>> _services = new Dictionary<GameServiceLifeSpan, Dictionary<Type, GameService>>();
+        private Dictionary<GameServiceDomain, List<Type>> _serviceTypes = new Dictionary<GameServiceDomain, List<Type>>();
+        private Dictionary<GameServiceDomain, Dictionary<Type, GameService>> _services = new Dictionary<GameServiceDomain, Dictionary<Type, GameService>>();
 
 
         public GameServiceManager()
@@ -32,36 +32,36 @@ namespace Game
                         throw new Exception($"GameService {type.Name} 必须添加 GameServiceAttribute 属性");
                     }
 
-                    if (attribute.LifeSpan == GameServiceLifeSpan.None)
+                    if (attribute.Domain == GameServiceDomain.None)
                     {
-                        throw new Exception($"GameService {type.Name} 的 LifeSpan 不能为 None");
+                        throw new Exception($"GameService {type.Name} 的 Domain 不能为 None");
                     }
 
-                    if (!_serviceTypes.ContainsKey(attribute.LifeSpan))
+                    if (!_serviceTypes.ContainsKey(attribute.Domain))
                     {
-                        _serviceTypes.Add(attribute.LifeSpan, new List<Type>());
+                        _serviceTypes.Add(attribute.Domain, new List<Type>());
                     }
 
-                    _serviceTypes[attribute.LifeSpan].Add(type);
+                    _serviceTypes[attribute.Domain].Add(type);
                 }
             }
         }
 
-        public async UniTask StartServices(GameServiceLifeSpan lifeSpan)
+        public async UniTask StartServices(GameServiceDomain domain)
         {
-            var types = GetServiceTypes(lifeSpan);
+            var types = GetServiceTypes(domain);
             if (types == null)
             {
-                GameLog.Info($"没有找到 {lifeSpan} 的服务");
+                GameLog.Info($"没有找到 {domain} 的服务");
                 return;
             }
 
-            if (_services.TryGetValue(lifeSpan, out var services))
+            if (_services.TryGetValue(domain, out var services))
             {
-                GameLog.Warning($"已经存在 {lifeSpan} 的服务");
+                GameLog.Warning($"已经存在 {domain} 的服务");
                 return;
             }
-            GameLog.Debug($"创建 {lifeSpan} 的服务");
+            GameLog.Debug($"创建 {domain} 的服务");
 
             var serviceDict = new Dictionary<Type, GameService>();
 
@@ -70,7 +70,7 @@ namespace Game
                 var service = Activator.CreateInstance(type) as GameService;
                 serviceDict.Add(type, service);
             }
-            _services.Add(lifeSpan, serviceDict);
+            _services.Add(domain, serviceDict);
 
             // 注入GameService类型的字段和属性
             foreach (var service in serviceDict.Values)
@@ -88,7 +88,7 @@ namespace Game
                         continue;
                     }
                     // 此处特殊判断
-                    if (lifeSpan == GameServiceLifeSpan.Game && attribute.LifeSpan == GameServiceLifeSpan.Login)
+                    if (domain == GameServiceDomain.Game && attribute.Domain == GameServiceDomain.Login)
                     {
                         throw new Exception($"GameService {service.GetType().Name}.{member.Name} Game 不能依赖于 Login 生命周期的服务");
                     }
@@ -117,9 +117,9 @@ namespace Game
             await UniTask.WhenAll(serviceDict.Values.Select(service => service.PostInit()));
         }
 
-        public void StopServices(GameServiceLifeSpan lifeSpan)
+        public void StopServices(GameServiceDomain domain)
         {
-            if (!_services.TryGetValue(lifeSpan, out var services))
+            if (!_services.TryGetValue(domain, out var services))
             {
                 return;
             }
@@ -129,7 +129,7 @@ namespace Game
                 service.Destroy();
             }
             services.Clear();
-            _services.Remove(lifeSpan);
+            _services.Remove(domain);
         }
 
         public void Update()
@@ -156,9 +156,9 @@ namespace Game
             _services.Clear();
         }
 
-        private List<Type> GetServiceTypes(GameServiceLifeSpan lifeSpan)
+        private List<Type> GetServiceTypes(GameServiceDomain domain)
         {
-            if (_serviceTypes.TryGetValue(lifeSpan, out var types))
+            if (_serviceTypes.TryGetValue(domain, out var types))
             {
                 return types;
             }

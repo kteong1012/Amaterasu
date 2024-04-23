@@ -10,7 +10,7 @@ using static Game.SceneEventDefine;
 
 namespace Game
 {
-    [GameService(GameServiceLifeSpan.Game)]
+    [GameService(GameServiceDomain.Game)]
     public class SceneService : GameService
     {
         protected override async UniTask Awake()

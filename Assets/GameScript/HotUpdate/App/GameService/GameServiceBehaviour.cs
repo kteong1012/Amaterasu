@@ -7,18 +7,18 @@ namespace Game
 {
     public class GameServiceBehaviour : MonoBehaviour
     {
-        public GameServiceLifeSpan lifeSpan = GameServiceLifeSpan.Game;
+        public GameServiceDomain domain = GameServiceDomain.Game;
 
         public async UniTask StartServices()
         {
-            GameLog.Info($"GameServiceBehaviour StartServices, LifeSpan: {lifeSpan}");
-            await GameEntry.Ins.StartServices(lifeSpan);
+            GameLog.Info($"GameServiceBehaviour StartServices, Domain: {domain}");
+            await GameEntry.Ins.StartServices(domain);
         }
 
         public void StopServices()
         {
-            GameLog.Info($"GameServiceBehaviour StopServices, LifeSpan: {lifeSpan}");
-            GameEntry.Ins.StopServices(lifeSpan);
+            GameLog.Info($"GameServiceBehaviour StopServices, Domain: {domain}");
+            GameEntry.Ins.StopServices(domain);
         }
     }
 }

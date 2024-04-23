@@ -36,7 +36,7 @@ namespace Game
             InitServiceManager();
 
             // 启动Game服务
-            await _serviceManager.StartServices(GameServiceLifeSpan.Game);
+            await _serviceManager.StartServices(GameServiceDomain.Game);
 
             // 进入登录场景
             var sceneService = GetService<SceneService>();
@@ -52,14 +52,14 @@ namespace Game
             _serviceManager = new GameServiceManager();
         }
 
-        public async UniTask StartServices(GameServiceLifeSpan lifeSpan)
+        public async UniTask StartServices(GameServiceDomain domain)
         {
-            await _serviceManager.StartServices(lifeSpan);
+            await _serviceManager.StartServices(domain);
         }
 
-        public void StopServices(GameServiceLifeSpan lifeSpan)
+        public void StopServices(GameServiceDomain domain)
         {
-            _serviceManager.StopServices(lifeSpan);
+            _serviceManager.StopServices(domain);
         }
 
         private void Update()

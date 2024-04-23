@@ -21,7 +21,7 @@ namespace Game
         QQ = 5
     }
 
-    [GameService(GameServiceLifeSpan.Game)]
+    [GameService(GameServiceDomain.Game)]
     public class LoginService : GameService
     {
         #region Fields & Properties
@@ -56,7 +56,7 @@ namespace Game
             GameLog.Info($"LoginService Login, LoginChannel: {LoginChannel}, PlayerId: {PlayerId}");
 
             // 开启LoginService
-            await GameEntry.Ins.StartServices(GameServiceLifeSpan.Login);
+            await GameEntry.Ins.StartServices(GameServiceDomain.Login);
 
             // 发送登录事件
             GameEntryEventsDefine.LoginSuccess.SendEventMessage(LoginChannel, playerId);
@@ -70,7 +70,7 @@ namespace Game
             GameEntryEventsDefine.LogoutSuccess.SendEventMessage(LoginChannel, PlayerId);
 
             // 关闭LoginService
-            GameEntry.Ins.StopServices(GameServiceLifeSpan.Login);
+            GameEntry.Ins.StopServices(GameServiceDomain.Login);
 
             // 返回登录界面
             _sceneService.ChangeToLoginScene().Forget();

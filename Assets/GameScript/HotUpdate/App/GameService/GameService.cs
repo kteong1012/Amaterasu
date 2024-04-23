@@ -8,26 +8,26 @@ namespace Game
 {
     public class GameServiceAttribute : Attribute
     {
-        public GameServiceLifeSpan LifeSpan { get; }
+        public GameServiceDomain Domain { get; }
 
-        public GameServiceAttribute(GameServiceLifeSpan lifeSpan)
+        public GameServiceAttribute(GameServiceDomain domain)
         {
-            LifeSpan = lifeSpan;
+            Domain = domain;
         }
     }
     public abstract class GameService
     {
-        public GameServiceLifeSpan LifeSpan => GetType().GetCustomAttribute<GameServiceAttribute>().LifeSpan;
+        public GameServiceDomain Domain => GetType().GetCustomAttribute<GameServiceAttribute>().Domain;
         protected EventGroup _eventGroup;
 
         public UniTask Init()
         {
-            GameLog.Debug($"GameService {GetType().Name} Init, LifeSpan: {LifeSpan}");
+            GameLog.Debug($"GameService {GetType().Name} Init, Domain: {Domain}");
             return Awake();
         }
         public UniTask PostInit()
         {
-            GameLog.Debug($"GameService {GetType().Name} PostInit, LifeSpan: {LifeSpan}");
+            GameLog.Debug($"GameService {GetType().Name} PostInit, Domain: {Domain}");
             return Start();
         }
         protected virtual UniTask Awake()
@@ -45,7 +45,7 @@ namespace Game
 
         public void Destroy()
         {
-            GameLog.Debug($"GameService {GetType().Name} Destroy, LifeSpan: {LifeSpan}");
+            GameLog.Debug($"GameService {GetType().Name} Destroy, Domain: {Domain}");
             OnDestroy();
         }
         protected virtual void OnDestroy()

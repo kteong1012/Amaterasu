@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Game
 {
-    [GameService(GameServiceLifeSpan.Login)]
+    [GameService(GameServiceDomain.Login)]
     public class PlayerDataService : GameService
     {
         #region Fields & Properties
