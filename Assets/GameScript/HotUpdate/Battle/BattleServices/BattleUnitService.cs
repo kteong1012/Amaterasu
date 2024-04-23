@@ -76,7 +76,7 @@ namespace Game
             foreach (var unit in _Units.Values)
             {
                 unit.Release();
-                unit?.gameObject.TryDestroy();
+                unit.gameObject.TryDestroy();
             }
             _Units.Clear();
         }

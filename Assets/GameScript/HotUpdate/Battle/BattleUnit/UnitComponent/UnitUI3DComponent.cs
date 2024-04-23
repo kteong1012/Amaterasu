@@ -35,7 +35,7 @@ namespace Game
         protected override void OnRelease()
         {
             _battleUnit.OnStatsChangeEvent -= OnStatsChange;
-            _uiUnitHud?.gameObject.TryDestroy();
+            _uiUnitHud.gameObject.TryDestroy();
             _uiUnitHud = null;
             _handle.Release();
         }

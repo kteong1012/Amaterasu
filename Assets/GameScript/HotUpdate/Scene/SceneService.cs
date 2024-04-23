@@ -6,10 +6,10 @@ using UniFramework.Event;
 using UnityEngine;
 using YIUIFramework;
 using YooAsset;
+using static Game.SceneEventDefine;
 
 namespace Game
 {
-#pragma warning disable LOG003 // 禁止使用YooAssets.LoadSceneAsync
     [GameService(GameServiceLifeSpan.Game)]
     public class SceneService : GameService
     {
@@ -20,13 +20,7 @@ namespace Game
 
         public async UniTask ChangeToBattleScene()
         {
-            var handle = YooAssets.LoadSceneAsync("scene_battle");
-            var tcs = new UniTaskCompletionSource();
-            handle.Completed += (sceneHandle) =>
-            {
-                tcs.TrySetResult();
-            };
-            await tcs.Task;
+            await ChangeScene("scene_battle");
             MainCamera.Instance.Camera.transform.position = new Vector3(0, 40, -4);
             MainCamera.Instance.Camera.transform.rotation = Quaternion.Euler(85, 0, 0);
         }
@@ -47,11 +41,29 @@ namespace Game
             MainCamera.Instance.Camera.transform.rotation = Quaternion.identity;
         }
 
+#pragma warning disable LOG003 // 禁止使用YooAssets.LoadSceneAsync
         private async UniTask ChangeScene(string sceneName)
         {
+            var behavioursToDestroy = GetGameBehavioursInScene();
+            foreach (var behaviour in behavioursToDestroy)
+            {
+                behaviour.StopServices();
+            }
+
             await YooAssets.LoadSceneAsync(sceneName);
-            await UniTask.DelayFrame(2); //等待一帧，确保场景加载完成
+            await UniTask.DelayFrame(1); //等待一帧，确保场景加载完成
+
+            var behavioursToStart = GetGameBehavioursInScene();
+            foreach (var behaviour in behavioursToStart)
+            {
+                behaviour.StartServices().Forget();
+            }
+        }
+#pragma warning restore LOG003 // 禁止使用YooAssets.LoadSceneAsync
+
+        private GameServiceBehaviour[] GetGameBehavioursInScene()
+        {
+            return GameObject.FindObjectsOfType<GameServiceBehaviour>();
         }
     }
-#pragma warning restore LOG003 // 禁止使用YooAssets.LoadSceneAsync
 }

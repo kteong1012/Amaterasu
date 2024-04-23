@@ -1,4 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
+using Game.Log;
+using System;
 using UnityEngine;
 
 namespace Game
@@ -7,13 +9,15 @@ namespace Game
     {
         public GameServiceLifeSpan lifeSpan = GameServiceLifeSpan.Game;
 
-        private void Awake()
+        public async UniTask StartServices()
         {
-            GameEntry.Ins.StartServices(lifeSpan).Forget();
+            GameLog.Info($"GameServiceBehaviour StartServices, LifeSpan: {lifeSpan}");
+            await GameEntry.Ins.StartServices(lifeSpan);
         }
 
-        private void OnDestroy()
+        public void StopServices()
         {
+            GameLog.Info($"GameServiceBehaviour StopServices, LifeSpan: {lifeSpan}");
             GameEntry.Ins.StopServices(lifeSpan);
         }
     }

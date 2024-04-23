@@ -69,13 +69,14 @@ namespace Game
 
         private void OnDestroy()
         {
-            _serviceManager?.Release();
 
             _eventGroup?.RemoveAllListener();
-
             YooAssets.Destroy();
-
             GameLog.ClearLogger();
+        }
+        private void OnApplicationQuit()
+        {
+            _serviceManager?.Release();
         }
 
         public T GetService<T>() where T : GameService
