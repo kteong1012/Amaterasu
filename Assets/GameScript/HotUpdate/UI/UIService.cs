@@ -39,6 +39,14 @@ namespace Game
             uiURPCamera.renderType = CameraRenderType.Overlay;
             mainURPCamera.cameraStack.Add(PanelMgr.Inst.UICamera);
         }
+
+        protected override void OnDestroy()
+        {
+            PanelMgr.DisposeInst();
+            RedDotMgr.DisposeInst();
+            CountDownMgr.DisposeInst();
+            SemaphoreSlimSingleton.DisposeInst();
+        }
         #endregion
 
         #region Private Methods
