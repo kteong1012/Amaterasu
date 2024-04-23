@@ -15,7 +15,7 @@ namespace Game
         private UnitNavigationComponent _navigationComponent;
         private UnitAIComponent _aiComponent;
         private UnitSkillComponent _skillComponent;
-        private UnitHudComponent _unitHudComponent;
+        private UnitUI3DComponent _unitHudComponent;
 
         public event StatsChangeHandler OnStatsChangeEvent
         {
@@ -43,7 +43,7 @@ namespace Game
             _skillComponent = AddUnitComponent<UnitSkillComponent>();
             _skillComponent.Init(this);
 
-            _unitHudComponent = AddUnitComponent<UnitHudComponent>();
+            _unitHudComponent = AddUnitComponent<UnitUI3DComponent>();
             _unitHudComponent.Init(this);
 
             _aiComponent.SetAI<UnitAI_XiaoMing>();

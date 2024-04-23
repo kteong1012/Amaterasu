@@ -28,5 +28,13 @@ namespace Game
         {
             return $"#{(int)(color.r * 255):X2}{(int)(color.g * 255):X2}{(int)(color.b * 255):X2}";
         }
+
+        public static void TryDestroy(this UnityEngine.Object obj)
+        {
+            if (obj != null)
+            {
+                UnityEngine.Object.Destroy(obj);
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ using YooAsset;
 
 namespace Game
 {
-    public class UnitHudComponent : UnitComponent
+    public class UnitUI3DComponent : UnitComponent
     {
         private UI3D_UnitHud _uiUnitHud;
         private BattleUnitController _battleUnit;
@@ -35,7 +35,7 @@ namespace Game
         protected override void OnRelease()
         {
             _battleUnit.OnStatsChangeEvent -= OnStatsChange;
-            Destroy(_uiUnitHud.gameObject);
+            _uiUnitHud?.gameObject.TryDestroy();
             _uiUnitHud = null;
             _handle.Release();
         }

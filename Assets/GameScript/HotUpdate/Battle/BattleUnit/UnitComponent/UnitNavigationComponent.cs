@@ -39,7 +39,6 @@ namespace Game
 
         protected override void OnRelease()
         {
-            transform.DOKill();
         }
 
         private void Update()
