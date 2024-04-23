@@ -5,6 +5,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// {{ AOT assemblies
 	public static readonly IReadOnlyList<string> PatchedAOTAssemblyList = new List<string>
 	{
+		"DOTween.dll",
 		"Luban.Runtime.dll",
 		"Nino.Serialization.dll",
 		"Nino.Shared.dll",
@@ -607,6 +608,7 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// Cysharp.Threading.Tasks.Internal.StateTuple<Cysharp.Threading.Tasks.UniTask.Awaiter<object>> Cysharp.Threading.Tasks.Internal.StateTuple.Create<Cysharp.Threading.Tasks.UniTask.Awaiter<object>>(Cysharp.Threading.Tasks.UniTask.Awaiter<object>)
 		// Cysharp.Threading.Tasks.UniTask<object> Cysharp.Threading.Tasks.UniTask.Create<object>(System.Func<Cysharp.Threading.Tasks.UniTask<object>>)
 		// System.Void Cysharp.Threading.Tasks.UniTaskExtensions.Forget<object>(Cysharp.Threading.Tasks.UniTask<object>)
+		// object DG.Tweening.TweenSettingsExtensions.SetEase<object>(object,DG.Tweening.Ease)
 		// string Luban.StringUtil.CollectionToString<int,long>(System.Collections.Generic.IDictionary<int,long>)
 		// int Nino.Serialization.Reader.Read<int>(int)
 		// int Nino.Serialization.Serializer.GetSize<object>(object&,System.Collections.Generic.Dictionary<System.Reflection.MemberInfo,object>)
@@ -635,9 +637,11 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// System.Void System.Runtime.CompilerServices.AsyncVoidMethodBuilder.AwaitUnsafeOnCompleted<Cysharp.Threading.Tasks.UniTask.Awaiter,Game.GameEntry.<Awake>d__6>(Cysharp.Threading.Tasks.UniTask.Awaiter&,Game.GameEntry.<Awake>d__6&)
 		// System.Void System.Runtime.CompilerServices.AsyncVoidMethodBuilder.AwaitUnsafeOnCompleted<Cysharp.Threading.Tasks.UniTask.Awaiter,Game.UI.UIHome.UIHomePanel.<OnClickBtnStartBattle>d__7>(Cysharp.Threading.Tasks.UniTask.Awaiter&,Game.UI.UIHome.UIHomePanel.<OnClickBtnStartBattle>d__7&)
 		// System.Void System.Runtime.CompilerServices.AsyncVoidMethodBuilder.AwaitUnsafeOnCompleted<Cysharp.Threading.Tasks.UniTask.Awaiter,Game.UI.UILogin.UILoginPanel.<OnClickBtnEnterGame>d__7>(Cysharp.Threading.Tasks.UniTask.Awaiter&,Game.UI.UILogin.UILoginPanel.<OnClickBtnEnterGame>d__7&)
+		// System.Void System.Runtime.CompilerServices.AsyncVoidMethodBuilder.AwaitUnsafeOnCompleted<Cysharp.Threading.Tasks.UniTask.Awaiter,Game.UI3D_DamageText.<Create>d__2>(Cysharp.Threading.Tasks.UniTask.Awaiter&,Game.UI3D_DamageText.<Create>d__2&)
 		// System.Void System.Runtime.CompilerServices.AsyncVoidMethodBuilder.Start<Game.GameEntry.<Awake>d__6>(Game.GameEntry.<Awake>d__6&)
 		// System.Void System.Runtime.CompilerServices.AsyncVoidMethodBuilder.Start<Game.UI.UIHome.UIHomePanel.<OnClickBtnStartBattle>d__7>(Game.UI.UIHome.UIHomePanel.<OnClickBtnStartBattle>d__7&)
 		// System.Void System.Runtime.CompilerServices.AsyncVoidMethodBuilder.Start<Game.UI.UILogin.UILoginPanel.<OnClickBtnEnterGame>d__7>(Game.UI.UILogin.UILoginPanel.<OnClickBtnEnterGame>d__7&)
+		// System.Void System.Runtime.CompilerServices.AsyncVoidMethodBuilder.Start<Game.UI3D_DamageText.<Create>d__2>(Game.UI3D_DamageText.<Create>d__2&)
 		// bool System.Runtime.CompilerServices.RuntimeHelpers.IsReferenceOrContainsReferences<int>()
 		// byte& System.Runtime.CompilerServices.Unsafe.Add<byte>(byte&,int)
 		// object& System.Runtime.CompilerServices.Unsafe.As<object,object>(object&)
@@ -650,10 +654,8 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 		// byte& System.Runtime.InteropServices.MemoryMarshal.GetReference<byte>(System.ReadOnlySpan<byte>)
 		// byte& System.Runtime.InteropServices.MemoryMarshal.GetReference<byte>(System.Span<byte>)
 		// int System.Runtime.InteropServices.MemoryMarshal.Read<int>(System.ReadOnlySpan<byte>)
-		// object[] UnityEngine.Component.GetComponents<object>()
 		// object UnityEngine.GameObject.AddComponent<object>()
 		// object UnityEngine.GameObject.GetComponent<object>()
-		// object[] UnityEngine.GameObject.GetComponents<object>()
 		// object YIUIBind.UIBindComponentTable.FindComponent<object>(string)
 		// System.Void YIUIFramework.PanelMgr.OpenPanel<object>()
 		// Cysharp.Threading.Tasks.UniTask<object> YIUIFramework.PanelMgr.OpenPanelAsync<object>()
