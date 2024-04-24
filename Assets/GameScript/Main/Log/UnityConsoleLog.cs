@@ -22,8 +22,8 @@ namespace Game.Log
         public Color DeubgColor = new Color(1, 0.5f, 0);
         public Color InfoColor = Color.cyan;
         public Color WarningColor = Color.yellow;
-        public Color ErrorColor = Color.white;
-        public Color ExceptionColor = Color.white;
+        public Color ErrorColor = Color.clear;
+        public Color ExceptionColor = Color.clear;
 
         public void Exception(LogLevel level, Exception exception, UnityEngine.Object @object)
         {
@@ -76,7 +76,12 @@ namespace Game.Log
         private static string GetColorString(string str, Color color)
         {
 #if UNITY_EDITOR
-            return $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{str}</color>";
+            var lines = str.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+            {
+                lines[i] = $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{lines[i]}</color>";
+            }
+            return string.Join("\n", lines);
 #else
             return str;
 #endif

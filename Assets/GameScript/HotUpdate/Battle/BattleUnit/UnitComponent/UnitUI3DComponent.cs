@@ -1,7 +1,9 @@
-﻿using Game.Cfg;
+﻿using DG.Tweening;
+using Game.Cfg;
 using System;
 using UniFramework.Event;
 using UnityEngine;
+using UnityEngine.Pool;
 using YooAsset;
 
 namespace Game
@@ -9,13 +11,17 @@ namespace Game
     public class UnitUI3DComponent : UnitComponent
     {
         private UI3D_UnitHud _uiUnitHud;
+        private AssetHandle _unitHudHandle;
+
         private BattleUnitController _battleUnit;
-        private AssetHandle _handle;
+
+        private YooAssetGameObjectPool _damageTextPool;
 
         protected override void OnInit()
         {
-            _handle = YooAssets.LoadAssetSync<GameObject>($"UI3D_UnitHud");
-            var go = _handle.InstantiateSync(MainCamera.Instance.worldCanvasRoot);
+            _unitHudHandle = YooAssets.LoadAssetSync<GameObject>($"UI3D_UnitHud");
+            _damageTextPool = new YooAssetGameObjectPool("UI3D_DamageText");
+            var go = _unitHudHandle.InstantiateSync(MainCamera.Instance.worldCanvasRoot);
             go.name = $"UI3D_UnitHud_{_controller.name}";
             _uiUnitHud = go.GetComponent<UI3D_UnitHud>();
 
@@ -37,7 +43,8 @@ namespace Game
             _battleUnit.OnStatsChangeEvent -= OnStatsChange;
             _uiUnitHud.gameObject.TryDestroy();
             _uiUnitHud = null;
-            _handle.Release();
+            _unitHudHandle.Release();
+            _damageTextPool.Dispose();
         }
 
         private void OnStatsChange(NumericId id, NumberX1000 oldValue, NumberX1000 newValue)
@@ -51,15 +58,24 @@ namespace Game
                     if (oldValue > newValue)
                     {
                         var damage = oldValue - newValue;
-                        UI3D_DamageText.Create(_uiUnitHud.transform, $"-{damage.Ceil().ToIntegerString()}");
+                        var content = $"-{damage.Ceil().ToIntegerString()}";
+                        ShowDamageText(_uiUnitHud.transform, content);
                     }
                     else
                     {
                         var heal = newValue - oldValue;
-                        UI3D_DamageText.Create(_uiUnitHud.transform, $"+{heal.Ceil().ToIntegerString()}");
+                        var content = $"+{heal.Ceil().ToIntegerString()}";
+                        ShowDamageText(_uiUnitHud.transform, content);
                     }
                 }
             }
+        }
+
+        private async void ShowDamageText(Transform parent, string content)
+        {
+            var text = _damageTextPool.Get<UI3D_DamageText>(parent);
+            await text.StartFloating(content);
+            _damageTextPool.Release(text.gameObject);
         }
     }
 }
