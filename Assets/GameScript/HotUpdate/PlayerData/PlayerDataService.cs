@@ -82,7 +82,7 @@ namespace Game
                 var task = File.WriteAllBytesAsync(fileName, bytes).AsUniTask();
                 tasks.Add(task);
             }
-            await UniTask.WhenAll(tasks);
+            await tasks;
         }
         #endregion
 

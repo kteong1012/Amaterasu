@@ -113,8 +113,8 @@ namespace Game
                 }
             }
 
-            await UniTask.WhenAll(serviceDict.Values.Select(service => service.Init()));
-            await UniTask.WhenAll(serviceDict.Values.Select(service => service.PostInit()));
+            await serviceDict.Values.Select(service => service.Init());
+            await serviceDict.Values.Select(service => service.PostInit());
         }
 
         public void StopServices(GameServiceDomain domain)
