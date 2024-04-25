@@ -28,9 +28,13 @@ namespace Game
             }
         }
 
-        public void PlayAnimation(string animName)
+        public void PlayAnimation(string animName, string queuedAnim = "")
         {
             _animation.Play(animName);
+            if (!string.IsNullOrEmpty(queuedAnim))
+            {
+                _animation.PlayQueued(queuedAnim);
+            }
         }
 
         public float GetAnimationClipDuration(string animName)

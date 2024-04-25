@@ -90,7 +90,7 @@ namespace Game
         {
             // 播放死亡动画
             var animationName = "XiaoMingAnim_Die";
-            PlayAnimation(animationName);
+            PlayAnimation(animationName, null);
             _modelComponent.ThrowModelAway(3f);
 
             // 从BattleUnitService移除自己
@@ -122,9 +122,9 @@ namespace Game
             return _statsComponent;
         }
 
-        public void PlayAnimation(string name)
+        public void PlayAnimation(string name, string queuedAnim = "XiaoMingAnim_Idle")
         {
-            _modelComponent.PlayAnimation(name);
+            _modelComponent.PlayAnimation(name, queuedAnim);
         }
         #endregion
 

@@ -40,11 +40,11 @@ namespace Game
 
         protected override void OnRelease()
         {
+            _damageTextPool.Dispose();
             _battleUnit.OnStatsChangeEvent -= OnStatsChange;
             _uiUnitHud.gameObject.TryDestroy();
             _uiUnitHud = null;
             _unitHudHandle.Release();
-            _damageTextPool.Dispose();
         }
 
         private void OnStatsChange(NumericId id, NumberX1000 oldValue, NumberX1000 newValue)
