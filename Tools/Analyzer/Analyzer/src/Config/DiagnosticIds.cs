@@ -13,6 +13,7 @@ namespace Analyzer.Config
         public const string PrivateFieldMember = "STD003";    // 成员字段名应为以下划线开头的小驼峰命名
         public const string PropertyMember = "STD004";    // 成员属性名应为大驼峰命名
         public const string PropertyAccess = "STD005";    // 属性的访问修饰符只允许用public
+        public const string DontUseMagicNumber = "STD006";    // 禁止使用魔法数字
         #endregion
         #endregion
 

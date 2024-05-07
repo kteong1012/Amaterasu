@@ -11,6 +11,7 @@ using System.Text;
 
 namespace Analyzer.Analyzer
 {
+
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class UseGameLogAnalyzer : DiagnosticAnalyzer
     {

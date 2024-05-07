@@ -16,7 +16,7 @@ namespace Analyzer.Analyzer
         public const string GameServiceAttributeNameSpace = "Game";
         public const string GameServiceAttributeName = "GameServiceAttribute";
         public const string GameServiceClassName = "GameService";
-        public const string GameServiceAttributeDefaultParam = "GameServiceLifeSpan.None";
+        public const string GameServiceAttributeDefaultParam = "GameServiceDomain.None";
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
             DiagnosticRules.GameServiceAttributeRule.Rule,
             DiagnosticRules.GameServiceAttributeNone.Rule
@@ -64,7 +64,7 @@ namespace Analyzer.Analyzer
                 }
                 else
                 {
-                    var enumTypeName = "GameServiceLifeSpan";
+                    var enumTypeName = "GameServiceDomain";
                     var uselessEnumValue = "None";
                     var attributeLocation = gameServiceAttribute.ApplicationSyntaxReference.GetSyntax().GetLocation();
 

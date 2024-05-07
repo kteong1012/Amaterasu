@@ -9,14 +9,14 @@ namespace Game
     }
     public class GameServiceAttribute : Attribute
     {
-        public GameServiceAttribute(GameServiceLifeSpan lifeSpan)
+        public GameServiceAttribute(GameServiceDomain domain)
         {
-            LifeSpan = lifeSpan;
+            Domain = domain;
         }
 
-        public GameServiceLifeSpan LifeSpan { get; }
+        public GameServiceDomain Domain { get; }
     }
-    public enum GameServiceLifeSpan
+    public enum GameServiceDomain
     {
         None,
         Game
