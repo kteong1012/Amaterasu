@@ -23,6 +23,7 @@ namespace Analyzer.Config
         public const string GameServiceAttributeNone = "LOG002";    // GameService的子类必须包含GameServiceAttribute特性
         public const string LoadSceneAsync = "LOG003";  // 禁止使用YooAssets.LoadSceneAsync接口，切换场景只允许在SceneService内部调用
         public const string UseGameLog = "LOG004";  //  禁止使用UnityEngine.Debug类，使用Game.Log.GameLog代替
+        public const string UI2DAttribute = "LOG005";  //  UI2D的子类必须包含UI2DAttribute特性
         #endregion
         #endregion
     }

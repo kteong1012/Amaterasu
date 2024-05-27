@@ -99,7 +99,7 @@ namespace Analyzer.Config
             }
         }
 
-        public static class GameServiceAttributeNone
+        public static class GameServiceAttributeNoneRule
         {
             public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
                 id: DiagnosticIds.GameServiceAttributeNone,
@@ -161,6 +161,22 @@ namespace Analyzer.Config
             private const string _title = "禁止使用魔法数字 {0}";
             private const string _message = "禁止使用魔法数字 {0}";
             private const string _description = "禁止使用魔法数字.";
+        }
+
+        public static class UI2DAttributeRule
+        {
+            public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+                id: DiagnosticIds.UI2DAttribute,
+                title: _title,
+                messageFormat: _message,
+                category: DiagnosticCategories.Logic,
+                defaultSeverity: DiagnosticSeverity.Error,
+                isEnabledByDefault: true,
+                description: _description
+            );
+            private const string _title = "UI2D特性缺失";
+            private const string _message = "UI2D的子类必须包含UI2DAttribute特性";
+            private const string _description = "UI2D的子类必须包含UI2DAttribute特性.";
         }
     }
 }

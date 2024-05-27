@@ -40,5 +40,9 @@ namespace Game
         public static EPlayMode PlayMode { get; internal set; }
         public static string YooAssetPackageName => "DefaultPackage";
 
+        // UI Settings
+        public static float UIClearInterval = 60f;
+        public static float UIExpire = 60f;
+
     }
 }

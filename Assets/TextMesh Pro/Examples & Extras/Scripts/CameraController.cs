@@ -169,7 +169,7 @@ namespace TMPro.Examples
                     }
                 }
 
-                // Get Input from Mobile Device
+                // GetAsComponent Input from Mobile Device
                 if (touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
                 {
                     Vector2 deltaPosition = Input.GetTouch(0).deltaPosition;

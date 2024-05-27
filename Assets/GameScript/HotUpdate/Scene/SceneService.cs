@@ -1,12 +1,6 @@
 using Cysharp.Threading.Tasks;
-using Game.UI.UIHome;
-using Game.UI.UILogin;
-using System;
-using UniFramework.Event;
 using UnityEngine;
-using YIUIFramework;
 using YooAsset;
-using static Game.SceneEventDefine;
 
 namespace Game
 {
@@ -28,7 +22,7 @@ namespace Game
         public async UniTask ChangeToLoginScene()
         {
             await ChangeScene("scene_login");
-            PanelMgr.Inst.OpenPanel<UILoginPanel>();
+            UIService.OpenPanel<UILoginPanel>();
             MainCamera.Instance.Camera.transform.position = Vector3.zero;
             MainCamera.Instance.Camera.transform.rotation = Quaternion.identity;
         }
@@ -36,7 +30,7 @@ namespace Game
         public async UniTask ChangeToHomeScene()
         {
             await ChangeScene("scene_home");
-            PanelMgr.Inst.OpenPanel<UIHomePanel>();
+            UIService.OpenPanel<UIHomePanel>();
             MainCamera.Instance.Camera.transform.position = Vector3.zero;
             MainCamera.Instance.Camera.transform.rotation = Quaternion.identity;
         }

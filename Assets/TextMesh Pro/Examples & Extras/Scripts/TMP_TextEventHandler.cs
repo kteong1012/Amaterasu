@@ -98,10 +98,10 @@ namespace TMPro
 
         void Awake()
         {
-            // Get a reference to the text component.
+            // GetAsComponent a reference to the text component.
             m_TextComponent = gameObject.GetComponent<TMP_Text>();
 
-            // Get a reference to the camera rendering the text taking into consideration the text component type.
+            // GetAsComponent a reference to the camera rendering the text taking into consideration the text component type.
             if (m_TextComponent.GetType() == typeof(TextMeshProUGUI))
             {
                 m_Canvas = gameObject.GetComponentInParent<Canvas>();
@@ -148,7 +148,7 @@ namespace TMPro
                 {
                     m_lastWordIndex = wordIndex;
 
-                    // Get the information about the selected word.
+                    // GetAsComponent the information about the selected word.
                     TMP_WordInfo wInfo = m_TextComponent.textInfo.wordInfo[wordIndex];
 
                     // Send the event to any listeners.
@@ -164,7 +164,7 @@ namespace TMPro
                 {
                     m_lastLineIndex = lineIndex;
 
-                    // Get the information about the selected word.
+                    // GetAsComponent the information about the selected word.
                     TMP_LineInfo lineInfo = m_TextComponent.textInfo.lineInfo[lineIndex];
 
                     // Send the event to any listeners.
@@ -189,7 +189,7 @@ namespace TMPro
                 {
                     m_selectedLink = linkIndex;
 
-                    // Get information about the link.
+                    // GetAsComponent information about the link.
                     TMP_LinkInfo linkInfo = m_TextComponent.textInfo.linkInfo[linkIndex];
 
                     // Send the event to any listeners.

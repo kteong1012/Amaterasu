@@ -667,23 +667,23 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: LOG_DEBUG;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;DOTWEEN;UNITASK_DOTWEEN_SUPPORT;TextMeshPro
-    EmbeddedLinux: DOTWEEN;TextMeshPro
+    Android: LOG_DEBUG;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;UNITASK_DOTWEEN_SUPPORT;TextMeshPro;DOTWEEN
+    EmbeddedLinux: TextMeshPro;DOTWEEN
     GameCoreScarlett: DOTWEEN
-    GameCoreXboxOne: DOTWEEN;TextMeshPro
+    GameCoreXboxOne: TextMeshPro;DOTWEEN
     LinuxHeadlessSimulation: DOTWEEN
-    Nintendo Switch: DOTWEEN;TextMeshPro
-    PS4: DOTWEEN;TextMeshPro
-    PS5: DOTWEEN;TextMeshPro
-    QNX: DOTWEEN;TextMeshPro
-    Stadia: DOTWEEN;TextMeshPro
-    Standalone: LOG_DEBUG;DOTWEEN;TextMeshPro
-    VisionOS: DOTWEEN;TextMeshPro
-    WebGL: DOTWEEN;TextMeshPro
+    Nintendo Switch: TextMeshPro;DOTWEEN
+    PS4: TextMeshPro;DOTWEEN
+    PS5: TextMeshPro;DOTWEEN
+    QNX: TextMeshPro;DOTWEEN
+    Stadia: TextMeshPro;DOTWEEN
+    Standalone: LOG_DEBUG;TextMeshPro;DOTWEEN
+    VisionOS: TextMeshPro;DOTWEEN
+    WebGL: TextMeshPro;DOTWEEN
     Windows Store Apps: DOTWEEN
-    XboxOne: DOTWEEN;TextMeshPro
-    iPhone: DOTWEEN;TextMeshPro
-    tvOS: DOTWEEN;TextMeshPro
+    XboxOne: TextMeshPro;DOTWEEN
+    iPhone: TextMeshPro;DOTWEEN
+    tvOS: TextMeshPro;DOTWEEN
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

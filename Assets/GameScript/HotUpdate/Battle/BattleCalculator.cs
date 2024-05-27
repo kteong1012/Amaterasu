@@ -14,7 +14,9 @@ namespace Game
         /// <returns></returns>
         public static NumberX1000 CalculateBaseDamage(NumberX1000 rawDamage, NumberX1000 defense)
         {
-            NumberX1000 damageReduction = 1f - 0.06f * defense / (1f + 0.06f * Math.Abs(defense));
+            // 因数
+            var factor = BattleConstants.DamageReductionFactor;
+            NumberX1000 damageReduction = 1f - factor * defense / (1f + factor * Math.Abs(defense));
             NumberX1000 damageTaken = rawDamage * damageReduction;
             return damageTaken;
         }

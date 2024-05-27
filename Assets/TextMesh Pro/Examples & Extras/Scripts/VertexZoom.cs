@@ -74,7 +74,7 @@ namespace TMPro.Examples
                 // Allocate new vertices 
                 if (hasTextChanged)
                 {
-                    // Get updated vertex data
+                    // GetAsComponent updated vertex data
                     cachedMeshInfoVertexData = textInfo.CopyMeshInfoVertexData();
 
                     hasTextChanged = false;
@@ -101,13 +101,13 @@ namespace TMPro.Examples
                     if (!charInfo.isVisible)
                         continue;
 
-                    // Get the index of the material used by the current character.
+                    // GetAsComponent the index of the material used by the current character.
                     int materialIndex = textInfo.characterInfo[i].materialReferenceIndex;
 
-                    // Get the index of the first vertex used by this text element.
+                    // GetAsComponent the index of the first vertex used by this text element.
                     int vertexIndex = textInfo.characterInfo[i].vertexIndex;
 
-                    // Get the cached vertices of the mesh used by this text element (character or sprite).
+                    // GetAsComponent the cached vertices of the mesh used by this text element (character or sprite).
                     Vector3[] sourceVertices = cachedMeshInfoVertexData[materialIndex].vertices;
 
                     // Determine the center point of each character at the baseline.

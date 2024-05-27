@@ -24,7 +24,7 @@ namespace TMPro.Examples
 
         void Awake()
         {
-            // Get a reference to the TMP text component if one already exists otherwise add one.
+            // GetAsComponent a reference to the TMP text component if one already exists otherwise add one.
             // This example show the convenience of having both TMP components derive from TMP_Text. 
             if (ObjectType == 0)
                 m_text = GetComponent<TextMeshPro>() ?? gameObject.AddComponent<TextMeshPro>();
@@ -43,7 +43,7 @@ namespace TMPro.Examples
             // Set the text
             m_text.text = "A <#0080ff>simple</color> line of text.";
 
-            // Get the preferred width and height based on the supplied width and height as opposed to the actual size of the current text container.
+            // GetAsComponent the preferred width and height based on the supplied width and height as opposed to the actual size of the current text container.
             Vector2 size = m_text.GetPreferredValues(Mathf.Infinity, Mathf.Infinity);
 
             // Set the size of the RectTransform based on the new calculated values.

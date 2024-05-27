@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace Game
 {
@@ -9,12 +10,15 @@ namespace Game
         public Canvas worldCanvas;
         public Camera worldCanvasCamera;
         public Transform worldCanvasRoot;
+
+        private UniversalAdditionalCameraData _universalAdditionalCameraData;
         private void Awake()
         {
             if (Instance == null)
             {
                 Instance = this;
                 Camera = GetComponent<Camera>();
+                _universalAdditionalCameraData = GetComponent<UniversalAdditionalCameraData>();
                 DontDestroyOnLoad(gameObject);
                 DontDestroyOnLoad(worldCanvas.gameObject);
             }
@@ -22,6 +26,11 @@ namespace Game
             {
                 Destroy(gameObject);
             }
+        }
+
+        public void AddCameraStack(Camera camera)
+        {
+            _universalAdditionalCameraData.cameraStack.Add(camera);
         }
     }
 }

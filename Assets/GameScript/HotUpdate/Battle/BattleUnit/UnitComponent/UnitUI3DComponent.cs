@@ -73,7 +73,7 @@ namespace Game
 
         private async void ShowDamageText(Transform parent, string content)
         {
-            var text = _damageTextPool.Get<UI3D_DamageText>(parent);
+            var text = _damageTextPool.GetAsComponent<UI3D_DamageText>(parent);
             await text.StartFloating(content);
             _damageTextPool.Release(text.gameObject);
         }

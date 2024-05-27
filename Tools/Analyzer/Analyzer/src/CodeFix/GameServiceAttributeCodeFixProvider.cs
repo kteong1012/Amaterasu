@@ -36,7 +36,7 @@ namespace Analyzer.CodeFix
             var classDeclaration = root?.FindToken(diagnosticSpan.Start).Parent?.AncestorsAndSelf().OfType<ClassDeclarationSyntax>().First();
             // 构造Code Action
             var action = CodeAction.Create(
-                title: "Add GameService",
+                title: "Add GameServiceAttribute",
                 createChangedDocument: c => AddGameServiceAttributeAsync(context.Document, classDeclaration, GameServiceAttributeAnalyzer.GameServiceAttributeName, c),
                 equivalenceKey: nameof(GameServiceAttributeCodeFixProvider));
 

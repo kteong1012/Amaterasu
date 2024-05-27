@@ -45,7 +45,7 @@ namespace Game
             return go;
         }
 
-        public T Get<T>(Transform parent) where T : Component
+        public T GetAsComponent<T>(Transform parent) where T : Component
         {
             var go = Get(parent);
             if (go == null)

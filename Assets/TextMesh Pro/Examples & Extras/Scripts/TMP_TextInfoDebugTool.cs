@@ -44,14 +44,14 @@ namespace TMPro.Examples
 
             m_Transform = m_TextComponent.transform;
 
-            // Get a reference to the text object's textInfo
+            // GetAsComponent a reference to the text object's textInfo
             m_TextInfo = m_TextComponent.textInfo;
 
             // Update Text Statistics
             ObjectStats = "Characters: " + m_TextInfo.characterCount + "   Words: " + m_TextInfo.wordCount + "   Spaces: " + m_TextInfo.spaceCount + "   Sprites: " + m_TextInfo.spriteCount + "   Links: " + m_TextInfo.linkCount
                           + "\nLines: " + m_TextInfo.lineCount + "   Pages: " + m_TextInfo.pageCount;
 
-            // Get the handle size for drawing the various
+            // GetAsComponent the handle size for drawing the various
             m_ScaleMultiplier = m_TextComponent.GetType() == typeof(TextMeshPro) ? 1 : 0.1f;
             m_HandleSize = HandleUtility.GetHandleSize(m_Transform.position) * m_ScaleMultiplier;
 
@@ -118,7 +118,7 @@ namespace TMPro.Examples
 
                 float dottedLineSize = 6;
 
-                // Get Bottom Left and Top Right position of the current character
+                // GetAsComponent Bottom Left and Top Right position of the current character
                 Vector3 bottomLeft = m_Transform.TransformPoint(characterInfo.bottomLeft);
                 Vector3 topLeft = m_Transform.TransformPoint(new Vector3(characterInfo.topLeft.x, characterInfo.topLeft.y, 0));
                 Vector3 topRight = m_Transform.TransformPoint(characterInfo.topRight);
@@ -553,7 +553,7 @@ namespace TMPro.Examples
         {
             Bounds meshBounds = m_TextComponent.bounds;
 
-            // Get Bottom Left and Top Right position of each word
+            // GetAsComponent Bottom Left and Top Right position of each word
             Vector3 bottomLeft = m_TextComponent.transform.position + meshBounds.min;
             Vector3 topRight = m_TextComponent.transform.position + meshBounds.max;
 

@@ -18,7 +18,7 @@ namespace Game
     public abstract class GameService
     {
         public GameServiceDomain Domain => GetType().GetCustomAttribute<GameServiceAttribute>().Domain;
-        protected EventGroup _eventGroup;
+        protected EventGroup _eventGroup = new EventGroup();
 
         public UniTask Init()
         {

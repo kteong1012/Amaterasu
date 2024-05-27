@@ -1,13 +1,8 @@
 using Cysharp.Threading.Tasks;
 using Game.Cfg;
 using Game.Log;
-using Game.UI.UIBattleEnd;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UniFramework.Event;
 using UnityEngine;
-using YIUIFramework;
 
 namespace Game
 {
@@ -54,7 +49,7 @@ namespace Game
             var battleEndEvent = message as BattleEvent.BattleEndEvent;
             GameLog.Info("战斗结束, 胜利方: " + battleEndEvent.winnerCamp);
             await UniTask.Delay(3000);
-            var uiBattleEndPanel = await PanelMgr.Inst.OpenPanelAsync<UIBattleEndPanel>();
+            var uiBattleEndPanel = UIService.OpenPanel<UIBattleEndPanel>();
             uiBattleEndPanel.SetWinnerCamp(battleEndEvent.winnerCamp);
         }
         #endregion

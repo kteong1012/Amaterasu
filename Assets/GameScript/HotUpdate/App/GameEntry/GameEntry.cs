@@ -1,28 +1,29 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UniFramework.Event;
 using Game.Log;
-using System;
 using YooAsset;
 using Cysharp.Threading.Tasks;
-using System.Threading.Tasks;
-using YIUIFramework;
-using Game.UI.UILogin;
 
 namespace Game
 {
     public class GameEntry : MonoBehaviour
     {
+        #region Constants
+        private const int TARGET_FRAME_RATE = 60;
+        #endregion
+
+        #region Fields & Properties
         public static GameEntry Ins { get; private set; }
 
         private readonly EventGroup _eventGroup = new EventGroup();
 
         private GameServiceManager _serviceManager;
+        #endregion
 
         private async void Awake()
         {
             Ins = this;
-            Application.targetFrameRate = 60;
+            Application.targetFrameRate = TARGET_FRAME_RATE;
             Application.runInBackground = true;
             DontDestroyOnLoad(this.gameObject);
 
@@ -41,6 +42,9 @@ namespace Game
             // 进入登录场景
             var sceneService = GetService<SceneService>();
             sceneService.ChangeToLoginScene().Forget();
+
+            // 打开登录界面
+            UIService.OpenPanel<UILoginPanel>();
         }
 
         private void AddEventListeners()

@@ -19,7 +19,7 @@ namespace Analyzer.Analyzer
         public const string GameServiceAttributeDefaultParam = "GameServiceDomain.None";
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
             DiagnosticRules.GameServiceAttributeRule.Rule,
-            DiagnosticRules.GameServiceAttributeNone.Rule
+            DiagnosticRules.GameServiceAttributeNoneRule.Rule
             );
 
         public override void Initialize(AnalysisContext context)
@@ -86,7 +86,7 @@ namespace Analyzer.Analyzer
                         if (valueText.ToString().Equals(uselessEnumValue))
                         {
                             var location = value.GetLocation();
-                            var diagnostic = Diagnostic.Create(DiagnosticRules.GameServiceAttributeNone.Rule, location);
+                            var diagnostic = Diagnostic.Create(DiagnosticRules.GameServiceAttributeNoneRule.Rule, location);
                             context.ReportDiagnostic(diagnostic);
                         }
                     }

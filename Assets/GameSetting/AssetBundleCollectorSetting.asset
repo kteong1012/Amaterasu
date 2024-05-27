@@ -29,7 +29,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/GameRes/Effect
+      - CollectPath: Assets/GameRes/Prefabs/Effect
         CollectorGUID: 80d76514758554baaa96a9efffe9f3ef
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -37,7 +37,7 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
-      - CollectPath: Assets/GameRes/Entity
+      - CollectPath: Assets/GameRes/Prefabs/Entity
         CollectorGUID: 4d7c84745db8e884f8020a8c5356e67c
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -76,7 +76,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/GameRes/UI
+      - CollectPath: Assets/GameRes/Prefabs/UI
         CollectorGUID: 4b625de1d20a53f4fad9a0ac4ceea14c
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -84,7 +84,7 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
-      - CollectPath: Assets/GameRes/UI3D
+      - CollectPath: Assets/GameRes/Prefabs/UI3D
         CollectorGUID: c3c3e4dc0e5a6424abd2e9cffe833028
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -114,19 +114,6 @@ MonoBehaviour:
         CollectorGUID: 287c4493edf20644d8ff51c42fc3ba27
         CollectorType: 0
         AddressRuleName: AddressDisable
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
-    - GroupName: ui_reddot
-      GroupDesc: 
-      AssetTags: 
-      ActiveRuleName: EnableGroup
-      Collectors:
-      - CollectPath: Assets/GameRes/RedDot
-        CollectorGUID: dd6d79ceaad353c449cd0db9ac27efa6
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
         AssetTags: 
