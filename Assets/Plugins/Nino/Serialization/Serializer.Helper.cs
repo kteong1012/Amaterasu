@@ -70,7 +70,7 @@ namespace Nino.Serialization
         public static int GetSize<T>(in T[] val = default, Dictionary<MemberInfo, object> members = null)
         {
             if (val == null) return 1;
-            var type = typeof(T);
+            var type = val.GetType();
             int length = val.Length;
 
             if (!WrapperManifest.TryGetWrapper(type, out var wrapper))
@@ -97,7 +97,7 @@ namespace Nino.Serialization
         public static int GetSize<T>(in List<T> val = default, Dictionary<MemberInfo, object> members = null)
         {
             if (val == null) return 1;
-            var type = typeof(T);
+            var type = val.GetType();
             int length = val.Count;
 
             if (!WrapperManifest.TryGetWrapper(type, out var wrapper))
@@ -125,7 +125,7 @@ namespace Nino.Serialization
             where T : struct
         {
             if (val == null) return 1;
-            var type = typeof(T);
+            var type = val.GetType();
 
             if (!WrapperManifest.TryGetWrapper(type, out var wrapper))
             {
@@ -150,7 +150,7 @@ namespace Nino.Serialization
 
         public static int GetSize<T>(in T val = default, Dictionary<MemberInfo, object> members = null)
         {
-            var type = typeof(T);
+            var type = val.GetType();
             int size = 0;
             if (TypeModel.IsEnum(type)) type = type.GetEnumUnderlyingType();
             

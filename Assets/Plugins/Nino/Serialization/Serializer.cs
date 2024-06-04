@@ -17,6 +17,7 @@ namespace Nino.Serialization
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static byte[] Serialize<T>(in T val)
         {
+            var type = val.GetType();
             Dictionary<MemberInfo, object> fields = ObjectPool<Dictionary<MemberInfo, object>>.Request();
             fields.Clear();
             int length = GetSize(in val, fields);
@@ -32,7 +33,7 @@ namespace Nino.Serialization
                 return ret;
             }
 
-            Serialize(typeof(T), val, fields, ret.AsSpan(), 0);
+            Serialize(type, val, fields, ret.AsSpan(), 0);
             ObjectPool<Dictionary<MemberInfo, object>>.Return(fields);
             return ret;
         }
@@ -53,8 +54,9 @@ namespace Nino.Serialization
                 buffer[0] = 0;
                 return 1;
             }
+            var type = val.GetType();
 
-            return Serialize(typeof(T), val, fields, buffer, 0);
+            return Serialize(type, val, fields, buffer, 0);
         }
 
         /// <summary>

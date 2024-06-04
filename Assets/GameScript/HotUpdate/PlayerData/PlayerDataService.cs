@@ -24,8 +24,16 @@ namespace Game
         #endregion
 
         #region Life Cycle
+        protected override async UniTask Awake()
+        {
+            var loginService = GameEntry.Ins.GetService<LoginService>();
+            await InitPlayerData(loginService.LoginChannel, loginService.PlayerId);
+            LoadAll();
+        }
+
         protected override void OnDestroy()
         {
+            SaveAll();
             _cachePlayerDataMap.Clear();
             base.OnDestroy();
         }
@@ -65,24 +73,32 @@ namespace Game
             }
         }
 
-        public async UniTask SaveAll()
+        public void SaveAll()
         {
             if (!Directory.Exists(_PlayerDataDir))
             {
                 Directory.CreateDirectory(_PlayerDataDir);
             }
 
-            var tasks = new List<UniTask>();
             foreach (var kv in _cachePlayerDataMap)
             {
                 var type = kv.Key;
                 var playerData = kv.Value;
                 var fileName = Path.Combine(_PlayerDataDir, GetPlayerDataFileName(type));
                 var bytes = Serializer.Serialize(playerData);
-                var task = File.WriteAllBytesAsync(fileName, bytes).AsUniTask();
-                tasks.Add(task);
+                File.WriteAllBytes(fileName, bytes);
             }
-            await tasks;
+        }
+
+        public T GetPlayerData<T>() where T : PlayerData
+        {
+            var type = typeof(T);
+            if (!_cachePlayerDataMap.TryGetValue(type, out var playerData))
+            {
+                playerData = Activator.CreateInstance(type) as PlayerData;
+                _cachePlayerDataMap.Add(type, playerData);
+            }
+            return playerData as T;
         }
         #endregion
 

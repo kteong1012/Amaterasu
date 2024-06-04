@@ -1,4 +1,5 @@
 using Game;
+using Game.Log;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,9 @@ public class UIHomePanel : UI2DPanel
     public override void OnCreate()
     {
         btnStartBattle.onClick.AddListener(OnClickBtnStartBattle);
+
+        var playerDataService = GameEntry.Ins.GetService<PlayerDataService>();
+        var roleData = playerDataService.GetPlayerData<RoleData>();
     }
 
     private async void OnClickBtnStartBattle()
