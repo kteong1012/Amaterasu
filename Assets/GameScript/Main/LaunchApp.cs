@@ -1,4 +1,3 @@
-using Codice.Utils;
 using Cysharp.Threading.Tasks;
 using Game.Log;
 using System;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using UniFramework.Event;
 using UnityEngine;
+using UnityEngine.Video;
 using YooAsset;
 
 namespace Game
@@ -15,16 +15,29 @@ namespace Game
     {
         private async void Start()
         {
-            // 打开补丁窗口
-            OpenPatchWindow();
             // 初始化Log
             SetGameLog();
+            // 播放启动视频
+            await PlaySplashVideo();
+            // 打开补丁窗口
+            OpenPatchWindow();
             // 初始化事件系统
             InitUniEvent();
             // 初始化资源模块
             await InitResourceModule();
             // 加载HotUpdate程序集
             LoadDll();
+        }
+
+        private async UniTask PlaySplashVideo()
+        {
+            var go = Resources.Load<GameObject>("SplashWindow/SplashWindow");
+            go = GameObject.Instantiate(go);
+            var videoPlayer = go.GetComponentInChildren<VideoPlayer>();
+            videoPlayer.Play();
+            var clip = videoPlayer.clip;
+            var duration = clip.length;
+            await UniTask.Delay(TimeSpan.FromSeconds(duration));
         }
 
         private void OpenPatchWindow()
