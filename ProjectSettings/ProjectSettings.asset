@@ -764,7 +764,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: LOG_DEBUG;UNITASK_DOTWEEN_SUPPORT;TextMeshPro;DOTWEEN
+    Android: UNITASK_DOTWEEN_SUPPORT;TextMeshPro;DOTWEEN
     EmbeddedLinux: TextMeshPro;DOTWEEN
     GameCoreScarlett: DOTWEEN
     GameCoreXboxOne: TextMeshPro;DOTWEEN
