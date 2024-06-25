@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8639d2d92d5ac214c889950a9cfc4a4c, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
+  Version: 1.0.0
+  LogLevel: 4
   HotupdateConfig:
     EnableHotupdate: 0
-    _playMode: 0
+    _playMode: 1
     _packageName: DefaultPackage
+    _cdnHostUrl: http://192.168.71.47:8080
+    _hotupdateAssemblies:
+    - HotUpdate.dll
+  UIConfig:
+    _clearInterval: 60
+    _expire: 60
