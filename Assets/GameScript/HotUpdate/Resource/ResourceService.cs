@@ -18,7 +18,7 @@ namespace Game
         {
             if (_gamePackage == null)
             {
-                _gamePackage = YooAssets.GetPackage(AppSettings.YooAssetPackageName);
+                _gamePackage = YooAssets.GetPackage(GameConfig.Instance.HotupdateConfig.PackageName);
                 if (_gamePackage == null)
                 {
                     return;

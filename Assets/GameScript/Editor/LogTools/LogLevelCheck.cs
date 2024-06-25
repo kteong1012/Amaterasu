@@ -1,73 +1,73 @@
-using UnityEditor;
-using UnityEngine;
-using UnityEditor.PackageManager;
-using System.Linq;
-using UnityEditor.Build.Content;
+//using UnityEditor;
+//using UnityEngine;
+//using UnityEditor.PackageManager;
+//using System.Linq;
+//using UnityEditor.Build.Content;
 
-namespace GameEditor
-{
-    public class LogLevelCheck : Editor
-    {
-        // ¶¨ÒåĞèÒª¼ì²éµÄºê¶¨Òå
-        private static readonly string[] symbols = { "LOG_DEBUG", "LOG_INFO", "LOG_WARNING" };
+//namespace GameEditor
+//{
+//    public class LogLevelCheck : Editor
+//    {
+//        // å®šä¹‰éœ€è¦æ£€æŸ¥çš„å®å®šä¹‰
+//        private static readonly string[] symbols = { "LOG_DEBUG", "LOG_INFO", "LOG_WARNING" };
 
-        private void Awake()
-        {
-            CheckSymbolState();
-        }
+//        private void Awake()
+//        {
+//            CheckSymbolState();
+//        }
 
-        [MenuItem("Tools/LogLevel/Debug")]
-        private static void SetDebugSymbol()
-        {
-            SetSymbolState("LOG_DEBUG");
-        }
+//        [MenuItem("Tools/LogLevel/Debug")]
+//        private static void SetDebugSymbol()
+//        {
+//            SetSymbolState("LOG_DEBUG");
+//        }
 
-        private static void CheckSymbolState()
-        {
-            foreach (string symbol in symbols)
-            {
-                bool isEnabled = IsSymbolEnabled(symbol);
-                Menu.SetChecked("LogLevel/" + GetSymbolName(symbol), isEnabled);
-            }
-        }
+//        private static void CheckSymbolState()
+//        {
+//            foreach (string symbol in symbols)
+//            {
+//                bool isEnabled = IsSymbolEnabled(symbol);
+//                Menu.SetChecked("LogLevel/" + GetSymbolName(symbol), isEnabled);
+//            }
+//        }
 
-        // ÉèÖÃºê¶¨ÒåµÄ×´Ì¬
-        private static void SetSymbolState(string symbol)
-        {
-            var target = EditorUserBuildSettings.activeBuildTarget;
-            var group = BuildPipeline.GetBuildTargetGroup(target);
+//        // è®¾ç½®å®å®šä¹‰çš„çŠ¶æ€
+//        private static void SetSymbolState(string symbol)
+//        {
+//            var target = EditorUserBuildSettings.activeBuildTarget;
+//            var group = BuildPipeline.GetBuildTargetGroup(target);
 
-            var defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(group);
-            var symbols = defines.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList();
-            var contains = symbols.Contains(symbol);
-            if (contains)
-            {
-                symbols.Remove(symbol);
-            }
-            else
-            {
-                symbols.Add(symbol);
-            }
-            defines = string.Join(";", symbols.ToArray());
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(group, defines);
-            CheckSymbolState();
-        }
+//            var defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(group);
+//            var symbols = defines.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList();
+//            var contains = symbols.Contains(symbol);
+//            if (contains)
+//            {
+//                symbols.Remove(symbol);
+//            }
+//            else
+//            {
+//                symbols.Add(symbol);
+//            }
+//            defines = string.Join(";", symbols.ToArray());
+//            PlayerSettings.SetScriptingDefineSymbolsForGroup(group, defines);
+//            CheckSymbolState();
+//        }
 
-        // ¼ì²éºê¶¨ÒåÊÇ·ñÆôÓÃ
-        private static bool IsSymbolEnabled(string symbol)
-        {
-            var target = EditorUserBuildSettings.activeBuildTarget;
-            var group = BuildPipeline.GetBuildTargetGroup(target);
-            string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(group);
-            return defines.Contains(symbol);
-        }
+//        // æ£€æŸ¥å®å®šä¹‰æ˜¯å¦å¯ç”¨
+//        private static bool IsSymbolEnabled(string symbol)
+//        {
+//            var target = EditorUserBuildSettings.activeBuildTarget;
+//            var group = BuildPipeline.GetBuildTargetGroup(target);
+//            string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(group);
+//            return defines.Contains(symbol);
+//        }
 
-        // »ñÈ¡ºê¶¨ÒåµÄÃû³Æ
-        private static string GetSymbolName(string symbol)
-        {
-            var shortName = symbol.Replace("LOG_", "");
-            var name = char.ToUpper(shortName[0]) + shortName.Substring(1).ToLower();
-            return name;
-        }
-    }
-}
+//        // è·å–å®å®šä¹‰çš„åç§°
+//        private static string GetSymbolName(string symbol)
+//        {
+//            var shortName = symbol.Replace("LOG_", "");
+//            var name = char.ToUpper(shortName[0]) + shortName.Substring(1).ToLower();
+//            return name;
+//        }
+//    }
+//}

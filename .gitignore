@@ -82,3 +82,7 @@ crashlytics-build.properties
 
 # HybridCLRData Directory
 /[Hh]ybridCLRData/
+
+# Assets/StreamingAssets
+/Assets/StreamingAssets/
+/Assets/StreamingAssets.meta

@@ -30,8 +30,6 @@ public class FsmUpdatePackageManifest : IStateNode
 
     private IEnumerator UpdateManifest()
     {
-        yield return new WaitForSecondsRealtime(0.5f);
-
         var packageName = (string)_machine.GetBlackboardValue("PackageName");
         var packageVersion = (string)_machine.GetBlackboardValue("PackageVersion");
         var package = YooAssets.GetPackage(packageName);

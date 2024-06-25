@@ -4,16 +4,16 @@ using YooAsset;
 
 namespace Game.Log
 {
-    public class UnityConsoleLog : IGameLogWithObject, YooAsset.ILogger
+    public class UnityConsoleLogger : IGameLoggerWithObject, YooAsset.ILogger
     {
-        private static UnityConsoleLog _instance;
-        public static UnityConsoleLog Instance
+        private static UnityConsoleLogger _instance;
+        public static UnityConsoleLogger Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new UnityConsoleLog();
+                    _instance = new UnityConsoleLogger();
                 }
                 return _instance;
             }
@@ -40,16 +40,20 @@ namespace Game.Log
             switch (level)
             {
                 case LogLevel.Debug:
-                    Debug.Log(GetColorString(message, DeubgColor), @object);
+                    GetColorString(ref message, DeubgColor);
+                    Debug.Log(message, @object);
                     break;
                 case LogLevel.Info:
-                    Debug.Log(GetColorString(message, InfoColor), @object);
+                    GetColorString(ref message, InfoColor);
+                    Debug.Log(message, @object);
                     break;
                 case LogLevel.Warning:
-                    Debug.LogWarning(GetColorString(message, WarningColor), @object);
+                    GetColorString(ref message, WarningColor);
+                    Debug.LogWarning(message, @object);
                     break;
                 case LogLevel.Error:
-                    Debug.LogError(GetColorString(message, ErrorColor), @object);
+                    GetColorString(ref message, ErrorColor);
+                    Debug.LogError(message, @object);
                     break;
             }
         }
@@ -59,32 +63,28 @@ namespace Game.Log
             switch (level)
             {
                 case LogLevel.Debug:
-                    Debug.Log(GetColorString(message, DeubgColor));
+                    GetColorString(ref message, DeubgColor);
+                    Debug.Log(message);
                     break;
                 case LogLevel.Info:
-                    Debug.Log(GetColorString(message, InfoColor));
+                    GetColorString(ref message, InfoColor);
+                    Debug.Log(message);
                     break;
                 case LogLevel.Warning:
-                    Debug.LogWarning(GetColorString(message, WarningColor));
+                    GetColorString(ref message, WarningColor);
+                    Debug.LogWarning(message);
                     break;
                 case LogLevel.Error:
-                    Debug.LogError(GetColorString(message, ErrorColor));
+                    GetColorString(ref message, ErrorColor);
+                    Debug.LogError(message);
                     break;
             }
         }
 
-        private static string GetColorString(string str, Color color)
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        private static void GetColorString(ref string str, Color color)
         {
-#if UNITY_EDITOR
-            var lines = str.Split('\n');
-            for (int i = 0; i < lines.Length; i++)
-            {
-                lines[i] = $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{lines[i]}</color>";
-            }
-            return string.Join("\n", lines);
-#else
-            return str;
-#endif
+            str = $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{str}</color>";
         }
 
         public void Log(string message)

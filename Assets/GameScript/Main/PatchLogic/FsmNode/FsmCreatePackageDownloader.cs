@@ -20,7 +20,7 @@ public class FsmCreatePackageDownloader : IStateNode
     void IStateNode.OnEnter()
     {
         PatchEventDefine.PatchStatesChange.SendEventMessage("创建补丁下载器！");
-        CoroutineManager.Instance.StartCoroutine(CreateDownloader());
+        CreateDownloader();
     }
     void IStateNode.OnUpdate()
     {
@@ -29,10 +29,8 @@ public class FsmCreatePackageDownloader : IStateNode
     {
     }
 
-    IEnumerator CreateDownloader()
+    void CreateDownloader()
     {
-        yield return new WaitForSecondsRealtime(0.5f);
-
         var packageName = (string)_machine.GetBlackboardValue("PackageName");
         var package = YooAssets.GetPackage(packageName);
         int downloadingMaxNum = 10;

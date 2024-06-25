@@ -2,6 +2,7 @@ using Game;
 using HybridCLR.Editor;
 using HybridCLR.Editor.Commands;
 using HybridCLR.Editor.HotUpdate;
+using HybridCLR.Editor.Settings;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -18,17 +19,16 @@ namespace GameEditor
 
             var hotUpdateDllDir = SettingsUtil.GetHotUpdateDllsOutputDirByTarget(target);
 
+            foreach (var dllName in GameConfig.Instance.HotupdateConfig.HotupdateAssemblies)
+            {
+                var fileName = $"{dllName}.dll";
+                var srcPath = $"{hotUpdateDllDir}/{fileName}";
+                var destPath = Path.Combine(GameConfig.Instance.HotupdateConfig.HotUpdateDllAssetFolder, fileName);
+                FileUtil.ReplaceFile(srcPath, destPath);
+            }
 
-            var srcPath = $"{hotUpdateDllDir}/{AppSettings.HotUpdateDllName}";
-            var destPath = AppSettings.HotUpdateDllAssetPath;
-            FileUtil.ReplaceFile(srcPath, destPath);
             AssetDatabase.Refresh();
             Debug.Log("CompileDllAndCopyToGameRes Done!");
-
-
-            var aotDir = $"{SettingsUtil.AssembliesPostIl2CppStripDir}/{target}";
-            var checker = new MissingMetadataChecker(aotDir, new string[] { });
-            checker.Check(srcPath);
         }
 
         [MenuItem("BuildTools/CopyAotDllsToResources")]
@@ -54,7 +54,6 @@ namespace GameEditor
             Debug.Log("CopyAotDllsToResources Done!");
         }
 
-#if UNITY_ANDROID
         [MenuItem("BuildTools/BuildPlayer")]
         public static void BuildAndroid()
         {
@@ -68,6 +67,5 @@ namespace GameEditor
             buildPlayerOptions.target = BuildTarget.Android;
             BuildPipeline.BuildPlayer(buildPlayerOptions);
         }
-#endif
     }
 }
