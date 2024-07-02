@@ -229,7 +229,7 @@
 
 //        private string GetSuggestedName(Game.BindNode bindNode)
 //        {
-//            if (bindNode == null || bindNode.nodes == null || bindNode.nodes.Count == 0 || bindNode.nodes.All(x => x == null))
+//            if (bindNode == null || bindNode.nodes == null || bindNode.nodes.Count == 0 || bindNode.nodes.Any(x => x == null))
 //            {
 //                Debug.LogWarning("没有检测到绑定的物体");
 //                return null;

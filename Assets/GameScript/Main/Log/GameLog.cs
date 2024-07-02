@@ -9,6 +9,7 @@ namespace Game.Log
 {
     public class GameLog
     {
+        public static LogLevel LogLevel { get; set; } = LogLevel.Debug;
         private static ConcurrentDictionary<Type, IGameLogger> _loggers = new ConcurrentDictionary<Type, IGameLogger>();
 
         public static void RegisterLogger<T>(T logger) where T : IGameLogger
@@ -31,7 +32,7 @@ namespace Game.Log
         [Conditional("UNITY_EDITOR")]
         public static void Debug(object message, UnityEngine.Object @object = null)
         {
-            if(GameConfig.Instance.LogLevel < LogLevel.Debug)
+            if(LogLevel < LogLevel.Debug)
             {
                 return;
             }
@@ -51,7 +52,7 @@ namespace Game.Log
 
         public static void Info(object message, UnityEngine.Object @object = null)
         {
-            if (GameConfig.Instance.LogLevel < LogLevel.Info)
+            if (LogLevel < LogLevel.Info)
             {
                 return;
             }
@@ -70,7 +71,7 @@ namespace Game.Log
 
         public static void Warning(object message, UnityEngine.Object @object = null)
         {
-            if (GameConfig.Instance.LogLevel < LogLevel.Warning)
+            if (LogLevel < LogLevel.Warning)
             {
                 return;
             }
@@ -89,7 +90,7 @@ namespace Game.Log
 
         public static void Error(object message, UnityEngine.Object @object = null)
         {
-            if (GameConfig.Instance.LogLevel < LogLevel.Error)
+            if (LogLevel < LogLevel.Error)
             {
                 return;
             }
@@ -108,7 +109,7 @@ namespace Game.Log
 
         public static void Exception(Exception exception, UnityEngine.Object @object = null)
         {
-            if (GameConfig.Instance.LogLevel < LogLevel.Exception)
+            if (LogLevel < LogLevel.Exception)
             {
                 return;
             }

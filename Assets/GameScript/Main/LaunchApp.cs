@@ -13,12 +13,17 @@ namespace Game
 {
     public class LaunchApp : MonoBehaviour
     {
+        public LogLevel editorLogLevel = LogLevel.Debug;
+        public EPlayMode editorPlayMode = EPlayMode.EditorSimulateMode;
+
         private async void Start()
         {
             // 初始化Log
-            SetGameLog();
+            InitGameLog();
+            // 获取版本号
+            InitAppInfo();
             // 播放启动视频
-            await PlaySplashVideo();
+            //await PlaySplashVideo();
             // 打开补丁窗口
             OpenPatchWindow();
             // 初始化事件系统
@@ -29,52 +34,97 @@ namespace Game
             LoadDll();
         }
 
+        private void InitGameLog()
+        {
+
+#if UNITY_EDITOR
+            GameLog.LogLevel = editorLogLevel;
+#else
+            GameLog.LogLevel = LogLevel.Debug;
+#endif
+            GameLog.RegisterLogger(UnityConsoleLogger.Instance);
+        }
+
+        private void InitAppInfo()
+        {
+            // 读取AppConfig
+            {
+                var path = "appConfig";
+                var ta = Resources.Load<TextAsset>(path);
+                var config = ta == null ? null : JsonUtility.FromJson<AppConfiguration>(ta.text);
+#if UNITY_EDITOR
+                if (config == null)
+                {
+                    // 编辑器模式下，如果没有version.config文件，创建一份
+                    config = new AppConfiguration();
+                    var json = JsonUtility.ToJson(config);
+                    File.WriteAllText("Assets/Resources/appConfig.json", json);
+                    UnityEditor.AssetDatabase.Refresh();
+                }
+#endif
+                if (config == null)
+                {
+                    GameLog.Error("version.json not found");
+                    return;
+                }
+
+                AppInfo.AppConfig = config;
+
+            }
+        }
+
         private async UniTask PlaySplashVideo()
         {
             var go = Resources.Load<GameObject>("SplashWindow/SplashWindow");
-            go = GameObject.Instantiate(go);
+            go = Instantiate(go);
             var videoPlayer = go.GetComponentInChildren<VideoPlayer>();
             videoPlayer.Play();
             var clip = videoPlayer.clip;
             var duration = clip.length;
             await UniTask.Delay(TimeSpan.FromSeconds(duration));
+            Destroy(go);
         }
 
         private void OpenPatchWindow()
         {
-            if (!GameConfig.Instance.HotupdateConfig.EnableHotupdate)
+            if (!AppInfo.AppConfig.enableHotupdate)
             {
                 return;
             }
             var go = Resources.Load<GameObject>("PatchWindow/PatchWindow");
-            GameObject.Instantiate(go);
+            Instantiate(go);
         }
 
-        private static void InitUniEvent()
+        private void InitUniEvent()
         {
             UniEvent.Initalize();
         }
 
-        private static void SetGameLog()
-        {
-            GameLog.RegisterLogger(UnityConsoleLogger.Instance);
-        }
-
-        private static async UniTask InitResourceModule()
+        private async UniTask InitResourceModule()
         {
             GameLog.Debug("初始化资源模块");
             YooAssets.Initialize(UnityConsoleLogger.Instance);
             GameLog.Debug("初始化资源模块完成");
 
-            // 开始补丁更新流程
-            PatchOperation operation = new PatchOperation(GameConfig.Instance.HotupdateConfig.PackageName, EDefaultBuildPipeline.BuiltinBuildPipeline.ToString(), GameConfig.Instance.HotupdateConfig.PlayMode);
+            var playMode = Application.isEditor ? editorPlayMode : AppInfo.AppConfig.ReleasePlayMode;
+
+            // 开始更新主资源补丁
+            GameLog.Debug("开始更新主资源补丁");
+            PatchOperation operation = new PatchOperation(AppInfo.AppConfig.mainPackageName, EDefaultBuildPipeline.BuiltinBuildPipeline.ToString(), playMode);
             YooAssets.StartOperation(operation);
-
             await operation.ToUniTask();
-
-            // 设置默认的资源包
-            var gamePackage = YooAssets.GetPackage(GameConfig.Instance.HotupdateConfig.PackageName);
+            GameLog.Debug("更新主资源补丁完成");
+            var gamePackage = YooAssets.GetPackage(AppInfo.AppConfig.mainPackageName);
             YooAssets.SetDefaultPackage(gamePackage);
+
+            if (!string.IsNullOrEmpty(AppInfo.AppConfig.rawFilePackageName))
+            {
+                // 开始更新原生文件资源补丁
+                GameLog.Debug("开始更新原生文件资源补丁");
+                operation = new PatchOperation(AppInfo.AppConfig.rawFilePackageName, EDefaultBuildPipeline.RawFileBuildPipeline.ToString(), playMode);
+                YooAssets.StartOperation(operation);
+                await operation.ToUniTask();
+            }
         }
 
         private void LoadDll()
@@ -82,22 +132,17 @@ namespace Game
             PatchEventDefine.PatchStatesChange.SendEventMessage("加载逻辑资源");
             // 加载HotUpdate程序集
 
-            if (!GameConfig.Instance.HotupdateConfig.EnableHotupdate)
+            var entryAssembly = (Assembly)null;
+            if (Application.isEditor)
             {
-                // 未开启热更新，直接加载HotUpdate程序集
-                GameLog.Debug("未开启热更新，直接加载HotUpdate程序集");
-            }
-            else if (Application.isEditor)
-            {
-                // Editor下无需加载，直接查找获得HotUpdate程序集
-                GameLog.Debug("Editor环境下无需加载HotUpdate程序集");
+                entryAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "HotUpdate");
             }
             else
             {
                 GameLog.Debug("加载HotUpdate程序集");
 
                 // 补充Aot泛型元数据
-                var aotDllNames = AOTGenericReferences.PatchedAOTAssemblyList;
+                var aotDllNames = AOTGenericReferences.PatchedAOTAssemblyList.Concat(AppInfo.AppConfig.aotMetaDlls).Distinct();
                 foreach (var dllName in aotDllNames)
                 {
                     var ta = Resources.Load<TextAsset>($"AotDlls/{dllName}");
@@ -118,20 +163,28 @@ namespace Game
                     }
                 }
                 // 加载HotUpdate程序集
-                foreach (var dllName in GameConfig.Instance.HotupdateConfig.HotupdateAssemblies)
+                foreach (var assName in AppInfo.AppConfig.hotupdateAssemblies)
                 {
-                    var dllPath = Path.Combine(GameConfig.Instance.HotupdateConfig.HotUpdateDllAssetFolder, dllName);
+                    var fileName = $"{assName}.dll.bytes";
+                    var folder = "Assets/GameRes/Dlls";
+                    var dllPath = $"{folder}/{fileName}";
                     var handle = YooAssets.LoadAssetSync<TextAsset>(dllPath);
                     var dllBytes = handle.GetAssetObject<TextAsset>().bytes;
                     GameLog.Debug($"加载HotUpdate程序集: {dllPath}, {dllBytes.Length} bytes");
-                    Assembly.Load(dllBytes);
+                    var ass = Assembly.Load(dllBytes);
+                    if (assName == "HotUpdate")
+                    {
+                        entryAssembly = ass;
+                    }
                     handle.Release();
                 }
             }
-
-            var hotUpdateAss = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "HotUpdate");
+            if (entryAssembly == null)
+            {
+                GameLog.Error("加载不到逻辑程序集");
+            }
             // 调用HotUpdate程序集的StartGame.Start方法
-            var typeStartGame = hotUpdateAss.GetType("Game.StartGame");
+            var typeStartGame = entryAssembly.GetType("Game.StartGame");
             var methodStart = typeStartGame.GetMethod("Start", BindingFlags.Static | BindingFlags.Public);
             methodStart.Invoke(null, null);
         }

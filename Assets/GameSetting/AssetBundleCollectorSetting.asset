@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowPackageView: 0
   ShowEditorAlias: 0
-  UniqueBundleName: 0
+  UniqueBundleName: 1
   Packages:
-  - PackageName: DefaultPackage
+  - PackageName: MainPackage
     PackageDesc: 
     EnableAddressable: 1
     LocationToLower: 0
@@ -114,6 +114,27 @@ MonoBehaviour:
         CollectorGUID: 287c4493edf20644d8ff51c42fc3ba27
         CollectorType: 0
         AddressRuleName: AddressDisable
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+  - PackageName: RawFilePackage
+    PackageDesc: 
+    EnableAddressable: 0
+    LocationToLower: 0
+    IncludeAssetGUID: 0
+    IgnoreDefaultType: 1
+    AutoCollectShaders: 1
+    Groups:
+    - GroupName: Common
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/GameRes/Raw
+        CollectorGUID: bc3c2ad2c7a958a40b8aae6c057ca720
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
         AssetTags: 

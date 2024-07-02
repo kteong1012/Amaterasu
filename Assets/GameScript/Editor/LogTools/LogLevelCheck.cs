@@ -9,7 +9,7 @@
 //    public class LogLevelCheck : Editor
 //    {
 //        // 定义需要检查的宏定义
-//        private static readonly string[] symbols = { "LOG_DEBUG", "LOG_INFO", "LOG_WARNING" };
+//        private static readonly string[] _symbols = { "LOG_DEBUG", "LOG_INFO", "LOG_WARNING" };
 
 //        private void Awake()
 //        {
@@ -24,7 +24,7 @@
 
 //        private static void CheckSymbolState()
 //        {
-//            foreach (string symbol in symbols)
+//            foreach (string symbol in _symbols)
 //            {
 //                bool isEnabled = IsSymbolEnabled(symbol);
 //                Menu.SetChecked("LogLevel/" + GetSymbolName(symbol), isEnabled);
@@ -35,20 +35,20 @@
 //        private static void SetSymbolState(string symbol)
 //        {
 //            var target = EditorUserBuildSettings.activeBuildTarget;
-//            var group = BuildPipeline.GetBuildTargetGroup(target);
+//            var group = AndroidPlayerAndAssetsBuildPipeline.GetBuildTargetGroup(target);
 
 //            var defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(group);
-//            var symbols = defines.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList();
-//            var contains = symbols.Contains(symbol);
+//            var _symbols = defines.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList();
+//            var contains = _symbols.Contains(symbol);
 //            if (contains)
 //            {
-//                symbols.Remove(symbol);
+//                _symbols.Remove(symbol);
 //            }
 //            else
 //            {
-//                symbols.Add(symbol);
+//                _symbols.Add(symbol);
 //            }
-//            defines = string.Join(";", symbols.ToArray());
+//            defines = string.Join(";", _symbols.ToArray());
 //            PlayerSettings.SetScriptingDefineSymbolsForGroup(group, defines);
 //            CheckSymbolState();
 //        }
@@ -57,7 +57,7 @@
 //        private static bool IsSymbolEnabled(string symbol)
 //        {
 //            var target = EditorUserBuildSettings.activeBuildTarget;
-//            var group = BuildPipeline.GetBuildTargetGroup(target);
+//            var group = AndroidPlayerAndAssetsBuildPipeline.GetBuildTargetGroup(target);
 //            string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(group);
 //            return defines.Contains(symbol);
 //        }

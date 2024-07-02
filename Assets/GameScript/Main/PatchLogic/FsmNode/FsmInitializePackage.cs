@@ -62,8 +62,8 @@ internal class FsmInitializePackage : IStateNode
         // 联机运行模式
         if (playMode == EPlayMode.HostPlayMode)
         {
-            string defaultHostServer = GetHostServerURL();
-            string fallbackHostServer = GetHostServerURL();
+            string defaultHostServer = GetHostServerURL(packageName);
+            string fallbackHostServer = GetHostServerURL(packageName);
             var createParameters = new HostPlayModeParameters();
             createParameters.DecryptionServices = new FileStreamDecryption();
             createParameters.BuildinQueryServices = new GameQueryServices();
@@ -74,8 +74,8 @@ internal class FsmInitializePackage : IStateNode
         // WebGL运行模式
         if (playMode == EPlayMode.WebPlayMode)
         {
-            string defaultHostServer = GetHostServerURL();
-            string fallbackHostServer = GetHostServerURL();
+            string defaultHostServer = GetHostServerURL(packageName);
+            string fallbackHostServer = GetHostServerURL(packageName);
             var createParameters = new WebPlayModeParameters();
             createParameters.DecryptionServices = new FileStreamDecryption();
             createParameters.BuildinQueryServices = new GameQueryServices();
@@ -102,30 +102,21 @@ internal class FsmInitializePackage : IStateNode
     /// <summary>
     /// 获取资源服务器地址
     /// </summary>
-    private string GetHostServerURL()
+    private string GetHostServerURL(string packageName)
     {
-        string hostServerIP = GameConfig.Instance.HotupdateConfig.CdnHostUrl;
-        string appVersion = GameConfig.Instance.Version;
+        string hostServerIP = AppInfo.AppConfig.cdnHostUrl;
+        string appVersion = AppInfo.AppVersion.ToString();
 
-#if UNITY_EDITOR
-        if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.Android)
-            return $"{hostServerIP}/CDN/Android/{appVersion}";
-        else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.iOS)
-            return $"{hostServerIP}/CDN/IPhone/{appVersion}";
-        else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL)
-            return $"{hostServerIP}/CDN/WebGL/{appVersion}";
-        else
-            return $"{hostServerIP}/CDN/PC/{appVersion}";
-#else
         if (Application.platform == RuntimePlatform.Android)
-            return $"{hostServerIP}/CDN/Android/{appVersion}";
+            return $"{hostServerIP}/CDN/Android/{appVersion}/{packageName}";
         else if (Application.platform == RuntimePlatform.IPhonePlayer)
-            return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+            return $"{hostServerIP}/CDN/IOS/{appVersion}/{packageName}";
         else if (Application.platform == RuntimePlatform.WebGLPlayer)
-            return $"{hostServerIP}/CDN/WebGL/{appVersion}";
+            return $"{hostServerIP}/CDN/WebGL/{appVersion}/{packageName}";
+        else if (Application.platform == RuntimePlatform.WindowsPlayer)
+            return $"{hostServerIP}/CDN/Windows/{appVersion}/{packageName}";
         else
-            return $"{hostServerIP}/CDN/PC/{appVersion}";
-#endif
+            throw new System.NotSupportedException($"Unsupported platform: {Application.platform}");
     }
 
     /// <summary>

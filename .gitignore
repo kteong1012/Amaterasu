@@ -86,3 +86,7 @@ crashlytics-build.properties
 # Assets/StreamingAssets
 /Assets/StreamingAssets/
 /Assets/StreamingAssets.meta
+
+# BuildParameters.asset
+/Assets/GameScript/Editor/BuildTools/BuildPipline/BuildParameters.asset
+/Assets/GameScript/Editor/BuildTools/BuildPipline/BuildParameters.asset.meta

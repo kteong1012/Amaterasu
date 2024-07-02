@@ -163,6 +163,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.DefaultCompany.AutoStarRail
     Standalone: com.DefaultCompany.AutoStarRail
+    iPhone: com.DefaultCompany.AutoStarRail
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -773,18 +774,20 @@ PlayerSettings:
     PS4: TextMeshPro;DOTWEEN
     PS5: TextMeshPro;DOTWEEN
     QNX: TextMeshPro;DOTWEEN
+    Server: UNITASK_DOTWEEN_SUPPORT;TextMeshPro;DOTWEEN
     Stadia: TextMeshPro;DOTWEEN
-    Standalone: LOG_DEBUG;TextMeshPro;DOTWEEN
+    Standalone: UNITASK_DOTWEEN_SUPPORT;TextMeshPro;DOTWEEN
     VisionOS: TextMeshPro;DOTWEEN
     WebGL: TextMeshPro;DOTWEEN
     Windows Store Apps: DOTWEEN
     XboxOne: TextMeshPro;DOTWEEN
-    iPhone: TextMeshPro;DOTWEEN
+    iPhone: TextMeshPro;DOTWEEN;UNITASK_DOTWEEN_SUPPORT
     tvOS: TextMeshPro;DOTWEEN
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
     Android: 1
+    Standalone: 1
   il2cppCompilerConfiguration: {}
   il2cppCodeGeneration: {}
   managedStrippingLevel:
