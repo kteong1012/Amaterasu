@@ -79,13 +79,14 @@ crashlytics-build.properties
 
 # YooAsset Bundle Directory
 /[Bb]undles/
+/[yY]oo/
 
 # HybridCLRData Directory
 /[Hh]ybridCLRData/
 
 # Assets/StreamingAssets
-/Assets/StreamingAssets/
-/Assets/StreamingAssets.meta
+/Assets/StreamingAssets/yoo/
+/Assets/StreamingAssets/yoo.meta
 
 # BuildParameters.asset
 /Assets/GameScript/Editor/BuildTools/BuildPipline/BuildParameters.asset

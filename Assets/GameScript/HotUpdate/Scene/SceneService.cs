@@ -36,6 +36,7 @@ namespace Game
         }
 
 #pragma warning disable LOG003 // 禁止使用YooAssets.LoadSceneAsync
+#pragma warning disable LOG006 // 禁止直接调用YooAssets类,应改为ResourcesService
         private async UniTask ChangeScene(string sceneName)
         {
             var behavioursToDestroy = GetGameBehavioursInScene();
@@ -53,6 +54,7 @@ namespace Game
                 behaviour.StartServices().Forget();
             }
         }
+#pragma warning restore LOG006 //  禁止直接调用YooAssets类,应改为ResourcesService
 #pragma warning restore LOG003 // 禁止使用YooAssets.LoadSceneAsync
 
         private GameServiceBehaviour[] GetGameBehavioursInScene()

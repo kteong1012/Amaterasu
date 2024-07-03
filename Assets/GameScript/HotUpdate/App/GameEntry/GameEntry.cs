@@ -40,8 +40,7 @@ namespace Game
             await _serviceManager.StartServices(GameServiceDomain.Game);
 
             // 进入登录场景
-            var sceneService = GetService<SceneService>();
-            sceneService.ChangeToLoginScene().Forget();
+            GameService<SceneService>.Instance.ChangeToLoginScene().Forget();
 
             // 打开登录界面
             UIService.OpenPanel<UILoginPanel>();
@@ -74,7 +73,6 @@ namespace Game
         private void OnDestroy()
         {
             _eventGroup?.RemoveAllListener();
-            YooAssets.Destroy();
             GameLog.ClearLogger();
         }
         private void OnApplicationQuit()

@@ -21,7 +21,7 @@ namespace GameEditor
             CompileDllCommand.CompileDll(target);
 
             var hotUpdateDllDir = SettingsUtil.GetHotUpdateDllsOutputDirByTarget(target);
-            var outputDir = "Assets/GameRes/Dlls";
+            var outputDir = "Assets/GameRes/Raw/Code";
 
             foreach (var dllName in contenxt.BuildParameters.hotUpdateAssemblies)
             {

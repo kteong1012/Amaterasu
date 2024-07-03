@@ -10,7 +10,7 @@ namespace Game
 
         public override void Init(UnitAIComponent aIComponent)
         {
-            _battleUnitService = GameEntry.Ins.GetService<BattleUnitService>();
+            _battleUnitService = GameService<BattleUnitService>.Instance;
         }
         public override void Act(UnitAIComponent aIComponent)
         {

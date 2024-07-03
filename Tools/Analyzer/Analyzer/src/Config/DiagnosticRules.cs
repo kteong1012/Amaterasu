@@ -178,5 +178,21 @@ namespace Analyzer.Config
             private const string _message = "UI2D的子类必须包含UI2DAttribute特性";
             private const string _description = "UI2D的子类必须包含UI2DAttribute特性.";
         }
+
+        public static class InvokeYooAssetsRule
+        {
+            public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+                id: DiagnosticIds.InokeYooAssets,
+                title: _title,
+                messageFormat: _message,
+                category: DiagnosticCategories.Logic,
+                defaultSeverity: DiagnosticSeverity.Error,
+                isEnabledByDefault: true,
+                description: _description
+            );
+            private const string _title = "禁止直接调用YooAssets类，应改为ResourcesService";
+            private const string _message = "禁止直接调用YooAssets类,应改为ResourcesService";
+            private const string _description = "禁止直接调用YooAssets类,应改为ResourcesService.";
+        }
     }
 }

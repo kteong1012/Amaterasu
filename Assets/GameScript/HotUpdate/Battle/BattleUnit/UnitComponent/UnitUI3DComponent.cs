@@ -19,7 +19,7 @@ namespace Game
 
         protected override void OnInit()
         {
-            _unitHudHandle = YooAssets.LoadAssetSync<GameObject>($"UI3D_UnitHud");
+            _unitHudHandle = GameService<ResourceService>.Instance.LoadAssetSync<GameObject>($"UI3D_UnitHud");
             _damageTextPool = new YooAssetGameObjectPool("UI3D_DamageText");
             var go = _unitHudHandle.InstantiateSync(MainCamera.Instance.worldCanvasRoot);
             go.name = $"UI3D_UnitHud_{_controller.name}";

@@ -165,12 +165,10 @@ namespace Game
                 // 加载HotUpdate程序集
                 foreach (var assName in AppInfo.AppConfig.hotupdateAssemblies)
                 {
-                    var fileName = $"{assName}.dll.bytes";
-                    var folder = "Assets/GameRes/Dlls";
-                    var dllPath = $"{folder}/{fileName}";
-                    var handle = YooAssets.LoadAssetSync<TextAsset>(dllPath);
-                    var dllBytes = handle.GetAssetObject<TextAsset>().bytes;
-                    GameLog.Debug($"加载HotUpdate程序集: {dllPath}, {dllBytes.Length} bytes");
+                    var location = $"{assName}.dll";
+                    var handle = YooAssets.LoadRawFileSync(location);
+                    var dllBytes = handle.GetRawFileData();
+                    GameLog.Debug($"加载HotUpdate程序集: {location}, {dllBytes.Length} bytes");
                     var ass = Assembly.Load(dllBytes);
                     if (assName == "HotUpdate")
                     {

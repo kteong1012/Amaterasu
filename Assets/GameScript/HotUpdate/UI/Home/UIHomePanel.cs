@@ -18,13 +18,13 @@ public class UIHomePanel : UI2DPanel
     {
         btnStartBattle.onClick.AddListener(OnClickBtnStartBattle);
 
-        var playerDataService = GameEntry.Ins.GetService<PlayerDataService>();
+        var playerDataService = GameService<PlayerDataService>.Instance;
         var roleData = playerDataService.GetPlayerData<RoleData>();
     }
 
     private async void OnClickBtnStartBattle()
     {
-        var sceneService = GameEntry.Ins.GetService<SceneService>();
+        var sceneService = GameService<SceneService>.Instance;
         await sceneService.ChangeToBattleScene();
         Close();
     }

@@ -180,6 +180,7 @@ namespace Game
                 }
             }
 
+            GameLog.Error($"没有找到 {typeof(T).Name} 的服务，可能未注册对应Domain");
             return null;
         }
     }

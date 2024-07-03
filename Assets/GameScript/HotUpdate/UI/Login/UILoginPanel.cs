@@ -19,7 +19,7 @@ namespace Game
 
         private async void OnClickBtnEnterGame()
         {
-            var loginService = GameEntry.Ins.GetService<LoginService>();
+            var loginService = GameService<LoginService>.Instance;
             await loginService.Login(LoginChannel.Local, "0");
             Close();
         }

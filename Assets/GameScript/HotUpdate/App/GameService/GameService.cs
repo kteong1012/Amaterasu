@@ -15,6 +15,18 @@ namespace Game
             Domain = domain;
         }
     }
+
+    public static class GameService<T> where T : GameService
+    {
+        public static T Instance
+        {
+            get
+            {
+                return GameEntry.Ins.GetService<T>();
+            }
+        }
+    }
+
     public abstract class GameService
     {
         public GameServiceDomain Domain => GetType().GetCustomAttribute<GameServiceAttribute>().Domain;

@@ -90,7 +90,7 @@ namespace Game
         {
             if (_handle == null)
             {
-                _handle = YooAssets.LoadAssetSync<GameObject>(_assetPath);
+                _handle = GameService<ResourceService>.Instance.LoadAssetSync<GameObject>(_assetPath);
             }
 
             var go = _handle.InstantiateSync();

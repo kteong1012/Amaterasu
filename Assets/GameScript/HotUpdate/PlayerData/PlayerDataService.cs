@@ -26,7 +26,7 @@ namespace Game
         #region Life Cycle
         protected override async UniTask Awake()
         {
-            var loginService = GameEntry.Ins.GetService<LoginService>();
+            var loginService = GameService<LoginService>.Instance;
             await InitPlayerData(loginService.LoginChannel, loginService.PlayerId);
             LoadAll();
         }
