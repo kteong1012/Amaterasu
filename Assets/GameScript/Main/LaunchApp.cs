@@ -20,7 +20,7 @@ namespace Game
         {
             // 初始化Log
             InitGameLog();
-            // 获取版本号
+            // 获取AppInfo
             InitAppInfo();
             // 播放启动视频
             //await PlaySplashVideo();
@@ -30,6 +30,8 @@ namespace Game
             InitUniEvent();
             // 初始化资源模块
             await InitResourceModule();
+            // 加载CSharpConfiguration
+            LoadCSharpConfiguration();
             // 加载HotUpdate程序集
             LoadDll();
         }
@@ -127,6 +129,24 @@ namespace Game
             }
         }
 
+        private void LoadCSharpConfiguration()
+        {
+            if (Application.isEditor)
+            {
+                return;
+            }
+            var rawPackage = YooAssets.GetPackage(AppInfo.AppConfig.rawFilePackageName);
+            var handle = rawPackage.LoadRawFileSync("csharpconfig");
+            if (handle == null)
+            {
+                GameLog.Error("加载不到CSharpConfiguration");
+                return;
+            }
+            var json = handle.GetRawFileText();
+            var config = JsonUtility.FromJson<CSharpConfiguration>(json);
+            AppInfo.CSharpConfig = config;
+        }
+
         private void LoadDll()
         {
             PatchEventDefine.PatchStatesChange.SendEventMessage("加载逻辑资源");
@@ -163,7 +183,7 @@ namespace Game
                     }
                 }
                 // 加载HotUpdate程序集
-                foreach (var assName in AppInfo.AppConfig.hotupdateAssemblies)
+                foreach (var assName in AppInfo.CSharpConfig.hotupdateAssemblies)
                 {
                     var location = $"{assName}.dll";
                     var handle = YooAssets.LoadRawFileSync(location);

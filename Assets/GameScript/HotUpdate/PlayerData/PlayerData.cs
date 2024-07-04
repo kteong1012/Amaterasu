@@ -1,6 +1,9 @@
-﻿namespace Game
+﻿using Nino.Core;
+
+namespace Game
 {
-    public abstract class PlayerData
+    [NinoType]
+    public class PlayerData
     {
     }
 }

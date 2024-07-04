@@ -17,5 +17,18 @@ namespace Game
                 _appconfig = value;
             }
         }
+
+        public static Version CSharpVersion { get; private set; }
+        private static CSharpConfiguration _csharpConfig;
+        public static CSharpConfiguration CSharpConfig
+        {
+            get => _csharpConfig;
+            set
+            {
+                CSharpVersion = new Version(value.csharpVersion);
+                GameLog.Info($"CSharpVersion: {CSharpVersion}");
+                _csharpConfig = value;
+            }
+        }
     }
 }

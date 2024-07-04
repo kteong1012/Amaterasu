@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using Game.Log;
-using Nino.Serialization;
+using Nino;
+using Nino.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +19,7 @@ namespace Game
 
         public string PlayerId { get; private set; }
 
-        private string _PlayerDataDir => $"{Application.persistentDataPath}/PlayerData/{LoginChannel}/{PlayerId}";
+        private string _playerDataPath => $"{Application.persistentDataPath}/PlayerData/{AppInfo.CSharpVersion}/{LoginChannel}/{PlayerId}.pdt";
 
         private Dictionary<Type, PlayerData> _cachePlayerDataMap = new();
         #endregion
@@ -54,40 +55,35 @@ namespace Game
         {
             _cachePlayerDataMap.Clear();
 
+            if (!File.Exists(_playerDataPath))
+            {
+                return;
+            }
+            var data = File.ReadAllBytes(_playerDataPath);
+
             var types = TypeManager.Instance.GetTypes().Where(IsPlayerDataClass);
 
-            foreach (var type in types)
+            HotUpdate_Nino.Deserializer.Deserialize(data, out List<PlayerData> playerDatas);
+
+            foreach (var playerData in playerDatas)
             {
-                var fileName = Path.Combine(_PlayerDataDir, GetPlayerDataFileName(type));
-                PlayerData playerData = null;
-                if (File.Exists(fileName))
-                {
-                    var bytes = File.ReadAllBytes(fileName);
-                    playerData = Deserializer.Deserialize(type, bytes) as PlayerData;
-                }
-                if (playerData == null)
-                {
-                    playerData = Activator.CreateInstance(type) as PlayerData;
-                }
+                var type = playerData.GetType();
                 _cachePlayerDataMap.Add(type, playerData);
             }
         }
 
         public void SaveAll()
         {
-            if (!Directory.Exists(_PlayerDataDir))
+            var dirPath = Path.GetDirectoryName(_playerDataPath);
+            if (!Directory.Exists(dirPath))
             {
-                Directory.CreateDirectory(_PlayerDataDir);
+                Directory.CreateDirectory(dirPath);
             }
 
-            foreach (var kv in _cachePlayerDataMap)
-            {
-                var type = kv.Key;
-                var playerData = kv.Value;
-                var fileName = Path.Combine(_PlayerDataDir, GetPlayerDataFileName(type));
-                var bytes = Serializer.Serialize(playerData);
-                File.WriteAllBytes(fileName, bytes);
-            }
+            var playerDatas = _cachePlayerDataMap.Values.ToList();
+            var data = HotUpdate_Nino.Serializer.Serialize(playerDatas);
+
+            File.WriteAllBytes(_playerDataPath, data);
         }
 
         public T GetPlayerData<T>() where T : PlayerData
@@ -103,15 +99,6 @@ namespace Game
         #endregion
 
         #region Private Methods
-        /// <summary>
-        /// 类型全名，并把小数点替换成下划线
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        private static string GetPlayerDataFileName(Type type)
-        {
-            return type.FullName.Replace(".", "_");
-        }
 
         private static bool IsPlayerDataClass(Type type)
         {
@@ -123,7 +110,7 @@ namespace Game
             {
                 return false;
             }
-            if (type.GetCustomAttribute<NinoSerializeAttribute>() == null)
+            if (type.GetCustomAttribute<NinoTypeAttribute>() == null)
             {
                 return false;
             }

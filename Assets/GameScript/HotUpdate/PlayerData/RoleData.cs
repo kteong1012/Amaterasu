@@ -1,8 +1,8 @@
-﻿using Nino.Serialization;
+﻿using Nino.Core;
 
 namespace Game
 {
-    [NinoSerialize]
+    [NinoType]
     public partial class RoleData : PlayerData
     {
         public int RoleId { get; set; }
