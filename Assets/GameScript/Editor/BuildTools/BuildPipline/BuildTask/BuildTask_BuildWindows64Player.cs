@@ -4,12 +4,11 @@ using UnityEngine;
 namespace GameEditor
 {
     [BuildTask(BuildParamGroup.Player)]
-    public class BuildTask_BuildAndroidPlayer : IBuildTask
+    public class BuildTask_BuildWindows64Player : IBuildTask
     {
 
         public void Run(BuildContext context)
         {
-            EditorUserBuildSettings.exportAsGoogleAndroidProject = context.BuildParameters.exportProject;
             var buildOptions = BuildOptions.None;
             if (context.BuildParameters.isDevelopmentMode)
             {
@@ -20,6 +19,8 @@ namespace GameEditor
             var scnenes = new string[] { context.LaunchScenePath };
             var outputPath = context.BuildParameters.GetBuildOutputPath();
             var buildTarget = context.BuildParameters.BuildTarget;
+
+            UnityEditor.WindowsStandalone.UserBuildSettings.createSolution = context.BuildParameters.exportProject;
 
             context.BuildReport = BuildPipeline.BuildPlayer(scnenes, outputPath, buildTarget, buildOptions);
 
