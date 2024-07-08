@@ -30,7 +30,7 @@ namespace Game
 
         public UnitController CreateUnit(int unitId, int level, UnitCamp unitCamp)
         {
-            var unitData = GameServices.ConfigService.TbUnitData.GetOrDefault(unitId);
+            var unitData = SSS.ConfigService.TbUnitData.GetOrDefault(unitId);
             if (unitData == null)
             {
                 GameLog.Error($"UnitData 表中没有找到Id为{unitId}的数据");

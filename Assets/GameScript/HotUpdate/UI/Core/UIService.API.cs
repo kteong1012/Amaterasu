@@ -8,27 +8,33 @@ namespace Game
     {
         public static T OpenPanel<T>() where T : UI2DPanel
         {
-            return Instance.DoOpenPanel<T>();
-        }
-
-        private T DoOpenPanel<T>() where T : UI2DPanel
-        {
-            var type = typeof(T);
-            if (!ui2DPanelInfos.TryGetValue(type.Name, out var panelInfo))
+            var panel = Instance.__OpenPanel<T>();
+            if (panel == null)
             {
-                GameLog.Error($"没有找到UI2DPanelAttribute特性的类型{type}");
+                GameLog.Error($"没有找到UI2DPanel '{typeof(T).Name}'");
                 return null;
             }
-            if (!_activePanels.TryGetValue(type.Name, out var panel))
+
+            return panel;
+        }
+
+        public UI2DPanel OpenPanel(string className)
+        {
+            if (!TryGetPanelInfo(className, out var panelInfo))
             {
-                panel = GetPanel(type.Name, panelInfo);
+                GameLog.Error($"没有找到UI2DPanelAttribute特性的类型{className}");
+                return null;
+            }
+            if (!_activePanels.TryGetValue(className, out var panel))
+            {
+                panel = GetPanel(className, panelInfo);
                 if (panel == null)
                 {
-                    GameLog.Error($"获取面板失败{type}");
+                    GameLog.Error($"获取 Panel 失败 '{className}'");
                     return null;
                 }
             }
-            _activePanels[type.Name] = panel;
+            _activePanels[className] = panel;
             SetParent(panel.transform, panel.Layer);
             panel.gameObject.SetActive(true);
             panel.transform.SetAsLastSibling();
@@ -36,7 +42,7 @@ namespace Game
             panel.transform.localScale = Vector3.one;
             panel.transform.localRotation = Quaternion.identity;
             panel.Open();
-            return panel as T;
+            return panel;
         }
 
         private void ClosePanel(UI2DPanel panel)

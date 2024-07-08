@@ -33,10 +33,10 @@ namespace Game
         #region Private Methods
         public void CreateDemo()
         {
-            GameServices.BattleUnitService.DestroyAllUnits();
-            var unit1 = GameServices.BattleUnitService.CreateUnit(1001, 10, UnitCamp.Enemy);
+            SSS.BattleUnitService.DestroyAllUnits();
+            var unit1 = SSS.BattleUnitService.CreateUnit(1001, 10, UnitCamp.Enemy);
             unit1.transform.position = new Vector3(20, unit1.transform.position.y, 20);
-            var unit2 = GameServices.BattleUnitService.CreateUnit(1001, 10, UnitCamp.Player);
+            var unit2 = SSS.BattleUnitService.CreateUnit(1001, 10, UnitCamp.Player);
             unit2.transform.position = new Vector3(-20, unit2.transform.position.y, -20);
             unit2.GetUnitComponent<UnitStatsComponent>().LinearAdd(NumericId.ACTSPD, NumericValueType.BaseAdd, NumberX1000.One * 50);
         }

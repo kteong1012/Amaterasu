@@ -27,7 +27,7 @@ namespace Game
         #region Life Cycle
         protected override async UniTask Awake()
         {
-            var loginService = GameServices.LoginService;
+            var loginService = SSS.LoginService;
             await InitPlayerData(loginService.LoginChannel, loginService.PlayerId);
             LoadAll();
         }
@@ -60,8 +60,6 @@ namespace Game
                 return;
             }
             var data = File.ReadAllBytes(_playerDataPath);
-
-            var types = TypeManager.Instance.GetTypes().Where(IsPlayerDataClass);
 
             HotUpdate_Nino.Deserializer.Deserialize(data, out List<PlayerData> playerDatas);
 

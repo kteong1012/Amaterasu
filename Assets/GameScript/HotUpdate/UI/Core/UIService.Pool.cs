@@ -99,8 +99,8 @@ namespace Game
 
         private void RecyclePanel(UI2DPanel panel)
         {
-            var typeName = panel.GetType().Name;
-            var panelInfo = ui2DPanelInfos[typeName];
+            var typeName = panel.ClassName;
+            TryGetPanelInfo(typeName, out var panelInfo);
             if (panelInfo.allowMultiOpen)
             {
                 if (!_recycledMultiPanels.TryGetValue(typeName, out var panels))

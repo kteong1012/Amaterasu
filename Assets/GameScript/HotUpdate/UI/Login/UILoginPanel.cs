@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Game
 {
     [UI2D("UILoginPanel")]
-    public class UILoginPanel : UI2DPanel
+    public partial class UILoginPanel : UI2DPanel
     {
         [SerializeField] private Button _loginButton;
 
@@ -19,7 +19,7 @@ namespace Game
 
         private async void OnClickBtnEnterGame()
         {
-            await GameServices.LoginService.Login(LoginChannel.Local, "0");
+            await SSS.LoginService.Login(LoginChannel.Local, "0");
             Close();
         }
     }

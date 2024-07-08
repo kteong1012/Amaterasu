@@ -23,6 +23,8 @@ namespace Game
         public abstract UI2DPanelLayer Layer { get; }
         public abstract UI2DPanelOptions Options { get; }
 
+        public virtual string ClassName { get; }
+
         public void Open()
         {
             OnOpen();

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [UI2D("UIHomePanel")]
-public class UIHomePanel : UI2DPanel
+public partial class UIHomePanel : UI2DPanel
 {
     public override UI2DPanelLayer Layer => UI2DPanelLayer.Normal;
 
@@ -18,12 +18,12 @@ public class UIHomePanel : UI2DPanel
     {
         btnStartBattle.onClick.AddListener(OnClickBtnStartBattle);
 
-        var roleData = GameServices.PlayerDataService.GetPlayerData<RoleData>();
+        var roleData = SSS.PlayerDataService.GetPlayerData<RoleData>();
     }
 
     private async void OnClickBtnStartBattle()
     {
-        await GameServices.SceneService.ChangeToBattleScene();
+        await SSS.SceneService.ChangeToBattleScene();
         Close();
     }
 }

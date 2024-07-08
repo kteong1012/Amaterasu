@@ -21,7 +21,7 @@ namespace Game.Cfg
         private async UniTask<ByteBuf> Loader(string tableName)
         {
             GameLog.Debug($"加载配置表 {tableName}");
-            var bytes = await GameServices.ResourceService.LoadRawFileAsync(tableName);
+            var bytes = await SSS.ResourceService.LoadRawFileAsync(tableName);
             return new ByteBuf(bytes);
         }
     }

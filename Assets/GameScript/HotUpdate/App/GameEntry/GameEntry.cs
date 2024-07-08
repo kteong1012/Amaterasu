@@ -32,10 +32,10 @@ namespace Game
             PatchEventDefine.ClosePatchWindow.SendEventMessage();
 
             // 启动Game服务
-            await GameServices.StartServices( GameServiceDomain.Game);
+            await SSS.StartServices( GameServiceDomain.Game);
 
             // 进入登录场景
-            GameServices.SceneService.ChangeToLoginScene().Forget();
+            SSS.SceneService.ChangeToLoginScene().Forget();
 
             // 打开登录界面
             UIService.OpenPanel<UILoginPanel>();
@@ -47,7 +47,7 @@ namespace Game
 
         private void Update()
         {
-            GameServices.Update();
+            SSS.Update();
         }
 
         private void OnDestroy()
@@ -57,7 +57,7 @@ namespace Game
         }
         private void OnApplicationQuit()
         {
-            GameServices.StopAll();
+            SSS.StopAll();
         }
     }
 }

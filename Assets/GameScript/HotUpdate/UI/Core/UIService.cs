@@ -22,16 +22,18 @@ namespace Game
     {
         public UI2DPanelInfo info;
 
-        public UI2DAttribute(string prefabPath, bool allowMultiOpen = false)
+        public UI2DAttribute(string prefabPath)
         {
             info = new UI2DPanelInfo
             {
-                prefabPath = prefabPath,
-                allowMultiOpen = allowMultiOpen
+                prefabPath = prefabPath
             };
         }
     }
-    public class UI2DPanelInfo
+    public class AllowMultiOpenAttribute : System.Attribute
+    {
+    }
+    public struct UI2DPanelInfo
     {
         public string prefabPath;
         public bool allowMultiOpen;
@@ -40,7 +42,6 @@ namespace Game
     [GameService(GameServiceDomain.Game)]
     public partial class UIService : GameService
     {
-        private Dictionary<string, UI2DPanelInfo> ui2DPanelInfos = new Dictionary<string, UI2DPanelInfo>();
         private GameObject _uiRoot;
         private Camera _uiCamera;
         private Transform _layerRoot;
@@ -50,17 +51,6 @@ namespace Game
         protected override UniTask Awake()
         {
             Instance = this;
-            var types = TypeManager.Instance.GetTypes();
-            foreach (var type in types)
-            {
-                var attr = type.GetCustomAttributes(typeof(UI2DAttribute), false);
-                if (attr.Length > 0)
-                {
-                    var ui2DPanelAttribute = attr[0] as UI2DAttribute;
-                    var typeName = type.Name;
-                    ui2DPanelInfos.Add(typeName, ui2DPanelAttribute.info);
-                }
-            }
 
             _eventGroup.AddListener<UIEventDefine.UI2DPanelCloseEvent>(OnUI2DPanelCloseEvent);
 
@@ -81,7 +71,7 @@ namespace Game
 
         private void InitRoot()
         {
-            var handle = GameServices.ResourceService.LoadAssetSync<GameObject>("UIRoot");
+            var handle = SSS.ResourceService.LoadAssetSync<GameObject>("UIRoot");
             _uiRoot = handle.InstantiateSync();
             _uiCamera = _uiRoot.GetComponentInChildren<Camera>();
             _layerRoot = _uiRoot.transform.Find("CanvasRoot/UILayerRoot");

@@ -12,13 +12,13 @@ namespace Game
         public async UniTask StartServices()
         {
             GameLog.Info($"GameServiceBehaviour StartServices, Domain: {domain}");
-            await GameServices.StartServices(domain);
+            await SSS.StartServices(domain);
         }
 
         public void StopServices()
         {
             GameLog.Info($"GameServiceBehaviour StopServices, Domain: {domain}");
-            GameServices.StopServices(domain);
+            SSS.StopServices(domain);
         }
     }
 }

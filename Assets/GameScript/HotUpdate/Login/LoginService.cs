@@ -54,12 +54,12 @@ namespace Game
             GameLog.Info($"LoginService Login, LoginChannel: {LoginChannel}, PlayerId: {PlayerId}");
 
             // 开启LoginService
-            await GameServices.StartServices(GameServiceDomain.Login);
+            await SSS.StartServices(GameServiceDomain.Login);
 
             // 发送登录事件
             GameEntryEventsDefine.LoginSuccess.SendEventMessage(LoginChannel, playerId);
 
-            await GameServices.SceneService.ChangeToHomeScene();
+            await SSS.SceneService.ChangeToHomeScene();
         }
 
         public void Logout()
@@ -68,10 +68,10 @@ namespace Game
             GameEntryEventsDefine.LogoutSuccess.SendEventMessage(LoginChannel, PlayerId);
 
             // 关闭LoginService
-            GameServices.StopServices(GameServiceDomain.Login);
+            SSS.StopServices(GameServiceDomain.Login);
 
             // 返回登录界面
-            GameServices.SceneService.ChangeToLoginScene().Forget();
+            SSS.SceneService.ChangeToLoginScene().Forget();
         }
         #endregion
 

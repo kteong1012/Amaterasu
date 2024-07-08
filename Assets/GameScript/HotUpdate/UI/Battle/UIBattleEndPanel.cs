@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 
 [UI2D("UIBattleEndPanel")]
-public class UIBattleEndPanel : UI2DPanel
+public partial class UIBattleEndPanel : UI2DPanel
 {
     public override UI2DPanelLayer Layer => UI2DPanelLayer.Normal;
 
@@ -38,12 +38,12 @@ public class UIBattleEndPanel : UI2DPanel
     private void OnClickBackToHomeSceneButton()
     {
         Close();
-        GameServices.SceneService.ChangeToHomeScene().Forget();
+        SSS.SceneService.ChangeToHomeScene().Forget();
     }
 
     private void OnClickRestartButton()
     {
-        GameServices.BattleRoomService.CreateDemo();
+        SSS.BattleRoomService.CreateDemo();
         Close();
     }
 }

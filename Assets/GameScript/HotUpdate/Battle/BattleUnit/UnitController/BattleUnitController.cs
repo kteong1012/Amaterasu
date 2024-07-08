@@ -94,7 +94,7 @@ namespace Game
             _modelComponent.ThrowModelAway(3f);
 
             // 从BattleUnitService移除自己
-            GameServices.BattleUnitService.DestroyUnit(InstanceId);
+            SSS.BattleUnitService.DestroyUnit(InstanceId);
         }
 
         public void TakeDamage(float damage)

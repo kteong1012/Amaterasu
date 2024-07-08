@@ -1,13 +1,9 @@
-﻿using Analyzer.Extension;
-using Analyzer.src.Extension;
+﻿using Analyzer.src.Extension;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace SourceGenerator
 {
@@ -45,7 +41,7 @@ namespace SourceGenerator
             sb.AppendLine("namespace Game");
             sb.AppendLine("{");
             sb++;
-            sb.AppendLine("public static class GameServices");
+            sb.AppendLine("public static class SSS");
             sb.AppendLine("{");
             sb++;
             foreach (var kvp in receiver.serviceTypeNames)
@@ -184,16 +180,7 @@ namespace SourceGenerator
             sb--;
             sb.AppendLine("}");
 
-            var test = false;
-            if (test)
-            {
-                var fileName = "E:\\OpenProjects\\Amaterasu\\Assets\\GameScript\\HotUpdate\\GameServices.g.cs";
-                File.WriteAllText(fileName, sb.ToString());
-            }
-            else
-            {
-                context.AddSource("GameServices.g.cs", sb.ToString());
-            }
+            context.AddSource("GameServices.g.cs", sb.ToString());
         }
 
 
@@ -242,6 +229,11 @@ namespace SourceGenerator
                 var attrTypeNameWithoutNamespace = _gameServiceAttributeType.Split('.').Last();
                 var attributeData = classTypeSymbol.GetAttributes().FirstOrDefault(a => a.AttributeClass.Name.Equals(attrTypeNameWithoutNamespace));
 
+                if (attributeData == null)
+                {
+                    return;
+                }
+
                 // 枚举值
                 var domain = attributeData.ConstructorArguments.FirstOrDefault().ToCSharpString();
                 domain = domain.Split('.').Last();
@@ -253,7 +245,7 @@ namespace SourceGenerator
 
                 if (!serviceTypeNames.TryGetValue(domain, out var serviceNames))
                 {
-                    serviceNames = new HashSet<(string fullName, string name)>();
+                    serviceNames = new HashSet<(string name, string fullName)>();
                     serviceTypeNames[domain] = serviceNames;
                 }
 
