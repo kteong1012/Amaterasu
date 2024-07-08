@@ -8,37 +8,6 @@ using YooAsset;
 namespace Game
 {
 
-    [System.Flags]
-    public enum UI2DPanelOptions
-    {
-        None = 0,
-        NotPlayOpenAnim = 1,
-        NotPlayCloseAnim = 2,
-        NotPlayAnim = NotPlayOpenAnim | NotPlayCloseAnim,
-        AllowMultiOpen = 4,
-    }
-
-    public class UI2DAttribute : System.Attribute
-    {
-        public UI2DPanelInfo info;
-
-        public UI2DAttribute(string prefabPath)
-        {
-            info = new UI2DPanelInfo
-            {
-                prefabPath = prefabPath
-            };
-        }
-    }
-    public class AllowMultiOpenAttribute : System.Attribute
-    {
-    }
-    public struct UI2DPanelInfo
-    {
-        public string prefabPath;
-        public bool allowMultiOpen;
-    }
-
     [GameService(GameServiceDomain.Game)]
     public partial class UIService : GameService
     {
@@ -53,6 +22,7 @@ namespace Game
             Instance = this;
 
             _eventGroup.AddListener<UIEventDefine.UI2DPanelCloseEvent>(OnUI2DPanelCloseEvent);
+            _eventGroup.AddListener<UIEventDefine.UI2DNodeReleaseEvent>(OnUI2DNodeReleaseEvent);
 
             InitRoot();
             InitLayer();
@@ -66,7 +36,7 @@ namespace Game
 
         public override void Update()
         {
-            UpdatePool();
+            UpdatePanelPool();
         }
 
         private void InitRoot()
@@ -78,7 +48,7 @@ namespace Game
             handle.Release();
 
             UnityEngine.Object.DontDestroyOnLoad(_uiRoot);
-             MainCamera.Instance.AddCameraStack(_uiCamera);
+            MainCamera.Instance.AddCameraStack(_uiCamera);
         }
 
         private void OnUI2DPanelCloseEvent(IEventMessage message)
@@ -89,6 +59,19 @@ namespace Game
                 return;
             }
             ClosePanel(msg.Panel);
+        }
+
+        private void OnUI2DNodeReleaseEvent(IEventMessage message)
+        {
+            var msg = message as UIEventDefine.UI2DNodeReleaseEvent;
+            if (msg == null)
+            {
+                return;
+            }
+            if (msg.Node != null)
+            {
+                RecycleNode(msg.Node);
+            }
         }
     }
 }

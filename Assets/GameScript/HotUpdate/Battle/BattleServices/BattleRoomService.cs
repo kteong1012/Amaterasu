@@ -10,6 +10,7 @@ namespace Game
     public partial class BattleRoomService : GameService
     {
         #region Fields & Properties
+        public YooAssetGameObjectPool DamageTextPool { get; } = new YooAssetGameObjectPool("UI3D_DamageText");
         #endregion
 
         #region Override Methods

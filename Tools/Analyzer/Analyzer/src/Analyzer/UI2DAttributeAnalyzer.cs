@@ -19,7 +19,10 @@ namespace Analyzer.Analyzer
         public const string UI2DClassName = "UI2D";
         public const string UI2DAttributeDefaultParam = "\"\"";
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(DiagnosticRules.UI2DAttributeRule.Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
+            DiagnosticRules.RequirePartialRule.Rule,
+            DiagnosticRules.UI2DAttributeRule.Rule
+            );
 
         public override void Initialize(AnalysisContext context)
         {
@@ -55,6 +58,14 @@ namespace Analyzer.Analyzer
                 if (!HasBaseType(classTypeSymbol, UI2DClassName))
                 {
                     continue;
+                }
+
+
+                if (!classDeclaration.Modifiers.Any(SyntaxKind.PartialKeyword))
+                {
+                    var location = classDeclaration.Identifier.GetLocation();
+                    var diagnostic = Diagnostic.Create(DiagnosticRules.RequirePartialRule.Rule, location, UI2DClassName);
+                    context.ReportDiagnostic(diagnostic);
                 }
 
                 var ui2DAttribute = classTypeSymbol.GetAttributes().FirstOrDefault(a => a.AttributeClass.Name.Equals(UI2DAttributeName));

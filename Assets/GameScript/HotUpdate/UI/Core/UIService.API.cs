@@ -1,11 +1,14 @@
 ﻿using Cysharp.Threading.Tasks;
 using Game.Log;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
 {
     public partial class UIService
     {
+        private Dictionary<string, UI2DPanel> _activePanels = new Dictionary<string, UI2DPanel>();
+
         public static T OpenPanel<T>() where T : UI2DPanel
         {
             var panel = Instance.__OpenPanel<T>();
@@ -18,7 +21,30 @@ namespace Game
             return panel;
         }
 
+        public static T CreateNode<T>(Transform parent) where T : UI2DNode
+        {
+            var node = Instance.__CreateNode<T>();
+            if (node == null)
+            {
+                GameLog.Error($"没有找到UI2DNode '{typeof(T).Name}'");
+                return null;
+            }
+
+            node.transform.SetParent(parent, false);
+            node.transform.SetAsLastSibling();
+            node.transform.localPosition = Vector3.zero;
+            node.transform.localScale = Vector3.one;
+            node.transform.localRotation = Quaternion.identity;
+
+            return node;
+        }
+
         public UI2DPanel OpenPanel(string className)
+        {
+            return __OpenPanel(className);
+        }
+
+        private UI2DPanel __OpenPanel(string className)
         {
             if (!TryGetPanelInfo(className, out var panelInfo))
             {
@@ -27,7 +53,7 @@ namespace Game
             }
             if (!_activePanels.TryGetValue(className, out var panel))
             {
-                panel = GetPanel(className, panelInfo);
+                panel = GetPanel(panelInfo);
                 if (panel == null)
                 {
                     GameLog.Error($"获取 Panel 失败 '{className}'");
@@ -41,7 +67,7 @@ namespace Game
             panel.transform.localPosition = Vector3.zero;
             panel.transform.localScale = Vector3.one;
             panel.transform.localRotation = Quaternion.identity;
-            panel.Open();
+            panel.__Show();
             return panel;
         }
 
@@ -51,6 +77,7 @@ namespace Game
             {
                 return;
             }
+            panel.__Hide();
             _activePanels.Remove(panel.GetType().Name);
             RecyclePanel(panel);
         }

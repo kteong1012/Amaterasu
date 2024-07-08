@@ -84,19 +84,6 @@ namespace Analyzer.Config
             private const string _title = "GameService特性缺失";
             private const string _message = "GameService的子类必须包含GameServiceAttribute特性";
             private const string _description = "GameService的子类必须包含GameServiceAttribute特性.";
-
-            public static DiagnosticDescriptor Test(string testContent)
-            {
-                return new DiagnosticDescriptor(
-                id: DiagnosticIds.GameServiceAttribute,
-                title: testContent,
-                messageFormat: testContent,
-                category: DiagnosticCategories.Logic,
-                defaultSeverity: DiagnosticSeverity.Error,
-                isEnabledByDefault: true,
-                description: testContent
-               );
-            }
         }
 
         public static class GameServiceAttributeNoneRule
@@ -177,6 +164,19 @@ namespace Analyzer.Config
             private const string _title = "UI2D特性缺失";
             private const string _message = "UI2D的子类必须包含UI2DAttribute特性";
             private const string _description = "UI2D的子类必须包含UI2DAttribute特性.";
+        }
+
+        public static class RequirePartialRule
+        {
+            public static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(
+                id: DiagnosticIds.RequirePartialRule,
+                title: "Class 缺少 partial 修饰符",
+                messageFormat: "{0} 必须为 partial",
+                category: DiagnosticCategories.Logic,
+                defaultSeverity: DiagnosticSeverity.Error,
+                isEnabledByDefault: true,
+                description: "Class 必须为 partial."
+            );
         }
 
         public static class InvokeYooAssetsRule

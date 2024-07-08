@@ -20,6 +20,7 @@ namespace Analyzer.Analyzer
         public const string GameServiceAttributeDefaultParam = "GameServiceDomain.None";
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
             DiagnosticRules.GameServiceAttributeRule.Rule,
+            DiagnosticRules.RequirePartialRule.Rule,
             DiagnosticRules.GameServiceAttributeNoneRule.Rule
             );
 
@@ -53,6 +54,14 @@ namespace Analyzer.Analyzer
                 if (classTypeSymbol.IsAbstract || !classTypeSymbol.BaseType?.Name.Equals(GameServiceClassName) == true)
                 {
                     continue;
+                }
+
+                // check if class has no partial modifier
+                if (!classDeclaration.Modifiers.Any(SyntaxKind.PartialKeyword))
+                {
+                    var location = classDeclaration.Identifier.GetLocation();
+                    var diagnostic = Diagnostic.Create(DiagnosticRules.RequirePartialRule.Rule, location, GameServiceClassName);
+                    context.ReportDiagnostic(diagnostic);
                 }
 
                 // check if class has GameServiceAttribute

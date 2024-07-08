@@ -35,7 +35,6 @@ namespace Game
             {
                 _mainPackage.UnloadUnusedAssets();
                 _unloadUnusedAssetsCountdown += UNLOAD_UNUSED_ASSETS_INTERVAL;
-                GameLog.Debug("== UnloadUnusedAssets ==");
             }
         }
     }

@@ -12,9 +12,11 @@ namespace Game
         public override UI2DPanelLayer Layer => UI2DPanelLayer.Normal;
         public override UI2DPanelOptions Options => UI2DPanelOptions.None;
 
-        public override void OnCreate()
+        protected override void OnCreate()
         {
             _loginButton.onClick.AddListener(OnClickBtnEnterGame);
+
+            CreateChild<UILoginNode>();
         }
 
         private async void OnClickBtnEnterGame()

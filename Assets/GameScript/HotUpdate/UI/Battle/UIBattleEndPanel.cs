@@ -18,7 +18,7 @@ public partial class UIBattleEndPanel : UI2DPanel
     public Button _backToHomeButton;
     public TextMeshProUGUI _textResult;
 
-    public override void OnCreate()
+    protected override void OnCreate()
     {
         _restartButton.onClick.AddListener(OnClickRestartButton);
         _backToHomeButton.onClick.AddListener(OnClickBackToHomeSceneButton);

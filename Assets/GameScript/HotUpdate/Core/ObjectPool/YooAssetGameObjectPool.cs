@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Log;
+using System;
 using UnityEngine;
 using UnityEngine.Pool;
 using YooAsset;
@@ -11,22 +12,26 @@ namespace Game
         private AssetHandle _handle;
         private ObjectPool<GameObject> _pool;
 
+        private Action<GameObject> _onCreate;
         private Action<GameObject> _actionOnGet;
         private Action<GameObject> _actionOnRelease;
         private Action<GameObject> _actionOnDestroy;
 
-        private bool _disposed;
+        private int _refCount;
+        public int RefCount => _refCount;
 
-        public YooAssetGameObjectPool(string assetPath, Action<GameObject> actionOnGet = null, Action<GameObject> actionOnRelease = null, Action<GameObject> actionOnDestroy = null, bool collectionCheck = true, int defaultCapacity = 10, int maxSize = 10000)
+        public YooAssetGameObjectPool(string assetPath, Action<GameObject> onCreate = null, Action<GameObject> actionOnGet = null, Action<GameObject> actionOnRelease = null, Action<GameObject> actionOnDestroy = null, bool collectionCheck = true, int defaultCapacity = 10, int maxSize = 10000)
         {
-            _disposed = false;
 
+            _onCreate = onCreate;
             _assetPath = assetPath;
             _actionOnGet = actionOnGet;
             _actionOnRelease = actionOnRelease;
             _actionOnDestroy = actionOnDestroy;
 
             _pool = new ObjectPool<GameObject>(CreateFunc, ActionOnGet, ActionOnRelease, ActionOnDestroy, collectionCheck, defaultCapacity, maxSize);
+
+            _refCount = 0;
         }
 
         public GameObject Get(Transform parent)
@@ -42,6 +47,8 @@ namespace Game
             go.transform.localRotation = Quaternion.identity;
             go.transform.localScale = Vector3.one;
             go.SetActive(true);
+
+            _refCount++;
             return go;
         }
 
@@ -62,22 +69,18 @@ namespace Game
         /// <param name="onDestroyAction">如果对象池在调用该方法的时候已经被Dispose了，就会调用这个委托。</param>
         public void Release(GameObject obj, Action<GameObject> onDestroyAction = null)
         {
-            if (_disposed)
-            {
-                onDestroyAction?.Invoke(obj);
-                UnityEngine.Object.Destroy(obj);
-            }
-            else
-            {
-                obj.transform.SetParent(null);
-                obj.SetActive(false);
-                _pool.Release(obj);
-            }
+            obj.transform.SetParent(null);
+            obj.SetActive(false);
+            _pool.Release(obj);
+            _refCount--;
         }
 
         public void Dispose()
         {
-            _disposed = true;
+            if (_refCount != 0)
+            {
+                GameLog.Warning($"对象池'{_assetPath}'的引用计数不为0，可能存在泄漏");
+            }
             _pool.Dispose();
             _handle?.Release();
             _actionOnGet = null;
@@ -95,6 +98,7 @@ namespace Game
 
             var go = _handle.InstantiateSync();
             go.name = $"{_assetPath}_{go.name}";
+            _onCreate?.Invoke(go);
             return go;
         }
 

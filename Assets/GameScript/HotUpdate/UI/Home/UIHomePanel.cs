@@ -14,7 +14,7 @@ public partial class UIHomePanel : UI2DPanel
 
     public Button btnStartBattle;
 
-    public override void OnCreate()
+    protected override void OnCreate()
     {
         btnStartBattle.onClick.AddListener(OnClickBtnStartBattle);
 

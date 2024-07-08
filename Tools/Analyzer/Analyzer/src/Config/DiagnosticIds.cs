@@ -25,6 +25,7 @@ namespace Analyzer.Config
         public const string UseGameLog = "LOG004";  //  禁止使用UnityEngine.Debug类，使用Game.Log.GameLog代替
         public const string UI2DAttribute = "LOG005";  //  UI2D的子类必须包含UI2DAttribute特性
         public const string InokeYooAssets = "LOG006";  //  禁止直接调用YooAssets类
+        public const string RequirePartialRule = "LOG007";  //  类必须包含 partial 修饰符
         #endregion
         #endregion
     }

@@ -91,3 +91,7 @@ crashlytics-build.properties
 # BuildParameters.asset
 /Assets/GameScript/Editor/BuildTools/BuildPipline/BuildParameters.asset
 /Assets/GameScript/Editor/BuildTools/BuildPipline/BuildParameters.asset.meta
+
+# Assets/UXTools/Res/UX-GUI-Editor-Tools/UserDatas
+/Assets/UXTools/Res/UX-GUI-Editor-Tools/UserDatas
+Assets/UXTools/Res/UX-GUI-Editor-Tools/UserDatas.meta

@@ -9,33 +9,34 @@ using System.Linq;
 namespace SourceGenerator
 {
     [Generator(LanguageNames.CSharp)]
-    public class UI2DPanelGenerator : ISourceGenerator
+    public class UI2DNodeGenerator : ISourceGenerator
     {
-        private const string _ui2DPanelBaseType = "Game.UI2DPanel";
-        private const string _ui2DPanelAttributeType = "UI2DAttribute";
+        private const string _ui2DNodeBaseType = "Game.UI2DNode";
+        private const string _ui2DNodeAttributeType = "UI2DAttribute";
 
 
         public void Initialize(GeneratorInitializationContext context)
         {
-            context.RegisterForSyntaxNotifications(() => new UI2DPanelSyntaxReceiver());
+            context.RegisterForSyntaxNotifications(() => new UI2DNodeSyntaxReceiver());
         }
 
         public void Execute(GeneratorExecutionContext context)
         {
-            if (context.SyntaxContextReceiver is not UI2DPanelSyntaxReceiver receiver)
+            if (context.SyntaxContextReceiver is not UI2DNodeSyntaxReceiver receiver)
             {
                 return;
             }
-            context.AddSource("UIServices.InitPanelInfo.g.cs", GenerateUIServiceInitInfo(receiver.openInfos));
-            context.AddSource("UIServices.ApiOpenPanel.g.cs", GenerateUIServiceApiOpen(receiver.openInfos));
+            AnalyzerHelper.AppendLog("Execute");
+            context.AddSource("UIServices.ApiOpenNode.g.cs", GenerateUIServiceApiOpen(receiver.openInfos));
+            context.AddSource("UIServices.InitNodeInfo.g.cs", GenerateUIServiceInitInfo(receiver.openInfos));
 
             foreach (var info in receiver.openInfos)
             {
-                context.AddSource($"{info.FullName}.g.cs", GeneratePanelClass(info));
+                context.AddSource($"{info.FullName}.g.cs", GenerateNodeClass(info));
             }
         }
 
-        private string GenerateUIServiceApiOpen(List<UI2DPanelOpenInfo> infos)
+        private string GenerateUIServiceApiOpen(List<UI2DNodeOpenInfo> infos)
         {
             var sb = new IntentStringBuilder(0);
             sb.AppendLine("using System;");
@@ -49,8 +50,8 @@ namespace SourceGenerator
             sb.AppendLine("{");//class start
             sb++;
 
-            sb.AppendLine("private T __OpenPanel<T>() where T : UI2DPanel");
-            sb.AppendLine("{");//method start __OpenPanel
+            sb.AppendLine("private T __CreateNode<T>() where T : UI2DNode");
+            sb.AppendLine("{");//method start __CreateNode
             sb++;
 
             foreach (var info in infos)
@@ -58,24 +59,24 @@ namespace SourceGenerator
                 sb.AppendLine($"if (typeof(T) == typeof({info.FullName}))");
                 sb.AppendLine("{"); //if start
                 sb++;
-                sb.AppendLine($"return __OpenPanel(\"{info.FullName}\") as T;");
+                sb.AppendLine($"return __GetNode(\"{info.FullName}\") as T;");
                 sb--;
                 sb.AppendLine("}"); //if end
             }
             sb.AppendLine("return null;");
 
             sb--;
-            sb.AppendLine("}");//method end __OpenPanel
+            sb.AppendLine("}");//method end __CreateNode
 
             sb--;
             sb.AppendLine("}");//class end
             sb--;
             sb.AppendLine("}");//namespace end
-
+            AnalyzerHelper.AppendLog(sb.ToString());
             return sb.ToString();
         }
 
-        private string GenerateUIServiceInitInfo(List<UI2DPanelOpenInfo> infos)
+        private string GenerateUIServiceInitInfo(List<UI2DNodeOpenInfo> infos)
         {
             var sb = new IntentStringBuilder(0);
             sb.AppendLine("using System;");
@@ -89,17 +90,17 @@ namespace SourceGenerator
             sb.AppendLine("{");
             sb++;
 
-            sb.AppendLine($"public bool TryGetPanelInfo(string panelName, out UI2DPanelInfo panelInfo)");
+            sb.AppendLine($"public bool TryGetNodeInfo(string nodeName, out UI2DNodeInfo nodeInfo)");
             sb.AppendLine("{");
             sb++;
-            sb.AppendLine("switch (panelName)");
+            sb.AppendLine("switch (nodeName)");
             sb.AppendLine("{");
             sb++;
             foreach (var info in infos)
             {
                 sb.AppendLine($"case \"{info.FullName}\":");
                 sb++;
-                sb.AppendLine($"panelInfo = new UI2DPanelInfo()");
+                sb.AppendLine($"nodeInfo = new UI2DNodeInfo()");
                 sb.AppendLine("{");
                 sb++;
                 sb.AppendLine($"prefabPath = {info.prefabPath},");
@@ -110,7 +111,7 @@ namespace SourceGenerator
             }
             sb.AppendLine("default:");
             sb++;
-            sb.AppendLine("panelInfo = default;");
+            sb.AppendLine("nodeInfo = default;");
             sb.AppendLine("return false;");
             sb--;
             sb.AppendLine("}");
@@ -125,7 +126,7 @@ namespace SourceGenerator
             return sb.ToString();
         }
 
-        private string GeneratePanelClass(UI2DPanelOpenInfo info)
+        private string GenerateNodeClass(UI2DNodeOpenInfo info)
         {
             var sb = new IntentStringBuilder(0);
 
@@ -155,7 +156,7 @@ namespace SourceGenerator
             return sb.ToString();
         }
 
-        class UI2DPanelOpenInfo
+        class UI2DNodeOpenInfo
         {
             public string namespaceName;
             public string className;
@@ -175,16 +176,16 @@ namespace SourceGenerator
             }
             public string prefabPath;
 
-            public UI2DPanelOpenInfo(string namespaceName, string className)
+            public UI2DNodeOpenInfo(string namespaceName, string className)
             {
                 this.namespaceName = namespaceName;
                 this.className = className;
             }
         }
 
-        class UI2DPanelSyntaxReceiver : ISyntaxContextReceiver
+        class UI2DNodeSyntaxReceiver : ISyntaxContextReceiver
         {
-            public List<UI2DPanelOpenInfo> openInfos = new List<UI2DPanelOpenInfo>();
+            public List<UI2DNodeOpenInfo> openInfos = new List<UI2DNodeOpenInfo>();
 
             public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
             {
@@ -206,14 +207,14 @@ namespace SourceGenerator
                     return;
                 }
                 var baseType = classTypeSymbol.BaseType?.ToString();
-                if (baseType != _ui2DPanelBaseType)
+                if (baseType != _ui2DNodeBaseType)
                 {
                     return;
                 }
 
                 var attributes = classTypeSymbol.GetAttributes();
 
-                var attribute = attributes.FirstOrDefault(a => a.AttributeClass.Name.Equals(_ui2DPanelAttributeType));
+                var attribute = attributes.FirstOrDefault(a => a.AttributeClass.Name.Equals(_ui2DNodeAttributeType));
 
                 if (attribute == null)
                 {
@@ -222,7 +223,7 @@ namespace SourceGenerator
 
                 var ns = classTypeSymbol.GetNameSpace();
 
-                var info = new UI2DPanelOpenInfo(ns, classTypeSymbol.Name);
+                var info = new UI2DNodeOpenInfo(ns, classTypeSymbol.Name);
                 if (openInfos.Any(x => x.FullName == info.FullName))
                 {
                     return;

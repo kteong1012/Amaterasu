@@ -15,12 +15,9 @@ namespace Game
 
         private BattleUnitController _battleUnit;
 
-        private YooAssetGameObjectPool _damageTextPool;
-
         protected override void OnInit()
         {
             _unitHudHandle = SSS.ResourceService.LoadAssetSync<GameObject>($"UI3D_UnitHud");
-            _damageTextPool = new YooAssetGameObjectPool("UI3D_DamageText");
             var go = _unitHudHandle.InstantiateSync(MainCamera.Instance.worldCanvasRoot);
             go.name = $"UI3D_UnitHud_{_controller.name}";
             _uiUnitHud = go.GetComponent<UI3D_UnitHud>();
@@ -40,7 +37,6 @@ namespace Game
 
         protected override void OnRelease()
         {
-            _damageTextPool.Dispose();
             _battleUnit.OnStatsChangeEvent -= OnStatsChange;
             _uiUnitHud.gameObject.TryDestroy();
             _uiUnitHud = null;
@@ -73,9 +69,9 @@ namespace Game
 
         private async void ShowDamageText(Transform parent, string content)
         {
-            var text = _damageTextPool.GetAsComponent<UI3D_DamageText>(parent);
+            var text = SSS.BattleRoomService.DamageTextPool.GetAsComponent<UI3D_DamageText>(parent);
             await text.StartFloating(content);
-            _damageTextPool.Release(text.gameObject);
+            SSS.BattleRoomService.DamageTextPool.Release(text.gameObject);
         }
     }
 }

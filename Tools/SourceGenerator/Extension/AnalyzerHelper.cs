@@ -567,16 +567,18 @@ public static class AnalyzerHelper
         return false;
     }
 
-    public static void ClearLog(string path)
+    public static void ClearLog()
     {
+        var path = "D:/log.log";
         if (File.Exists(path))
         {
             File.Delete(path);
         }
     }
 
-    public static void AppendLog(string path, string content)
+    public static void AppendLog(string content)
     {
+        var path = "D:/log.log";
         using (StreamWriter sw = new StreamWriter(path, true))
         {
             sw.WriteLine(content);
