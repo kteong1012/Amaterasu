@@ -5,7 +5,7 @@ using YooAsset;
 namespace Game
 {
     [GameService(GameServiceDomain.Game)]
-    public class SceneService : GameService
+    public partial class SceneService : GameService
     {
         protected override async UniTask Awake()
         {

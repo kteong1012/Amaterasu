@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Game
 {
     [GameService(GameServiceDomain.Login)]
-    public class PlayerDataService : GameService
+    public partial class PlayerDataService : GameService
     {
         #region Fields & Properties
         public LoginChannel LoginChannel { get; private set; }
@@ -27,7 +27,7 @@ namespace Game
         #region Life Cycle
         protected override async UniTask Awake()
         {
-            var loginService = GameService<LoginService>.Instance;
+            var loginService = GameServices.LoginService;
             await InitPlayerData(loginService.LoginChannel, loginService.PlayerId);
             LoadAll();
         }

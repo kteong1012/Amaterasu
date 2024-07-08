@@ -22,7 +22,7 @@ namespace Game
     }
 
     [GameService(GameServiceDomain.Game)]
-    public class LoginService : GameService
+    public partial class LoginService : GameService
     {
         #region Fields & Properties
         public LoginChannel LoginChannel { get; private set; }
@@ -30,8 +30,6 @@ namespace Game
         public string PlayerId { get; private set; }
 
         private Dictionary<Type, PlayerData> _cachePlayerDataMap = new();
-
-        private SceneService _sceneService;
         #endregion
 
         #region Life Cycle
@@ -56,12 +54,12 @@ namespace Game
             GameLog.Info($"LoginService Login, LoginChannel: {LoginChannel}, PlayerId: {PlayerId}");
 
             // 开启LoginService
-            await GameEntry.Ins.StartServices(GameServiceDomain.Login);
+            await GameServices.StartServices(GameServiceDomain.Login);
 
             // 发送登录事件
             GameEntryEventsDefine.LoginSuccess.SendEventMessage(LoginChannel, playerId);
 
-            await _sceneService.ChangeToHomeScene();
+            await GameServices.SceneService.ChangeToHomeScene();
         }
 
         public void Logout()
@@ -70,10 +68,10 @@ namespace Game
             GameEntryEventsDefine.LogoutSuccess.SendEventMessage(LoginChannel, PlayerId);
 
             // 关闭LoginService
-            GameEntry.Ins.StopServices(GameServiceDomain.Login);
+            GameServices.StopServices(GameServiceDomain.Login);
 
             // 返回登录界面
-            _sceneService.ChangeToLoginScene().Forget();
+            GameServices.SceneService.ChangeToLoginScene().Forget();
         }
         #endregion
 

@@ -1,5 +1,6 @@
 ﻿using Analyzer.Config;
 using Analyzer.Extension;
+using Analyzer.src.Extension;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;

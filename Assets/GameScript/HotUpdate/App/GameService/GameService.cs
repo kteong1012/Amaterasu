@@ -16,32 +16,10 @@ namespace Game
         }
     }
 
-    public static class GameService<T> where T : GameService
-    {
-        public static T Instance
-        {
-            get
-            {
-                return GameEntry.Ins.GetService<T>();
-            }
-        }
-    }
-
     public abstract class GameService
     {
-        public GameServiceDomain Domain => GetType().GetCustomAttribute<GameServiceAttribute>().Domain;
         protected EventGroup _eventGroup = new EventGroup();
 
-        public UniTask Init()
-        {
-            GameLog.Debug($"GameService {GetType().Name} Init, Domain: {Domain}");
-            return Awake();
-        }
-        public UniTask PostInit()
-        {
-            GameLog.Debug($"GameService {GetType().Name} PostInit, Domain: {Domain}");
-            return Start();
-        }
         protected virtual UniTask Awake()
         {
             return UniTask.CompletedTask;
@@ -53,12 +31,6 @@ namespace Game
 
         public virtual void Update()
         {
-        }
-
-        public void Destroy()
-        {
-            GameLog.Debug($"GameService {GetType().Name} Destroy, Domain: {Domain}");
-            OnDestroy();
         }
         protected virtual void OnDestroy()
         {

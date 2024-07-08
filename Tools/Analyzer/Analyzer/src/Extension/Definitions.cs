@@ -1,4 +1,4 @@
-﻿namespace Analyzer.Config
+﻿namespace Analyzer.src.Extension
 {
     public static class Definitions
     {

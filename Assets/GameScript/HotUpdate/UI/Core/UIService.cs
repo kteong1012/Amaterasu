@@ -81,7 +81,7 @@ namespace Game
 
         private void InitRoot()
         {
-            var handle = GameService<ResourceService>.Instance.LoadAssetSync<GameObject>("UIRoot");
+            var handle = GameServices.ResourceService.LoadAssetSync<GameObject>("UIRoot");
             _uiRoot = handle.InstantiateSync();
             _uiCamera = _uiRoot.GetComponentInChildren<Camera>();
             _layerRoot = _uiRoot.transform.Find("CanvasRoot/UILayerRoot");

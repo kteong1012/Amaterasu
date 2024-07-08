@@ -16,8 +16,6 @@ namespace Game
         public static GameEntry Ins { get; private set; }
 
         private readonly EventGroup _eventGroup = new EventGroup();
-
-        private GameServiceManager _serviceManager;
         #endregion
 
         private async void Awake()
@@ -33,14 +31,11 @@ namespace Game
             // 关闭更新窗口
             PatchEventDefine.ClosePatchWindow.SendEventMessage();
 
-            // 初始化服务管理器
-            InitServiceManager();
-
             // 启动Game服务
-            await _serviceManager.StartServices(GameServiceDomain.Game);
+            await GameServices.StartServices( GameServiceDomain.Game);
 
             // 进入登录场景
-            GameService<SceneService>.Instance.ChangeToLoginScene().Forget();
+            GameServices.SceneService.ChangeToLoginScene().Forget();
 
             // 打开登录界面
             UIService.OpenPanel<UILoginPanel>();
@@ -50,24 +45,9 @@ namespace Game
         {
         }
 
-        private void InitServiceManager()
-        {
-            _serviceManager = new GameServiceManager();
-        }
-
-        public async UniTask StartServices(GameServiceDomain domain)
-        {
-            await _serviceManager.StartServices(domain);
-        }
-
-        public void StopServices(GameServiceDomain domain)
-        {
-            _serviceManager.StopServices(domain);
-        }
-
         private void Update()
         {
-            _serviceManager?.Update();
+            GameServices.Update();
         }
 
         private void OnDestroy()
@@ -77,12 +57,7 @@ namespace Game
         }
         private void OnApplicationQuit()
         {
-            _serviceManager?.Release();
-        }
-
-        public T GetService<T>() where T : GameService
-        {
-            return _serviceManager.GetService<T>();
+            GameServices.StopAll();
         }
     }
 }

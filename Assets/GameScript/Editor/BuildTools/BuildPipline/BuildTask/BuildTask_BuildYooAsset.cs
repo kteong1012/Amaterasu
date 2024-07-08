@@ -81,7 +81,6 @@ namespace GameEditor
             var fileNameStyle = EFileNameStyle.HashName;
             var buildinFileCopyOption = enableHotUpdate ? EBuildinFileCopyOption.ClearAndCopyByTags : EBuildinFileCopyOption.ClearAndCopyAll;
             var buildinFileCopyParams = enableHotUpdate ? "local;Local;LOCAL" : null;
-            var compressOption = ECompressOption.Uncompressed;
             var encryptionServices = (IEncryptionServices)null; //暂时不考虑加密
 
             var buildParameters = new RawFileBuildParameters();

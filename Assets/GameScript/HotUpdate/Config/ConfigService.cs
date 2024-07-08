@@ -11,7 +11,7 @@ namespace Game.Cfg
     [GameService(GameServiceDomain.Game)]
     public partial class ConfigService : GameService
     {
-        protected override async UniTask Awake()
+        protected override async UniTask Start()
         {
             GameLog.Info("====初始化配置====");
             await LoadAll(Loader);
@@ -21,7 +21,7 @@ namespace Game.Cfg
         private async UniTask<ByteBuf> Loader(string tableName)
         {
             GameLog.Debug($"加载配置表 {tableName}");
-            var bytes = await GameService<ResourceService>.Instance.LoadRawFileAsync(tableName);
+            var bytes = await GameServices.ResourceService.LoadRawFileAsync(tableName);
             return new ByteBuf(bytes);
         }
     }

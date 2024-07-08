@@ -9,12 +9,11 @@ using UnityEngine;
 namespace Game
 {
     [GameService(GameServiceDomain.Battle)]
-    public class BattleUnitService : GameService
+    public partial class BattleUnitService : GameService
     {
         private Dictionary<string, Type> _unitControllerTypeMaps = new Dictionary<string, Type>();
         private int _instanceId;
         private Dictionary<int, UnitController> _Units = new Dictionary<int, UnitController>();
-        private ConfigService _configService;
 
         protected override async UniTask Awake()
         {
@@ -31,7 +30,7 @@ namespace Game
 
         public UnitController CreateUnit(int unitId, int level, UnitCamp unitCamp)
         {
-            var unitData = _configService.TbUnitData.GetOrDefault(unitId);
+            var unitData = GameServices.ConfigService.TbUnitData.GetOrDefault(unitId);
             if (unitData == null)
             {
                 GameLog.Error($"UnitData 表中没有找到Id为{unitId}的数据");

@@ -11,7 +11,7 @@ namespace Game
         public static void Start()
         {
             var go = new GameObject("GameEntry");
-            go.AddComponent<GameEntry>();
+            go.AddComponent<GameEntry>(); 
         }
     }
 }

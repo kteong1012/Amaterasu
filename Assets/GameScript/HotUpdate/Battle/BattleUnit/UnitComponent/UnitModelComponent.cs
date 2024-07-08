@@ -15,7 +15,7 @@ namespace Game
         protected override void OnInit()
         {
             var unitData = _controller.UnitData;
-            var handle = GameService<ResourceService>.Instance.LoadAssetSync<GameObject>(unitData.ModelPath);
+            var handle = GameServices.ResourceService.LoadAssetSync<GameObject>(unitData.ModelPath);
             _model = handle.InstantiateSync(Vector3.zero, Quaternion.identity, _controller.transform);
             _animation = _model.GetOrAddComponent<Animation>();
         }

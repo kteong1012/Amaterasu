@@ -38,14 +38,12 @@ public class UIBattleEndPanel : UI2DPanel
     private void OnClickBackToHomeSceneButton()
     {
         Close();
-        var sceneService = GameService<SceneService>.Instance;
-        sceneService.ChangeToHomeScene().Forget();
+        GameServices.SceneService.ChangeToHomeScene().Forget();
     }
 
     private void OnClickRestartButton()
     {
-        var battleRoomService = GameService<BattleRoomService>.Instance ;
-        battleRoomService.CreateDemo();
+        GameServices.BattleRoomService.CreateDemo();
         Close();
     }
 }
