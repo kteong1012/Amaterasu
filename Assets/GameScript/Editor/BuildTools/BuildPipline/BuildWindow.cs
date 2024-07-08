@@ -31,6 +31,7 @@ namespace GameEditor
 
         private void OnEnable()
         {
+            LoadParameters();
             CollectBuildPipelines();
         }
 
@@ -113,11 +114,6 @@ namespace GameEditor
 
         private void DrawBuildParameter()
         {
-            if (_serializedObject == null || !_serializedObject.targetObject || _buildParameters == null || _buildParamGroups == null)
-            {
-                LoadParameters();
-            }
-
             GUILayout.BeginVertical("box");
             var content = new GUIContent("构建参数");
             var style = new GUIStyle(EditorStyles.boldLabel);
