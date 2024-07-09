@@ -108,7 +108,7 @@ namespace Game
             YooAssets.Initialize(UnityConsoleLogger.Instance);
             GameLog.Debug("初始化资源模块完成");
 
-            var playMode = Application.isEditor ? editorPlayMode : AppInfo.AppConfig.ReleasePlayMode;
+            var playMode = AppInfo.IsEditor ? editorPlayMode : AppInfo.AppConfig.ReleasePlayMode;
 
             // 开始更新主资源补丁
             GameLog.Debug("开始更新主资源补丁");
@@ -131,18 +131,11 @@ namespace Game
 
         private void LoadCSharpConfiguration()
         {
-            if (Application.isEditor)
+            if (AppInfo.IsEditor)
             {
                 return;
             }
-            var rawPackage = YooAssets.GetPackage(AppInfo.AppConfig.rawFilePackageName);
-            var handle = rawPackage.LoadRawFileSync("csharpconfig");
-            if (handle == null)
-            {
-                GameLog.Error("加载不到CSharpConfiguration");
-                return;
-            }
-            var json = handle.GetRawFileText();
+            var json = LoadRawFileTextSync("csharpconfig");
             var config = JsonUtility.FromJson<CSharpConfiguration>(json);
             AppInfo.CSharpConfig = config;
         }
@@ -153,7 +146,7 @@ namespace Game
             // 加载HotUpdate程序集
 
             var entryAssembly = (Assembly)null;
-            if (Application.isEditor)
+            if (AppInfo.IsEditor)
             {
                 entryAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "HotUpdate");
             }
@@ -186,15 +179,13 @@ namespace Game
                 foreach (var assName in AppInfo.CSharpConfig.hotupdateAssemblies)
                 {
                     var location = $"{assName}.dll";
-                    var handle = YooAssets.LoadRawFileSync(location);
-                    var dllBytes = handle.GetRawFileData();
+                    var dllBytes = LoadRawFileDataSync(location);
                     GameLog.Debug($"加载HotUpdate程序集: {location}, {dllBytes.Length} bytes");
                     var ass = Assembly.Load(dllBytes);
                     if (assName == "HotUpdate")
                     {
                         entryAssembly = ass;
                     }
-                    handle.Release();
                 }
             }
             if (entryAssembly == null)
@@ -205,6 +196,24 @@ namespace Game
             var typeStartGame = entryAssembly.GetType("Game.StartGame");
             var methodStart = typeStartGame.GetMethod("Start", BindingFlags.Static | BindingFlags.Public);
             methodStart.Invoke(null, null);
+        }
+
+        private static byte[] LoadRawFileDataSync(string location)
+        {
+            var rawPackage = YooAssets.GetPackage(AppInfo.AppConfig.rawFilePackageName);
+            var handle = rawPackage.LoadRawFileSync(location);
+            var dllBytes = handle.GetRawFileData();
+            handle.Release();
+            return dllBytes;
+        }
+
+        private static string LoadRawFileTextSync(string location)
+        {
+            var rawPackage = YooAssets.GetPackage(AppInfo.AppConfig.rawFilePackageName);
+            var handle = rawPackage.LoadRawFileSync(location);
+            var text = handle.GetRawFileText();
+            handle.Release();
+            return text;
         }
     }
 }

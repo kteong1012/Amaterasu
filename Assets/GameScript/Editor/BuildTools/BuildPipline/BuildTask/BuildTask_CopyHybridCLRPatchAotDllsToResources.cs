@@ -31,6 +31,11 @@ namespace GameEditor
             foreach (var assName in aotDllNames)
             {
                 var srcPath = $"{aotDllDir}/{target}/{assName}";
+                if (!File.Exists(srcPath))
+                {
+                    Debug.LogWarning($"AotDll not found: {srcPath}");
+                    continue;
+                }
                 var destPath = $"{outputDir}/{assName}.bytes";
                 File.Copy(srcPath, destPath);
             }

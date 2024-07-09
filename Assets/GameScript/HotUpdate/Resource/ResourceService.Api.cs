@@ -26,24 +26,32 @@ namespace Game
         public byte[] LoadRawFileBytesSync(string path)
         {
             var handle = _rawFilePackage.LoadRawFileSync(path);
-            return handle.GetRawFileData();
+            var data = handle.GetRawFileData();
+            handle.Release();
+            return data;
         }
         public async UniTask<byte[]> LoadRawFileAsync(string path)
         {
             var handle = _rawFilePackage.LoadRawFileAsync(path);
             await handle.ToUniTask();
-            return handle.GetRawFileData();
+            var data = handle.GetRawFileData();
+            handle.Release();
+            return data;
         }
         public string LoadRawFileTextSync(string path)
         {
             var handle = _rawFilePackage.LoadRawFileSync(path);
-            return handle.GetRawFileText();
+            var text = handle.GetRawFileText();
+            handle.Release();
+            return text;
         }
         public async UniTask<string> LoadRawFileTextAsync(string path)
         {
             var handle = _rawFilePackage.LoadRawFileAsync(path);
             await handle.ToUniTask();
-            return handle.GetRawFileText();
+            var text = handle.GetRawFileText();
+            handle.Release();
+            return text;
         }
         #endregion
     }

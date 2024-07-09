@@ -1,1 +1,1 @@
-{"appVersion":"1.0.0","isDevelopmentMode":true,"enableHotupdate":false,"cdnHostUrl":"http://localhost:8080","hotupdateAssemblies":["HotUpdate"],"aotMetaDlls":[],"mainPackageName":"MainPackage","rawFilePackageName":"RawFilePackage"}
+{"appVersion":"1.0.0","isDevelopmentMode":true,"enableHotupdate":false,"cdnHostUrl":"http://localhost:8080","aotMetaDlls":["DOTween.dll","Luban.Runtime.dll","Main.dll","System.Core.dll","UniTask.dll","UnityEngine.CoreModule.dll","YooAsset.dll","mscorlib.dll"],"mainPackageName":"MainPackage","rawFilePackageName":"RawFilePackage"}

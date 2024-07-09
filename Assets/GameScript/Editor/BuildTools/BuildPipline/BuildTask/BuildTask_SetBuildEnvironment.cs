@@ -4,12 +4,12 @@ using UnityEditor;
 
 namespace GameEditor
 {
-    [BuildTask(BuildParamGroup.Player | BuildParamGroup.Assets)]
-    public class BuildTask_SetDefineSymbols : IBuildTask
+    [BuildTask(BuildParamGroup.Any)]
+    public class BuildTask_SetBuildEnvironment : IBuildTask
     {
         private readonly HashSet<string> _symbols;
 
-        public BuildTask_SetDefineSymbols()
+        public BuildTask_SetBuildEnvironment()
         {
             var target = EditorUserBuildSettings.activeBuildTarget;
             var buildTargetGroup = UnityEditor.BuildPipeline.GetBuildTargetGroup(target);
@@ -19,6 +19,13 @@ namespace GameEditor
 
         public void Run(BuildContext context)
         {
+            EditorUserBuildSettings.development = context.BuildParameters.isDevelopmentMode;
+
+            var target = EditorUserBuildSettings.activeBuildTarget;
+            var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(target);
+            PlayerSettings.SetApiCompatibilityLevel(buildTargetGroup, ApiCompatibilityLevel.NET_4_6);
+            PlayerSettings.SetScriptingBackend(buildTargetGroup, ScriptingImplementation.IL2CPP);
+
             SetLogSymbol(context);
         }
 

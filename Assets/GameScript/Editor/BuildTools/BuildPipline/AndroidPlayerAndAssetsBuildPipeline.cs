@@ -13,7 +13,7 @@ namespace GameEditor
 
             var tasks = new List<IBuildTask>();
 
-            tasks.Add(new BuildTask_SetDefineSymbols());
+            tasks.Add(new BuildTask_SetBuildEnvironment());
             tasks.Add(new BuildTask_SetAppConfig());
             tasks.Add(new BuildTask_ModifyHybridCLRSettings());
             tasks.Add(new BuildTask_GenerateAllHybridCLRSource());

@@ -30,5 +30,11 @@ namespace Game
                 _csharpConfig = value;
             }
         }
+
+#if UNITY_EDITOR
+        public static bool IsEditor => true;
+#else
+        public static bool IsEditor => false;
+#endif
     }
 }

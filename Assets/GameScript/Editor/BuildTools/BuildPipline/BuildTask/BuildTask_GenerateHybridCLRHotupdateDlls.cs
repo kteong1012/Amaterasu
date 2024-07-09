@@ -19,7 +19,7 @@ namespace GameEditor
         public static void CompileDllAndCopyToGameRes(BuildContext contenxt)
         {
             var target = EditorUserBuildSettings.activeBuildTarget;
-            CompileDllCommand.CompileDll(target);
+            CompileDllCommand.CompileDll(target, contenxt.BuildParameters.isDevelopmentMode);
 
             var hotUpdateDllDir = SettingsUtil.GetHotUpdateDllsOutputDirByTarget(target);
             var codeDir = "Assets/GameRes/Raw/Code";
@@ -38,7 +38,7 @@ namespace GameEditor
             }
 
             var csharpConfigFileName = "csharpconfig.json";
-            var csharpConfigPath = $"{hotUpdateDllDir}/{csharpConfigFileName}";
+            var csharpConfigPath = $"{codeDir}/{csharpConfigFileName}";
             var csharpConfig = (CSharpConfiguration)null;
             if (File.Exists(csharpConfigPath))
             {

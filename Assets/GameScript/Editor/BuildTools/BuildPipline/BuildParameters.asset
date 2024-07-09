@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce119663126d545469a0b6daed1df5d5, type: 3}
   m_Name: BuildParameters
   m_EditorClassIdentifier: 
+  pipelineName: "\u6784\u5EFA\u5B89\u5353\u8D44\u6E90\u548C\u6574\u5305"
   version: 1.0.0
   tag: 
   isDevelopmentMode: 1
@@ -20,6 +21,14 @@ MonoBehaviour:
   cdnHostUrl: http://localhost:8080
   hotUpdateAssemblies:
   - HotUpdate
-  patchAotDllNames: []
+  patchAotDllNames:
+  - DOTween.dll
+  - Luban.Runtime.dll
+  - Main.dll
+  - System.Core.dll
+  - UniTask.dll
+  - UnityEngine.CoreModule.dll
+  - YooAsset.dll
+  - mscorlib.dll
   mainPackageName: MainPackage
   rawFilePackageName: RawFilePackage
