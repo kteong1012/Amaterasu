@@ -1,4 +1,5 @@
 ﻿using HybridCLR.Editor;
+using Luban;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -14,33 +15,46 @@ namespace GameEditor
             CopyAotDllsToResources(context);
 
             AssetDatabase.Refresh();
+
         }
 
         public static void CopyAotDllsToResources(BuildContext context)
         {
             var target = EditorUserBuildSettings.activeBuildTarget;
-            var aotDllDir = SettingsUtil.AssembliesPostIl2CppStripDir;
+            var aotDllDir = SettingsUtil.GetAssembliesPostIl2CppStripDir(target);
             var outputDir = "Assets/Resources/AotDlls";
             if (Directory.Exists(outputDir))
             {
                 Directory.Delete(outputDir, true);
             }
             Directory.CreateDirectory(outputDir);
+            var fileName = "AotPatchAssemblies.bytes";
 
-            var aotDllNames = AOTGenericReferences.PatchedAOTAssemblyList.Concat(context.BuildParameters.patchAotDllNames).Distinct();
-            foreach (var assName in aotDllNames)
+            var buf = new ByteBuf();
+
+            // write count
+            buf.WriteSize(context.AotPatchAssemblies.Count);
+
+            foreach (var aotPatchAssembly in context.AotPatchAssemblies)
             {
-                var srcPath = $"{aotDllDir}/{target}/{assName}";
-                if (!File.Exists(srcPath))
+                var aotDllPath = Path.Combine(aotDllDir, aotPatchAssembly);
+                if (!File.Exists(aotDllPath))
                 {
-                    Debug.LogWarning($"AotDll not found: {srcPath}");
+                    Debug.LogError($"AotDll not found: {aotDllPath}");
                     continue;
                 }
-                var destPath = $"{outputDir}/{assName}.bytes";
-                File.Copy(srcPath, destPath);
+                // write name
+                buf.WriteString(aotPatchAssembly);
+
+                // write bytes
+                var bytes = File.ReadAllBytes(aotDllPath);
+                Debug.Log($"Copy AotDll: {aotDllPath}, size: {bytes.Length}");
+                buf.WriteBytes(bytes);
             }
-            AssetDatabase.Refresh();
-            Debug.Log("CopyAotDllsToResources Done!");
+
+            var bytesData = buf.CopyData();
+            var outputPath = Path.Combine(outputDir, fileName);
+            File.WriteAllBytes(outputPath, bytesData);
         }
     }
 }

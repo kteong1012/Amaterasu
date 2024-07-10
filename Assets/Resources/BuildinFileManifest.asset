@@ -80,8 +80,8 @@ MonoBehaviour:
     FileName: 5c0de666dd2f5650a2b2044e9eb20cb9.bundle
     FileCRC32: a5422832
   - PackageName: RawFilePackage
+    FileName: 63b9675e4f6cfe3d606c2bc4e7eddfb0.bundle
+    FileCRC32: 8d12d354
+  - PackageName: RawFilePackage
     FileName: b624bb27eeee7436d6087325fda2867f.bundle
     FileCRC32: 9afae385
-  - PackageName: RawFilePackage
-    FileName: f5c6dcc03d5a0eca79ee140cef655457.bundle
-    FileCRC32: fdd89ecd

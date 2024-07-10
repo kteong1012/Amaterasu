@@ -1,4 +1,5 @@
-﻿using UnityEditor.Build.Reporting;
+﻿using System.Collections.Generic;
+using UnityEditor.Build.Reporting;
 
 namespace GameEditor
 {
@@ -13,6 +14,8 @@ namespace GameEditor
 
         // 可读写属性
         public BuildReport BuildReport { get; set; }
+
+        public HashSet<string> AotPatchAssemblies { get; set; } = new HashSet<string>();
 
         public void Initialize(IBuildPipline pipeline, BuildParameters buildParameters)
         {

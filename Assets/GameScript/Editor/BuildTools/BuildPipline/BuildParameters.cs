@@ -190,7 +190,6 @@ namespace GameEditor
                 isDevelopmentMode = buildParameters.isDevelopmentMode,
                 enableHotupdate = buildParameters.enableHotupdate,
                 cdnHostUrl = buildParameters.cdnHostUrl,
-                aotMetaDlls = buildParameters.patchAotDllNames,
                 mainPackageName = buildParameters.mainPackageName,
                 rawFilePackageName = buildParameters.rawFilePackageName
             };

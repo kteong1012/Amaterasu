@@ -8,7 +8,6 @@ namespace Game
         public bool isDevelopmentMode;
         public bool enableHotupdate;
         public string cdnHostUrl;
-        public string[] aotMetaDlls;
         public string mainPackageName;
         public string rawFilePackageName;
 

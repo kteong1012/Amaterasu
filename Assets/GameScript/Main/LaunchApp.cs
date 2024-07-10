@@ -1,6 +1,8 @@
 using Cysharp.Threading.Tasks;
 using Game.Log;
+using Luban;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -143,7 +145,6 @@ namespace Game
         private void LoadDll()
         {
             PatchEventDefine.PatchStatesChange.SendEventMessage("加载逻辑资源");
-            // 加载HotUpdate程序集
 
             var entryAssembly = (Assembly)null;
             if (AppInfo.IsEditor)
@@ -154,27 +155,10 @@ namespace Game
             {
                 GameLog.Debug("加载HotUpdate程序集");
 
-                // 补充Aot泛型元数据
-                var aotDllNames = AOTGenericReferences.PatchedAOTAssemblyList.Concat(AppInfo.AppConfig.aotMetaDlls).Distinct();
-                foreach (var dllName in aotDllNames)
-                {
-                    var ta = Resources.Load<TextAsset>($"AotDlls/{dllName}");
-                    if (ta == null)
-                    {
-                        GameLog.Error($"AotDlls/{dllName} not found");
-                        continue;
-                    }
-                    var bytes = ta.bytes;
-                    var ret = HybridCLR.RuntimeApi.LoadMetadataForAOTAssembly(bytes, HybridCLR.HomologousImageMode.SuperSet);
-                    if (ret == HybridCLR.LoadImageErrorCode.OK)
-                    {
-                        GameLog.Debug($"加载AOT元数据成功: {dllName}");
-                    }
-                    else
-                    {
-                        GameLog.Error($"加载AOT元数据失败: {dllName}. {ret}");
-                    }
-                }
+
+                // 补充Aot泛型元数据程序集
+                LoadAotGenericMetadataAssemblies();
+
                 // 加载HotUpdate程序集
                 foreach (var assName in AppInfo.CSharpConfig.hotupdateAssemblies)
                 {
@@ -196,6 +180,38 @@ namespace Game
             var typeStartGame = entryAssembly.GetType("Game.StartGame");
             var methodStart = typeStartGame.GetMethod("Start", BindingFlags.Static | BindingFlags.Public);
             methodStart.Invoke(null, null);
+        }
+
+        private void LoadAotGenericMetadataAssemblies()
+        {
+            var resourcePath = "AotDlls/AotPatchAssemblies";
+            var ta = Resources.Load<TextAsset>(resourcePath);
+            if (ta == null)
+            {
+                GameLog.Warning($"{resourcePath} 找不到，文件缺失或者不需要补充泛型元数据");
+                return;
+            }
+            var buf = new ByteBuf(ta.bytes);
+
+            // read count
+            var assemblyCount = buf.ReadSize();
+
+            for (var i = 0; i < assemblyCount; i++)
+            {
+                // read name
+                var dllName = buf.ReadString();
+                // read bytes
+                var bytes = buf.ReadBytes();
+                var ret = HybridCLR.RuntimeApi.LoadMetadataForAOTAssembly(bytes, HybridCLR.HomologousImageMode.SuperSet);
+                if (ret == HybridCLR.LoadImageErrorCode.OK)
+                {
+                    GameLog.Info($"加载AOT元数据成功: {dllName}");
+                }
+                else
+                {
+                    GameLog.Error($"加载AOT元数据失败: {dllName}. {ret}");
+                }
+            }
         }
 
         private static byte[] LoadRawFileDataSync(string location)

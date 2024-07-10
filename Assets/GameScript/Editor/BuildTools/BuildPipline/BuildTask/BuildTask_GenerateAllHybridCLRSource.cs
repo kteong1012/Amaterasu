@@ -1,6 +1,14 @@
-﻿using HybridCLR.Editor.Commands;
+﻿using HybridCLR.Editor;
+using HybridCLR.Editor.AOT;
+using HybridCLR.Editor.Commands;
+using HybridCLR.Editor.Meta;
 using HybridCLR.Editor.Settings;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 namespace GameEditor
 {
@@ -25,7 +33,63 @@ namespace GameEditor
             // 桥接函数生成依赖于AOT dll，必须保证已经build过，生成AOT dll
             MethodBridgeGeneratorCommand.GenerateMethodBridge(target);
             ReversePInvokeWrapperGeneratorCommand.GenerateReversePInvokeWrapper(target);
-            AOTReferenceGeneratorCommand.GenerateAOTGenericReference(target);
+            var referencedDllNames = GenerateAOTGenericReference(target);
+
+            // 添加扫描后的dll到AOT裁剪列表
+            foreach (var dllName in referencedDllNames)
+            {
+                context.AotPatchAssemblies.Add(dllName);
+            }
+            // 添加配置的dll到AOT裁剪列表
+            foreach (var dllName in context.BuildParameters.patchAotDllNames)
+            {
+                var name = dllName;
+                if (!name.EndsWith(".dll"))
+                {
+                    name += ".dll";
+                }
+                context.AotPatchAssemblies.Add(name);
+            }
+            Debug.Log("AotPatchAssemblies: " + string.Join(", ", context.AotPatchAssemblies));
+            Debug.Log("GenerateAllHybridCLRSource Done!");
+        }
+
+
+
+        public static IEnumerable<string> GenerateAOTGenericReference(BuildTarget target)
+        {
+            var gs = SettingsUtil.HybridCLRSettings;
+            var hotUpdateDllNames = SettingsUtil.HotUpdateAssemblyNamesExcludePreserved;
+
+            var referencedDllNames = new HashSet<string>();
+
+            using (AssemblyReferenceDeepCollector collector = new AssemblyReferenceDeepCollector(MetaUtil.CreateHotUpdateAndAOTAssemblyResolver(target, hotUpdateDllNames), hotUpdateDllNames))
+            {
+                var analyzer = new Analyzer(new Analyzer.Options
+                {
+                    MaxIterationCount = Math.Min(20, gs.maxGenericReferenceIteration),
+                    Collector = collector,
+                });
+
+                analyzer.Run();
+
+                var types = analyzer.AotGenericTypes.ToList();
+                var methods = analyzer.AotGenericMethods.ToList();
+                var aotPatchListFilePath = $"Assets/Resources/aotPatchList.txt";
+                List<dnlib.DotNet.ModuleDef> modules = new HashSet<dnlib.DotNet.ModuleDef>(
+                    types
+                    .Select(t => t.Type.Module)
+                    .Concat(methods.Select(m => m.Method.Module)))
+                    .ToList();
+                modules.Sort((a, b) => a.Name.CompareTo(b.Name));
+
+                foreach (var module in modules)
+                {
+                    referencedDllNames.Add(module.Name);
+                }
+            }
+
+            return referencedDllNames;
         }
     }
 }
