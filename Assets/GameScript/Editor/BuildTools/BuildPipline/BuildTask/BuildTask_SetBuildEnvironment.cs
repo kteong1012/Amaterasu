@@ -7,17 +7,14 @@ namespace GameEditor
     [BuildTask(BuildParamGroup.Any)]
     public class BuildTask_SetBuildEnvironment : IBuildTask
     {
-        private readonly HashSet<string> _symbols;
-
-        public BuildTask_SetBuildEnvironment()
+        public void Run(BuildContext context)
         {
-            var target = EditorUserBuildSettings.activeBuildTarget;
-            var buildTargetGroup = UnityEditor.BuildPipeline.GetBuildTargetGroup(target);
-            var rawSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
-            _symbols = rawSymbols.Split(';').Distinct().ToHashSet();
+            ConfigureBuildSettings(context);
+
+            SetSymbols(context);
         }
 
-        public void Run(BuildContext context)
+        private static void ConfigureBuildSettings(BuildContext context)
         {
             EditorUserBuildSettings.development = context.BuildParameters.isDevelopmentMode;
 
@@ -25,30 +22,32 @@ namespace GameEditor
             var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(target);
             PlayerSettings.SetApiCompatibilityLevel(buildTargetGroup, ApiCompatibilityLevel.NET_4_6);
             PlayerSettings.SetScriptingBackend(buildTargetGroup, ScriptingImplementation.IL2CPP);
-
-            SetLogSymbol(context);
         }
 
-        private void AddSymbol(string symbol)
+        private void SetSymbols(BuildContext context)
         {
-            _symbols.Add(symbol);
-        }
 
-        private void RemoveSymbol(string symbol)
-        {
-            _symbols.Remove(symbol);
-        }
+            var target = EditorUserBuildSettings.activeBuildTarget;
+            var buildTargetGroup = UnityEditor.BuildPipeline.GetBuildTargetGroup(target);
+            var rawSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
+            var symbols = rawSymbols.Split(';').Distinct().ToHashSet();
 
-        private void SetLogSymbol(BuildContext context)
-        {
+            // Common Basic symbols
+            symbols.Add("UNITASK_DOTWEEN_SUPPORT");
+            symbols.Add("TextMeshPro");
+            symbols.Add("DOTWEEN");
+
+            // LOG_DEBUG
             if (context.BuildParameters.isDevelopmentMode)
             {
-                AddSymbol("LOG_DEBUG");
+                symbols.Add("LOG_DEBUG");
             }
             else
             {
-                RemoveSymbol("LOG_DEBUG");
+                symbols.Remove("LOG_DEBUG");
             }
+
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget), string.Join(";", symbols));
         }
     }
 }
