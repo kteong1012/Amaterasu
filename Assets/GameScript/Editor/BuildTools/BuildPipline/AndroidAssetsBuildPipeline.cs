@@ -13,7 +13,7 @@ namespace GameEditor
 
             var tasks = new List<IBuildTask>();
             tasks.Add(new BuildTask_SetBuildEnvironment());
-            tasks.Add(new BuildTask_ModifyHybridCLRSettings());
+            tasks.Add(new BuildTask_InitializeHybridCLR());
             tasks.Add(new BuildTask_GenerateHybridCLRHotupdateDlls());
             tasks.Add(new BuildTask_BuildYooAsset());
 

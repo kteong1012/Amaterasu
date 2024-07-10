@@ -15,7 +15,7 @@ namespace GameEditor
 
             tasks.Add(new BuildTask_SetBuildEnvironment());
             tasks.Add(new BuildTask_SetAppConfig());
-            tasks.Add(new BuildTask_ModifyHybridCLRSettings());
+            tasks.Add(new BuildTask_InitializeHybridCLR());
             tasks.Add(new BuildTask_GenerateAllHybridCLRSource());
             tasks.Add(new BuildTask_GenerateHybridCLRHotupdateDlls());
             tasks.Add(new BuildTask_CopyHybridCLRPatchAotDllsToResources());
