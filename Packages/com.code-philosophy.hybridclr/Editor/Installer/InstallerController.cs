@@ -33,7 +33,7 @@ namespace HybridCLR.Editor.Installer
         {
             _curVersion = ParseUnityVersion(Application.unityVersion);
             _versionManifest = GetHybridCLRVersionManifest();
-            _curDefaultVersion = _versionManifest.versions.FirstOrDefault(v => v.unity_version == _curVersion.major.ToString());
+            _curDefaultVersion = _versionManifest.versions.FirstOrDefault(v => _curVersion.isTuanjieEngine ? v.unity_version == $"{_curVersion.major}-tuanjie" : v.unity_version == _curVersion.major.ToString());
             PackageVersion = LoadPackageInfo().version;
             InstalledLibil2cppVersion = ReadLocalVersion();
         }
@@ -88,6 +88,7 @@ namespace HybridCLR.Editor.Installer
             public int major;
             public int minor1;
             public int minor2;
+            public bool isTuanjieEngine;
 
             public override string ToString()
             {
@@ -108,7 +109,8 @@ namespace HybridCLR.Editor.Installer
             int major = int.Parse(match.Groups[1].Value);
             int minor1 = int.Parse(match.Groups[2].Value);
             int minor2 = int.Parse(match.Groups[3].Value);
-            return new UnityVersion { major = major, minor1 = minor1, minor2 = minor2 };
+            bool isTuanjieEngine = versionStr.Contains("t");
+            return new UnityVersion { major = major, minor1 = minor1, minor2 = minor2, isTuanjieEngine = isTuanjieEngine };
         }
 
         public string GetCurrentUnityVersionMinCompatibleVersionStr()
@@ -120,10 +122,12 @@ namespace HybridCLR.Editor.Installer
         {
             switch(majorVersion)
             {
-                case 2019: return $"2019.4.0";
-                case 2020: return $"2020.3.0";
-                case 2021: return $"2021.3.0";
-                case 2022: return $"2022.3.0";
+                case 2019: return "2019.4.0";
+                case 2020: return "2020.3.0";
+                case 2021: return "2021.3.0";
+                case 2022: return "2022.3.0";
+                case 2023: return "2023.2.0";
+                case 6000: return "6000.0.0";
                 default: return $"2020.3.0";
             }
         }
@@ -142,7 +146,8 @@ namespace HybridCLR.Editor.Installer
             {
                 return CompatibleType.Incompatible;
             }
-            if ((version.major == 2019 && version.minor1 < 4) || (version.major >= 2020 &&  version.minor1 < 3))
+            if ((version.major == 2019 && version.minor1 < 4)
+                || (version.major >= 2020 &&  version.major <= 2022 && version.minor1 < 3))
             {
                 return CompatibleType.MaybeIncompatible;
             }
