@@ -1,0 +1,34 @@
+{
+  "profiles": {
+    "dotnet_json": {
+      "commandName": "Project",
+      "commandLineArgs": "    -t server \r\n    -c cs-dotnet-json \r\n    -d json  \r\n    --conf ..\\..\\DataTables\\luban.conf \r\n    -x outputCodeDir=Gen \r\n    -x outputDataDir=..\\GenerateDatas\\json\r\n",
+      "workingDirectory": "E:\\OpenProjects\\luban_examples\\Projects\\Csharp_DotNet_json"
+    },
+    "cs-bin": {
+      "commandName": "Project",
+      "commandLineArgs": "-t server \r\n-c cs-dotnet-json \r\n-d json  \r\n--conf ..\\..\\DataTables\\luban.conf \r\n-x outputCodeDir=Gen \r\n-x outputDataDir=..\\GenerateDatas\\json \r\n-x pathValidator.rootDir=D:\\workspace2\\luban_examples\\Projects\\Csharp_Unity_bin \r\n-x l10n.provider=default \r\n-x l10n.textFile.path=..\\..\\DataTables\\Datas\\l10n\\texts.json \r\n-x l10n.textFile.keyFieldName=key",
+      "workingDirectory": "F:\\OpenProjects\\luban_examples\\Projects\\Csharp_DotNet_bin"
+    },
+    "simple": {
+      "commandName": "Project",
+      "commandLineArgs": "    -t all \r\n    -d json \r\n    --conf luban.conf \r\n    -x outputDataDir=output",
+      "workingDirectory": "E:\\OpenProjects\\luban_examples\\MiniTemplate"
+    },
+    "simple-go": {
+      "commandName": "Project",
+      "commandLineArgs": "-t all\n-c go-json\n-d json\n--conf luban.conf\n-x outputCodeDir=output/go\n-x outputDataDir=output/json\n-x lubanGoModule=demo/luban",
+      "workingDirectory": "E:\\OpenProjects\\luban_examples\\MiniTemplate"
+    },
+    "temp": {
+      "commandName": "Project",
+      "commandLineArgs": "-t client \r\n-c typescript-json \r\n-d json \r\n--conf ./luban.conf \r\n-x typescript-json.outputCodeDir=../../BeaconWar/assets/script/template \r\n-x json.outputDataDir=../../BeaconWar/assets/script/resources/template",
+      "workingDirectory": "D:\\TempDir\\ConfigDemo\\excel\\MiniTemplate"
+    },
+    "simle-test": {
+      "commandName": "Project",
+      "commandLineArgs": "-t all \r\n-d json \r\n-c java-bin\r\n--conf luban.conf \r\n-x outputDataDir=output/data\r\n-x outputCodeDir=output/code",
+      "workingDirectory": "E:\\OpenProjects\\luban_examples\\Test"
+    }
+  }
+}

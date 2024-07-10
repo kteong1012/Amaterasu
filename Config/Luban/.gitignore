@@ -4,3 +4,4 @@
 */.vscode
 !*.sln
 !*.csproj
+/src/*/bin/*/net7.0/

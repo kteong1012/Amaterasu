@@ -13,8 +13,8 @@ dotnet %LUBAN_DLL% ^
     -d bin ^
     -d json ^
     -c cs-bin ^
-    -x bin.outputDataDir=%GAME_CLIENT_ROOT%\Assets\GameRes\Config\Bytes ^
-    -x json.outputDataDir=%GAME_CLIENT_ROOT%\Assets\GameRes\Config\Json ^
+    -x bin.outputDataDir=%GAME_CLIENT_ROOT%\Assets\GameRes\Raw\Config\Bytes ^
+    -x json.outputDataDir=%GAME_CLIENT_ROOT%\Assets\GameRes\Raw\Config\Json ^
     -x outputCodeDir=%GAME_CLIENT_ROOT%\Assets\GameScript\HotUpdate\Config\Generate
 
 pause

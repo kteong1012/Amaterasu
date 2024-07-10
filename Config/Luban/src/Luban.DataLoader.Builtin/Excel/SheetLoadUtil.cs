@@ -468,6 +468,13 @@ public static class SheetLoadUtil
         return s == tag;
     }
 
+    private static bool IsEmptyRow(List<Cell> row)
+    {
+        return row.All(c => string.IsNullOrWhiteSpace(c.Value?.ToString()));
+    }
+
+    const int maxEmptyRowCount = 300;
+
     private static List<List<Cell>> ParseRawSheetContent(IExcelDataReader reader, bool orientRow, bool headerOnly)
     {
         // TODO 优化性能
@@ -477,6 +484,7 @@ public static class SheetLoadUtil
         // 3. 跳过null或者empty的单元格
         var originRows = new List<List<Cell>>();
         int rowIndex = 0;
+        int emptyRowCount = 0;
         do
         {
             var row = new List<Cell>();
@@ -484,12 +492,23 @@ public static class SheetLoadUtil
             {
                 row.Add(new Cell(rowIndex, i, reader.GetValue(i)));
             }
-            originRows.Add(row);
+            ++rowIndex;
+            if (IsEmptyRow(row))
+            {
+                ++emptyRowCount;
+                if (emptyRowCount == maxEmptyRowCount)
+                {
+                    s_logger.Warn("excel:{filename} sheet:{sheet} 连续空行超过{}行，删除这些空行可以提升导出性能", s_curExcel.Value, reader.Name, maxEmptyRowCount);
+                }
+            }
+            else
+            {
+                originRows.Add(row);
+            }
             if (orientRow && headerOnly && !IsHeaderRow(row))
             {
                 break;
             }
-            ++rowIndex;
         } while (reader.Read());
 
         List<List<Cell>> finalRows;
