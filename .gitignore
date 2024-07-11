@@ -88,10 +88,21 @@ crashlytics-build.properties
 /Assets/HybridCLRGenerate/
 /Assets/HybridCLRGenerate.meta
 
-# Assets/StreamingAssets
+# Assets/Resources/AotDlls
+/Assets/Resources/AotDlls/
+/Assets/Resources/AotDlls.meta
+
+# Assets/StreamingAssets/yoo
 /Assets/StreamingAssets/yoo/
 /Assets/StreamingAssets/yoo.meta
 
 # BuildParameters.asset
 /Assets/GameScript/Editor/BuildTools/BuildPipline/BuildParameters.asset
 /Assets/GameScript/Editor/BuildTools/BuildPipline/BuildParameters.asset.meta
+
+# BuildinFileManifest.asset
+/Assets/Resources/BuildinFileManifest.asset
+/Assets/Resources/BuildinFileManifest.asset.meta
+
+# Assets/GameRes/Raw/Code
+/Assets/GameRes/Raw/Code/*

@@ -111,6 +111,7 @@ namespace Game
             GameLog.Debug("初始化资源模块完成");
 
             var playMode = AppInfo.IsEditor ? editorPlayMode : AppInfo.AppConfig.ReleasePlayMode;
+            AppInfo.PlayMode = playMode;
 
             // 开始更新主资源补丁
             GameLog.Debug("开始更新主资源补丁");
@@ -133,7 +134,7 @@ namespace Game
 
         private void LoadCSharpConfiguration()
         {
-            if (AppInfo.IsEditor)
+            if (AppInfo.PlayMode == EPlayMode.EditorSimulateMode)
             {
                 return;
             }
@@ -147,6 +148,7 @@ namespace Game
             PatchEventDefine.PatchStatesChange.SendEventMessage("加载逻辑资源");
 
             var entryAssembly = (Assembly)null;
+
             if (AppInfo.IsEditor)
             {
                 entryAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "HotUpdate");
@@ -154,7 +156,6 @@ namespace Game
             else
             {
                 GameLog.Debug("加载HotUpdate程序集");
-
 
                 // 补充Aot泛型元数据程序集
                 LoadAotGenericMetadataAssemblies();

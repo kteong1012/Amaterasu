@@ -1,4 +1,5 @@
 ﻿using Game.Log;
+using YooAsset;
 
 namespace Game
 {
@@ -36,5 +37,7 @@ namespace Game
 #else
         public static bool IsEditor => false;
 #endif
+
+        public static EPlayMode PlayMode { get; set; }
     }
 }
