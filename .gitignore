@@ -88,6 +88,10 @@ crashlytics-build.properties
 /Assets/HybridCLRGenerate/
 /Assets/HybridCLRGenerate.meta
 
+# Assets/Resources/yoo
+/Assets/Resources/yoo/
+/Assets/Resources/yoo.meta
+
 # Assets/Resources/AotDlls
 /Assets/Resources/AotDlls/
 /Assets/Resources/AotDlls.meta

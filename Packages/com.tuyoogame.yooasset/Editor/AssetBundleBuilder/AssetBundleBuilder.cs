@@ -36,7 +36,7 @@ namespace YooAsset.Editor
             BuildLogger.InitLogger(enableLog);
 
             // 执行构建流程
-            BuildLogger.Log($"Begin to build package : {buildParameters.PackageName} by {buildParameters.BuildPipeline}");
+            Debug.Log($"Begin to build package : {buildParameters.PackageName} by {buildParameters.BuildPipeline}");
             var buildResult = BuildRunner.Run(buildPipeline, _buildContext);
             if (buildResult.Success)
             {

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniFramework.Machine;
 using YooAsset;
-using Game.Log;
-using Game;
 
 /// <summary>
 /// 创建文件下载器
@@ -20,7 +18,7 @@ public class FsmCreatePackageDownloader : IStateNode
     void IStateNode.OnEnter()
     {
         PatchEventDefine.PatchStatesChange.SendEventMessage("创建补丁下载器！");
-        CreateDownloader();
+        Game.CoroutineManager.Instance.StartCoroutine(CreateDownloader());
     }
     void IStateNode.OnUpdate()
     {
@@ -29,8 +27,10 @@ public class FsmCreatePackageDownloader : IStateNode
     {
     }
 
-    void CreateDownloader()
+    IEnumerator CreateDownloader()
     {
+        yield return new WaitForSecondsRealtime(0.5f);
+
         var packageName = (string)_machine.GetBlackboardValue("PackageName");
         var package = YooAssets.GetPackage(packageName);
         int downloadingMaxNum = 10;
@@ -40,7 +40,7 @@ public class FsmCreatePackageDownloader : IStateNode
 
         if (downloader.TotalDownloadCount == 0)
         {
-            Game.Log.GameLog.Debug("Not found any download files !");
+            Debug.Log("Not found any download files !");
             _machine.ChangeState<FsmUpdaterDone>();
         }
         else

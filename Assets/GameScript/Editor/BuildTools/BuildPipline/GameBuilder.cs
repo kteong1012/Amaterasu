@@ -11,36 +11,32 @@ namespace GameEditor
     {
         public void Build(BuildContext context, List<IBuildTask> tasks)
         {
-            using (var recorder = new EditorBuildLogRecorder())
+            var buildParameters = context.BuildParameters;
+            // 检查构建参数是否为空
+            if (buildParameters == null)
             {
-                var buildParameters = context.BuildParameters;
-                // 检查构建参数是否为空
-                if (buildParameters == null)
-                {
-                    throw new System.Exception($"{nameof(buildParameters)} is null !");
-                }
-
-                // 检查构建上下文是否为空
-                if (context == null)
-                {
-                    throw new System.Exception($"{nameof(context)} is null !");
-                }
-
-                // 检查构建任务是否为空
-                if (tasks.Count == 0)
-                {
-                    throw new System.Exception($"Build pipeline is empty !");
-                }
-
-                CheckBuildGroup(context, tasks);
-
-                // 执行构建流程
-                foreach (var task in tasks)
-                {
-                    task.Run(context);
-                }
+                throw new System.Exception($"{nameof(buildParameters)} is null !");
             }
 
+            // 检查构建上下文是否为空
+            if (context == null)
+            {
+                throw new System.Exception($"{nameof(context)} is null !");
+            }
+
+            // 检查构建任务是否为空
+            if (tasks.Count == 0)
+            {
+                throw new System.Exception($"Build pipeline is empty !");
+            }
+
+            CheckBuildGroup(context, tasks);
+
+            // 执行构建流程
+            foreach (var task in tasks)
+            {
+                task.Run(context);
+            }
         }
 
         private void CheckBuildGroup(BuildContext context, List<IBuildTask> tasks)
@@ -78,49 +74,6 @@ namespace GameEditor
             if (error)
             {
                 throw new System.Exception("构建流程参数组检查不通过！");
-            }
-        }
-
-
-        private class EditorBuildLogRecorder : IDisposable
-        {
-            private static readonly string logFilePath = "Build/EditorBuildLog.log";
-
-            public EditorBuildLogRecorder()
-            {
-                if (Application.isBatchMode)
-                {
-                    return;
-                }
-                if (System.IO.File.Exists(logFilePath))
-                {
-                    System.IO.File.Delete(logFilePath);
-                }
-                var directory = System.IO.Path.GetDirectoryName(logFilePath);
-                if (!System.IO.Directory.Exists(directory))
-                {
-                    System.IO.Directory.CreateDirectory(directory);
-                }
-                System.IO.File.Create(logFilePath).Close();
-
-                // 监听unity log
-                Application.logMessageReceived -= OnLogMessageReceived;
-                Application.logMessageReceived += OnLogMessageReceived;
-            }
-
-
-            private void OnLogMessageReceived(string condition, string stackTrace, LogType type)
-            {
-                using (var writer = new System.IO.StreamWriter(logFilePath, true))
-                {
-                    var dateTime = DateTime.Now;
-                    writer.WriteLine($"{dateTime.ToString("yyyy-MM-dd HH:mm:ss")} [{type}] {condition}");
-                    writer.WriteLine(stackTrace);
-                }
-            }
-            public void Dispose()
-            {
-                Application.logMessageReceived -= OnLogMessageReceived;
             }
         }
     }

@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editorLogLevel: 4
-  editorPlayMode: 0
+  editorPlayMode: 1
 --- !u!4 &450980817
 Transform:
   m_ObjectHideFlags: 0

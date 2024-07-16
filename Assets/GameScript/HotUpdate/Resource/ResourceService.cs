@@ -33,7 +33,7 @@ namespace Game
             }
             else
             {
-                _mainPackage.UnloadUnusedAssets();
+                _mainPackage.UnloadUnusedAssetsAsync();
                 _unloadUnusedAssetsCountdown += UNLOAD_UNUSED_ASSETS_INTERVAL;
             }
         }

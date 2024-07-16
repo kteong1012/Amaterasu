@@ -91,10 +91,6 @@ namespace Game
 
         private void OpenPatchWindow()
         {
-            if (!AppInfo.AppConfig.enableHotupdate)
-            {
-                return;
-            }
             var go = Resources.Load<GameObject>("PatchWindow/PatchWindow");
             Instantiate(go);
         }
@@ -129,6 +125,7 @@ namespace Game
                 operation = new PatchOperation(AppInfo.AppConfig.rawFilePackageName, EDefaultBuildPipeline.RawFileBuildPipeline.ToString(), playMode);
                 YooAssets.StartOperation(operation);
                 await operation.ToUniTask();
+                GameLog.Debug("更新原生文件资源补丁完成");
             }
         }
 

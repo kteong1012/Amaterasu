@@ -35,10 +35,8 @@ namespace YooAsset.Editor
             _bundleListView = _root.Q<ListView>("TopListView");
             _bundleListView.makeItem = MakeBundleListViewItem;
             _bundleListView.bindItem = BindBundleListViewItem;
-#if UNITY_2022_1_OR_NEWER
-            _bundleListView.selectionChanged += BundleListView_onSelectionChange;
-#elif UNITY_2020_1_OR_NEWER
-            _assetListView.selectionChanged += AssetListView_onSelectionChange;
+#if UNITY_2020_1_OR_NEWER
+            _bundleListView.onSelectionChange += BundleListView_onSelectionChange;
 #else
             _bundleListView.onSelectionChanged += BundleListView_onSelectionChange;
 #endif
@@ -191,7 +189,7 @@ namespace YooAsset.Editor
 
             // Status
             StyleColor textColor;
-            if (bundleInfo.Status == BundleLoaderBase.EStatus.Failed.ToString())
+            if (bundleInfo.Status == EOperationStatus.Failed)
                 textColor = new StyleColor(Color.yellow);
             else
                 textColor = label1.style.color;

@@ -4,4 +4,3 @@
 [assembly: InternalsVisibleTo("YooAsset.EditorExtension")]
 [assembly: InternalsVisibleTo("YooAsset.RuntimeExtension")]
 [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
-[assembly: InternalsVisibleTo("UniFrame.StreamingAssetsHelper")]

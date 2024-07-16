@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniFramework.Machine;
 using YooAsset;
-using Game.Log;
 using Game;
 
 /// <summary>
@@ -22,7 +21,7 @@ internal class FsmInitializePackage : IStateNode
     void IStateNode.OnEnter()
     {
         PatchEventDefine.PatchStatesChange.SendEventMessage("初始化资源包！");
-        CoroutineManager.Instance.StartCoroutine(InitPackage());
+        Game.CoroutineManager.Instance.StartCoroutine(InitPackage());
     }
     void IStateNode.OnUpdate()
     {
@@ -46,8 +45,9 @@ internal class FsmInitializePackage : IStateNode
         InitializationOperation initializationOperation = null;
         if (playMode == EPlayMode.EditorSimulateMode)
         {
+            var simulateBuildResult = EditorSimulateModeHelper.SimulateBuild(buildPipeline, packageName);
             var createParameters = new EditorSimulateModeParameters();
-            createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild(buildPipeline, packageName);
+            createParameters.EditorFileSystemParameters = FileSystemParameters.CreateDefaultEditorFileSystemParameters(simulateBuildResult);
             initializationOperation = package.InitializeAsync(createParameters);
         }
 
@@ -55,7 +55,7 @@ internal class FsmInitializePackage : IStateNode
         if (playMode == EPlayMode.OfflinePlayMode)
         {
             var createParameters = new OfflinePlayModeParameters();
-            createParameters.DecryptionServices = new FileStreamDecryption();
+            createParameters.BuildinFileSystemParameters = CreateBuildinFileSystemParameters(packageName);
             initializationOperation = package.InitializeAsync(createParameters);
         }
 
@@ -64,22 +64,18 @@ internal class FsmInitializePackage : IStateNode
         {
             string defaultHostServer = GetHostServerURL(packageName);
             string fallbackHostServer = GetHostServerURL(packageName);
+            IRemoteServices remoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
             var createParameters = new HostPlayModeParameters();
-            createParameters.DecryptionServices = new FileStreamDecryption();
-            createParameters.BuildinQueryServices = new GameQueryServices();
-            createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
+            createParameters.BuildinFileSystemParameters = CreateBuildinFileSystemParameters(packageName);
+            createParameters.CacheFileSystemParameters = FileSystemParameters.CreateDefaultCacheFileSystemParameters(remoteServices);
             initializationOperation = package.InitializeAsync(createParameters);
         }
 
         // WebGL运行模式
         if (playMode == EPlayMode.WebPlayMode)
         {
-            string defaultHostServer = GetHostServerURL(packageName);
-            string fallbackHostServer = GetHostServerURL(packageName);
             var createParameters = new WebPlayModeParameters();
-            createParameters.DecryptionServices = new FileStreamDecryption();
-            createParameters.BuildinQueryServices = new GameQueryServices();
-            createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
+            createParameters.WebFileSystemParameters = FileSystemParameters.CreateDefaultWebFileSystemParameters();
             initializationOperation = package.InitializeAsync(createParameters);
         }
 
@@ -88,13 +84,11 @@ internal class FsmInitializePackage : IStateNode
         // 如果初始化失败弹出提示界面
         if (initializationOperation.Status != EOperationStatus.Succeed)
         {
-            Game.Log.GameLog.Warning($"{initializationOperation.Error}");
+            Debug.LogWarning($"{initializationOperation.Error}");
             PatchEventDefine.InitializeFailed.SendEventMessage();
         }
         else
         {
-            var version = initializationOperation.PackageVersion;
-            Game.Log.GameLog.Debug($"Init resource package version : {version}");
             _machine.ChangeState<FsmUpdatePackageVersion>();
         }
     }
@@ -117,6 +111,22 @@ internal class FsmInitializePackage : IStateNode
             return $"{hostServerIP}/CDN/Windows/{appVersion}/{packageName}";
         else
             throw new System.NotSupportedException($"Unsupported platform: {Application.platform}");
+    }
+
+    private FileSystemParameters CreateBuildinFileSystemParameters(string packageName)
+    {
+        if (AppInfo.AppConfig.mainPackageName.Equals(packageName))
+        {
+            return FileSystemParameters.CreateDefaultBuildinFileSystemParameters();
+        }
+        else if (AppInfo.AppConfig.rawFilePackageName.Equals(packageName))
+        {
+            return FileSystemParameters.CreateDefaultBuildinRawFileSystemParameters();
+        }
+        else
+        {
+            throw new System.NotSupportedException($"Unsupported package name: {packageName}");
+        }
     }
 
     /// <summary>
@@ -155,7 +165,7 @@ internal class FsmInitializePackage : IStateNode
         {
             BundleStream bundleStream = new BundleStream(fileInfo.FileLoadPath, FileMode.Open, FileAccess.Read, FileShare.Read);
             managedStream = bundleStream;
-            return AssetBundle.LoadFromStream(bundleStream, fileInfo.ConentCRC, GetManagedReadBufferSize());
+            return AssetBundle.LoadFromStream(bundleStream, fileInfo.FileLoadCRC, GetManagedReadBufferSize());
         }
 
         /// <summary>
@@ -166,7 +176,7 @@ internal class FsmInitializePackage : IStateNode
         {
             BundleStream bundleStream = new BundleStream(fileInfo.FileLoadPath, FileMode.Open, FileAccess.Read, FileShare.Read);
             managedStream = bundleStream;
-            return AssetBundle.LoadFromStreamAsync(bundleStream, fileInfo.ConentCRC, GetManagedReadBufferSize());
+            return AssetBundle.LoadFromStreamAsync(bundleStream, fileInfo.FileLoadCRC, GetManagedReadBufferSize());
         }
 
         private static uint GetManagedReadBufferSize()
@@ -187,7 +197,7 @@ internal class FsmInitializePackage : IStateNode
         AssetBundle IDecryptionServices.LoadAssetBundle(DecryptFileInfo fileInfo, out Stream managedStream)
         {
             managedStream = null;
-            return AssetBundle.LoadFromFile(fileInfo.FileLoadPath, fileInfo.ConentCRC, GetFileOffset());
+            return AssetBundle.LoadFromFile(fileInfo.FileLoadPath, fileInfo.FileLoadCRC, GetFileOffset());
         }
 
         /// <summary>
@@ -197,7 +207,7 @@ internal class FsmInitializePackage : IStateNode
         AssetBundleCreateRequest IDecryptionServices.LoadAssetBundleAsync(DecryptFileInfo fileInfo, out Stream managedStream)
         {
             managedStream = null;
-            return AssetBundle.LoadFromFileAsync(fileInfo.FileLoadPath, fileInfo.ConentCRC, GetFileOffset());
+            return AssetBundle.LoadFromFileAsync(fileInfo.FileLoadPath, fileInfo.FileLoadCRC, GetFileOffset());
         }
 
         private static ulong GetFileOffset()

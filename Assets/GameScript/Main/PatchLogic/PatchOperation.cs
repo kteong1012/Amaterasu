@@ -5,8 +5,6 @@ using UnityEngine;
 using UniFramework.Machine;
 using UniFramework.Event;
 using YooAsset;
-using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
 
 public class PatchOperation : GameAsyncOperation
 {
@@ -99,10 +97,5 @@ public class PatchOperation : GameAsyncOperation
         {
             throw new System.NotImplementedException($"{message.GetType()}");
         }
-    }
-
-    internal UniTask ToUniTask()
-    {
-        return this.Task.AsUniTask();
     }
 }

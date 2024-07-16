@@ -31,7 +31,16 @@ namespace GameEditor
             CollectBuildPipelines();
         }
 
+        private Vector2 _scrollPosition;
+
         private void OnGUI()
+        {
+            _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
+            DrawWindow();
+            EditorGUILayout.EndScrollView();
+        }
+
+        private void DrawWindow()
         {
             DrawEnvironmentInfo();
             DrawPipelineOption();

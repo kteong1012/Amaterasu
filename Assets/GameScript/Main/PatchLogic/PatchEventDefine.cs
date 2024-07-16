@@ -108,9 +108,6 @@ public class PatchEventDefine
         }
     }
 
-    /// <summary>
-    /// 关闭更新窗口
-    /// </summary>
     public class ClosePatchWindow : IEventMessage
     {
         public static void SendEventMessage()

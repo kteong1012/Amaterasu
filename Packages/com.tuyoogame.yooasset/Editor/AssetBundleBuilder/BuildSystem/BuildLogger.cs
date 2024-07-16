@@ -8,7 +8,6 @@ namespace YooAsset.Editor
     internal static class BuildLogger
     {
         private static bool _enableLog = true;
-        private static string _prefix = "<color=#FFA500>[BuildLogger]</color>";
 
         public static void InitLogger(bool enableLog)
         {
@@ -19,16 +18,16 @@ namespace YooAsset.Editor
         {
             if (_enableLog)
             {
-                Debug.Log(_prefix + message);
+                Debug.Log(message);
             }
         }
         public static void Warning(string message)
         {
-            Debug.LogWarning(_prefix + message);
+            Debug.LogWarning(message);
         }
         public static void Error(string message)
         {
-            Debug.LogError(_prefix + message);
+            Debug.LogError(message);
         }
 
         public static string GetErrorMessage(ErrorCode code, string message)

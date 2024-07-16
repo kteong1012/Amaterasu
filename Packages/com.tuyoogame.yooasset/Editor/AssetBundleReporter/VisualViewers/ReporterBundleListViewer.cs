@@ -66,9 +66,7 @@ namespace YooAsset.Editor
             _bundleListView = _root.Q<ListView>("TopListView");
             _bundleListView.makeItem = MakeBundleListViewItem;
             _bundleListView.bindItem = BindBundleListViewItem;
-#if UNITY_2022_1_OR_NEWER
-            _bundleListView.selectionChanged += BundleListView_onSelectionChange;
-#elif UNITY_2020_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
             _bundleListView.onSelectionChange += BundleListView_onSelectionChange;
 #else
             _bundleListView.onSelectionChanged += BundleListView_onSelectionChange;

@@ -79,7 +79,6 @@ public class PatchWindow : MonoBehaviour
         _eventGroup.AddListener<PatchEventDefine.WebFileDownloadFailed>(OnHandleEventMessage);
         _eventGroup.AddListener<PatchEventDefine.ClosePatchWindow>(OnHandleEventMessage);
     }
-
     void OnDestroy()
     {
         _eventGroup.RemoveAllListener();

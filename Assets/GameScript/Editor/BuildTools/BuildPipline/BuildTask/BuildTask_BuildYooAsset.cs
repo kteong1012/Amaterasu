@@ -71,7 +71,7 @@ namespace GameEditor
             {
                 throw new Exception($"Build {packageName} failed ! , {buildResult.ErrorInfo}");
             }
-            EditorUtility.RevealInFinder(buildResult.OutputPackageDirectory);
+            //EditorUtility.RevealInFinder(buildResult.OutputPackageDirectory);
         }
 
         private void BuildRawFilePackage(BuildContext context, string packageName)
@@ -103,7 +103,7 @@ namespace GameEditor
             {
                 throw new Exception($"Build {packageName} failed ! , {buildResult.ErrorInfo}");
             }
-            EditorUtility.RevealInFinder(buildResult.OutputPackageDirectory);
+            //EditorUtility.RevealInFinder(buildResult.OutputPackageDirectory);
         }
 
         private string GetVersionName()
