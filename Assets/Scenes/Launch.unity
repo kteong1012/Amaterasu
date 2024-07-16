@@ -286,6 +286,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   editorLogLevel: 4
   editorPlayMode: 1
+  editorAppConfig:
+    appVersion: 1.0.0
+    isDevelopmentMode: 1
+    enableHotupdate: 0
+    cdnHostUrl: http://localhost:8080
+    mainPackageName: MainPackage
+    rawFilePackageName: RawFilePackage
 --- !u!4 &450980817
 Transform:
   m_ObjectHideFlags: 0

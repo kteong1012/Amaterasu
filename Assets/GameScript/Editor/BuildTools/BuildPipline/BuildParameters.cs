@@ -28,7 +28,6 @@ namespace GameEditor
         }
     }
 
-
     /// <summary>
     /// 都是只读字段，所以需要构造时候一次性初始化所有参数
     /// </summary>

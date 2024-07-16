@@ -17,6 +17,7 @@ namespace Game
     {
         public LogLevel editorLogLevel = LogLevel.Debug;
         public EPlayMode editorPlayMode = EPlayMode.EditorSimulateMode;
+        public AppConfiguration editorAppConfig;
 
         private async void Start()
         {
@@ -40,32 +41,21 @@ namespace Game
 
         private void InitGameLog()
         {
-
-#if UNITY_EDITOR
-            GameLog.LogLevel = editorLogLevel;
-#else
-            GameLog.LogLevel = LogLevel.Debug;
-#endif
+            GameLog.LogLevel = AppInfo.IsEditor ? editorLogLevel : LogLevel.Debug;
             GameLog.RegisterLogger(UnityConsoleLogger.Instance);
         }
 
         private void InitAppInfo()
         {
-            // 读取AppConfig
+            if (AppInfo.IsEditor)
+            {
+                AppInfo.AppConfig = editorAppConfig;
+            }
+            else
             {
                 var path = "appConfig";
                 var ta = Resources.Load<TextAsset>(path);
                 var config = ta == null ? null : JsonUtility.FromJson<AppConfiguration>(ta.text);
-#if UNITY_EDITOR
-                if (config == null)
-                {
-                    // 编辑器模式下，如果没有version.config文件，创建一份
-                    config = new AppConfiguration();
-                    var json = JsonUtility.ToJson(config);
-                    File.WriteAllText("Assets/Resources/appConfig.json", json);
-                    UnityEditor.AssetDatabase.Refresh();
-                }
-#endif
                 if (config == null)
                 {
                     GameLog.Error("version.json not found");
@@ -73,7 +63,6 @@ namespace Game
                 }
 
                 AppInfo.AppConfig = config;
-
             }
         }
 

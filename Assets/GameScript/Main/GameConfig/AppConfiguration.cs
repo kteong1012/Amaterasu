@@ -1,7 +1,9 @@
-﻿using YooAsset;
+﻿using System;
+using YooAsset;
 
 namespace Game
 {
+    [Serializable]
     public class AppConfiguration
     {
         public string appVersion = Version.DefaultVersion;
