@@ -110,3 +110,5 @@ crashlytics-build.properties
 
 # Assets/GameRes/Raw/Code
 /Assets/GameRes/Raw/Code/*
+
+/Assets/UXTools/Res/UX-GUI-Editor-Tools/UserDatas/Editor/*
