@@ -1,5 +1,4 @@
-﻿using Game.Cfg;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,16 +6,24 @@ using System.Threading.Tasks;
 
 namespace Game
 {
+    public enum NumericValueType
+    {
+        Base,
+        BaseAdd,
+        BaseMul,
+        FinalAdd,
+        FinalMul,
+    }
     public class NumericObject
     {
-        public NumericId Id { get; set; }
+        public int Id { get; set; }
         public NumberX1000 Base { get; set; }
         public NumberX1000 BaseAdd { get; set; }
         public NumberX1000 BaseMul { get; set; }
         public NumberX1000 FinalAdd { get; set; }
         public NumberX1000 FinalMul { get; set; }
 
-        public NumericObject(NumericId id)
+        public NumericObject(int id)
         {
             Id = id;
         }

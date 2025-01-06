@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using Game.Log;
 
 namespace Game
 {
@@ -30,10 +31,8 @@ namespace Game
             _currentState = nextState;
             _currentState.SetStateMachine(this);
             _currentState.Enter();
-            if (AppInfo.IsEditor)
-            {
-                FloatingText.Show($"进入状态:{_currentState.GetType().Name}");
-            }
+            
+            GameLog.Debug($"进入状态:{_currentState.GetType().Name}");
         }
 
         public void Update()

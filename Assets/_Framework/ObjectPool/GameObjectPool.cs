@@ -127,7 +127,7 @@ namespace Game
         {
             if (_handle == null)
             {
-                _handle = SSS.Get<ResourceService>().LoadAssetSync<GameObject>(_assetPath);
+                _handle = YooAssets.LoadAssetSync<GameObject>(_assetPath);
             }
 
             if (_handle == null || _handle.Status == EOperationStatus.Failed)

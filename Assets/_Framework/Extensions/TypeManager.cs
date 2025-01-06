@@ -10,6 +10,7 @@ namespace Game
     public class TypeManager
     {
         private static TypeManager _instance;
+
         public static TypeManager Instance
         {
             get
@@ -18,22 +19,25 @@ namespace Game
                 {
                     _instance = new TypeManager();
                 }
+
                 return _instance;
             }
         }
 
-        private Assembly _hotUpdateAssembly;
-        private Type[] _hotUpdateTypes;
+        private Dictionary<string, Type> _typeDict = new Dictionary<string, Type>();
 
-        public TypeManager()
+        public void AddAssembly(Assembly assembly)
         {
-            _hotUpdateAssembly = GetType().Assembly;
-            _hotUpdateTypes = _hotUpdateAssembly.GetTypes();
+            var types = assembly.GetTypes();
+            foreach (var type in types)
+            {
+                _typeDict.TryAdd(type.FullName, type);
+            }
         }
 
-        public IEnumerable<Type> GetTypes()
+        public Type[] GetTypes()
         {
-            return _hotUpdateTypes;
+            return _typeDict.Values.ToArray();
         }
     }
 }

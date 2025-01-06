@@ -13,11 +13,11 @@ namespace Game
         private static Dictionary<GameServiceDomain, bool> _domainActive = new Dictionary<GameServiceDomain, bool>();
         private static Dictionary<GameServiceDomain, List<GameService>> _services = new Dictionary<GameServiceDomain, List<GameService>>();
 
-        static SSS()
+        public static void Init(params Assembly[] assemblies)
         {
+            var types = TypeManager.Instance.GetTypes();
             // Collect all GameService types
             _domainTypes = new Dictionary<GameServiceDomain, HashSet<Type>>();
-            var types = HotUpdateAssemblyManager.Instance.GetTypes();
             foreach (var type in types)
             {
                 // if type is abstract, skip

@@ -5,5 +5,15 @@
         <var name="BaseMul" alias="BM"/>
         <var name="FinalAdd" alias="FA"/>
         <var name="FinalMul" alias="FM"/>
+
+        <mapper target="client" codeTarget="cs-bin,cs-dotnet-json">
+            <option name="type" value="Game.NumericValueType"/>
+            <option name="constructor" value="EnumMapper.ToNumericValueType"/>
+        </mapper>
+
+        <mapper target="all" codeTarget="cs-bin,cs-dotnet-json">
+            <option name="type" value="Game.NumericValueType"/>
+            <option name="constructor" value="EnumMapper.ToNumericValueType"/>
+        </mapper>
     </enum>
 </module>

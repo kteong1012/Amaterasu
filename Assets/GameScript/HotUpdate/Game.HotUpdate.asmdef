@@ -1,5 +1,5 @@
 {
-    "name": "HotUpdate",
+    "name": "Game.HotUpdate",
     "rootNamespace": "",
     "references": [
         "GUID:e34a5702dd353724aa315fb8011f08c3",
@@ -11,7 +11,8 @@
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:0eaf2021dc6336c4ba15381311211830",
         "GUID:cd13589a4c54a804b90bd8fe0969390a",
-        "GUID:8c4dd21966739024fbd72155091d199e"
+        "GUID:8c4dd21966739024fbd72155091d199e",
+        "GUID:32aeb878fdb15f94b903e344162e7c7e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
