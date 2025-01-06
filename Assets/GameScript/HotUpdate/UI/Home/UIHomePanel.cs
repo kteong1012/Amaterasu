@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using UniFramework.Event;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game
@@ -24,6 +25,8 @@ namespace Game
             btnStartNewGame.onClick.AddListener(OnStartNewGame);
             btnSwitchLanguage.onClick.AddListener(OnSwitchLanguage);
             btnQuitGame.onClick.AddListener(OnQuitGame);
+            
+            btnContinuePlayerGame.gameObject.SetActive(false);
         }
 
         protected override void OnShow()
@@ -35,7 +38,7 @@ namespace Game
         {
             UpdateViewAsync().Forget();
         }
-        
+
         private async UniTaskVoid UpdateViewAsync()
         {
         }
@@ -46,10 +49,19 @@ namespace Game
 
         private void OnContinuePlayerGame()
         {
+            EnterGame().Forget();
+            Close();
         }
 
         private void OnStartNewGame()
         {
+            EnterGame().Forget();
+            Close();
+        }
+
+        private async UniTask EnterGame()
+        {
+            await SSS.Get<GameStateService>().ChangeState(new GameStateBattle());
         }
 
         private void OnSwitchLanguage()

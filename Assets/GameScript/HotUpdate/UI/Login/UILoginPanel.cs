@@ -55,7 +55,7 @@ namespace Game
                     return;
                 }
 
-                await SSS.Get<AccountService>().Login(LoginChannel.Local, _inputAccountName.text);
+                await SSS.Get<LoginService>().Login(LoginChannel.Local, _inputAccountName.text);
             }
         }
     }
