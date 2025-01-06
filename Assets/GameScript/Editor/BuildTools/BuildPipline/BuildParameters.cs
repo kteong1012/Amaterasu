@@ -140,7 +140,7 @@ namespace GameEditor
                 }
                 else
                 {
-                    return Path.Combine(buildFolder, appName);
+                    return Path.Combine(buildFolder, $"{appName}.exe");
                 }
             }
             else if (buildParameters.BuildTarget is BuildTarget.iOS)

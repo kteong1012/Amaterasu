@@ -1,0 +1,24 @@
+{
+  "profiles": {
+    "Collect": {
+      "commandName": "Project",
+      "commandLineArgs": "Collect -mainExcelPath Main.xlsx -codeTextPath Source/code.txt -prefabTextPath Source/prefab.txt -configTextPath Source/config.txt",
+      "workingDirectory": "E:\\OpenProjects\\Code_DD\\branches\\main\\Unity\\Config\\Localization"
+    },
+    "Update": {
+      "commandName": "Project",
+      "commandLineArgs": "Update -mainExcelPath Main.xlsx -translateFolderPath Translate -exportPatchFolderPath Patch/Tasks -languages zh_CN,en_US,ja_JP",
+      "workingDirectory": "E:\\OpenProjects\\Code_DD\\branches\\main\\Unity\\Config\\Localization"
+    },
+    "Export": {
+      "commandName": "Project",
+      "commandLineArgs": "Export -translateFolderPath Translate -outputDir Json -dataType Json -languages zh_CN,en_US,ja_JP",
+      "workingDirectory": "E:\\OpenProjects\\Code_DD\\branches\\main\\Unity\\Config\\Localization"
+    },
+    "Patch": {
+      "commandName": "Project",
+      "commandLineArgs": "Patch -translateFolderPath Translate -patchFolderPath Patch/Results -languages zh_CN,en_US,ja_JP",
+      "workingDirectory": "E:\\OpenProjects\\Code_DD\\branches\\main\\Unity\\Config\\Localization"
+    }
+  }
+}

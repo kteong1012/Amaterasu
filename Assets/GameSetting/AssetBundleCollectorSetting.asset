@@ -21,8 +21,8 @@ MonoBehaviour:
     EnableAddressable: 1
     LocationToLower: 0
     IncludeAssetGUID: 0
-    IgnoreDefaultType: 1
     AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
     Groups:
     - GroupName: battle
       GroupDesc: "\u6218\u6597"
@@ -32,7 +32,7 @@ MonoBehaviour:
       - CollectPath: Assets/GameRes/Prefabs/Effect
         CollectorGUID: 80d76514758554baaa96a9efffe9f3ef
         CollectorType: 0
-        AddressRuleName: AddressByFileName
+        AddressRuleName: AddressDisable
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
         AssetTags: 
@@ -53,6 +53,30 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+      - CollectPath: Assets/GameRes/Prefabs/Dice
+        CollectorGUID: f7bf57360475d414098c011d8479ec99
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/Prefabs/Chara
+        CollectorGUID: 91c7f5a56ccc66e418ae5a436861eba3
+        CollectorType: 0
+        AddressRuleName: AddressDisable
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/Prefabs/Environment
+        CollectorGUID: a63ce8b7a5215994ab173a43075d5b78
+        CollectorType: 0
+        AddressRuleName: AddressDisable
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
     - GroupName: shader
       GroupDesc: "\u7740\u8272\u5668"
       AssetTags: 
@@ -67,7 +91,7 @@ MonoBehaviour:
         CollectorGUID: 6070eae1192f2994887f2983a177d503
         CollectorType: 0
         AddressRuleName: AddressByFileName
-        PackRuleName: PackSeparately
+        PackRuleName: PackDirectory
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
@@ -80,15 +104,41 @@ MonoBehaviour:
         CollectorGUID: 4b625de1d20a53f4fad9a0ac4ceea14c
         CollectorType: 0
         AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
+        PackRuleName: PackTopDirectory
+        FilterRuleName: CollectPrefab
         AssetTags: 
         UserData: 
       - CollectPath: Assets/GameRes/Prefabs/UI3D
         CollectorGUID: c3c3e4dc0e5a6424abd2e9cffe833028
         CollectorType: 0
         AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
+        PackRuleName: PackTopDirectory
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+        UserData: 
+    - GroupName: tex
+      GroupDesc: "\u8D34\u56FE"
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/GameRes/Textures
+        CollectorGUID: 136e9cd9923af4340a83db423d37841d
+        CollectorType: 0
+        AddressRuleName: AddressDisable
+        PackRuleName: PackTopDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+    - GroupName: font
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/GameRes/Fonts
+        CollectorGUID: 0d2ba514e153f494c8fa71ac00240825
+        CollectorType: 0
+        AddressRuleName: AddressByGroupAndFileName
+        PackRuleName: PackTopDirectory
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
@@ -97,8 +147,8 @@ MonoBehaviour:
     EnableAddressable: 1
     LocationToLower: 0
     IncludeAssetGUID: 0
-    IgnoreDefaultType: 1
     AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
     Groups:
     - GroupName: Config
       GroupDesc: 
@@ -107,6 +157,14 @@ MonoBehaviour:
       Collectors:
       - CollectPath: Assets/GameRes/Raw/Config/Bytes
         CollectorGUID: 95b79ce8f442ed54f937fecf26688d33
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackSeparately
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
+      - CollectPath: Assets/GameRes/Raw/Localization/Bytes
+        CollectorGUID: 7d48dfcd0bb6e3a49b5cef41c471c89c
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackSeparately

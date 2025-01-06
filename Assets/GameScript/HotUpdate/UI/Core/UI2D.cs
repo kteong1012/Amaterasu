@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
+using YooAsset;
 
 namespace Game
 {
@@ -7,29 +9,55 @@ namespace Game
     {
         private List<UI2DNode> _children = new List<UI2DNode>();
 
-        public UI2DNode CreateChild<T>(Transform parent = null) where T : UI2DNode
+        private List<AssetHandle> _assetHandles = new List<AssetHandle>();
+
+        private void ClearAssetHandles()
+        {
+            foreach (var handle in _assetHandles)
+            {
+                handle.Release();
+            }
+            _assetHandles.Clear();
+        }
+
+        public T AddChildNode<T>(Transform parent = null) where T : UI2DNode
         {
             if (parent == null)
             {
                 parent = transform;
             }
-            var node = UIService.CreateNode<T>(parent);
+            var node = SSS.Get<UIService>().CreateNode<T>(parent);
             _children.TryAdd(node);
             return node;
         }
 
-        private bool _isShow = false;
-
-        public void __Show()
+        public void AddChildNode<T>(T node) where T : UI2DNode
         {
-            if (_isShow)
+            // 手动唤起生命周期
+            node.__Init();
+            node.__Show();
+            _children.TryAdd(node);
+        }
+
+        private bool _inited;
+
+        protected bool _isShow;
+        public virtual bool IsShow { get => _isShow; protected set => _isShow = value; }
+
+        public void __Show(bool force = false)
+        {
+            if (!_inited)
+            {
+                __Init();
+            }
+            else if (IsShow && !force)
             {
                 return;
             }
-            _isShow = true;
+            IsShow = true;
             foreach (var child in _children)
             {
-                child.__Show();
+                child.__Show(force);
             }
             gameObject.SetActive(true);
             OnShow();
@@ -37,11 +65,15 @@ namespace Game
 
         public void __Hide()
         {
-            if (!_isShow)
+            if (!_inited)
+            {
+                __Init();
+            }
+            else if (!IsShow)
             {
                 return;
             }
-            _isShow = false;
+            IsShow = false;
             foreach (var child in _children)
             {
                 child.__Hide();
@@ -52,7 +84,7 @@ namespace Game
 
 
 
-        public void ReleaseChild(UI2DNode node)
+        public void RemoveChild(UI2DNode node)
         {
             node.__Release();
             _children.TryRemove(node);
@@ -70,6 +102,11 @@ namespace Game
 
         public void __Init()
         {
+            if (_inited)
+            {
+                return;
+            }
+            _inited = true;
             OnCreate();
         }
 
@@ -107,6 +144,44 @@ namespace Game
         /// 每次关闭面板时调用
         /// </summary>
         protected virtual void OnHide()
+        {
+
+        }
+
+        /// <summary>
+        /// 增加此接口是为了切换多语言时候能调用
+        /// </summary>
+        public void Translate(Language language)
+        {
+            // 遍历所有的 TextMeshProUGUI 组件，把它们的字体批量替换
+            var textComponents = transform.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true);
+            var font = Localization.LocalizationHandler.GetFont();
+            foreach (var textComponent in textComponents)
+            {
+                textComponent.font = font;
+            }
+            foreach (var child in _children)
+            {
+                child.Translate(language);
+            }
+            UpdateLocalizationText(language);
+            UpdateView();
+        }
+
+        /// <summary>
+        /// 遍历物体下所有 Localization 组件，调用 Refresh 方法
+        /// </summary>
+        /// <param name="language"></param>
+        private void UpdateLocalizationText(Language language)
+        {
+            var localizations = GetComponentsInChildren<Localization>(true);
+            foreach (var localization in localizations)
+            {
+                localization.Refresh();
+            }
+        }
+
+        protected virtual void UpdateView()
         {
 
         }

@@ -17,6 +17,8 @@ public sealed partial class BattleSettings : Luban.BeanBase
     public BattleSettings(ByteBuf _buf) 
     {
         Test = _buf.ReadInt();
+
+        TranslateText();
     }
 
     public static BattleSettings DeserializeBattleSettings(ByteBuf _buf)
@@ -24,14 +26,17 @@ public sealed partial class BattleSettings : Luban.BeanBase
         return new BattleSettings(_buf);
     }
 
-    public readonly int Test;
+    public int Test { get; private set; }
    
     public const int __ID__ = 1984693531;
     public override int GetTypeId() => __ID__;
 
     public  void ResolveRef(ConfigService tables)
     {
-        
+    }
+
+    public  void TranslateText()
+    {
     }
 
     public override string ToString()

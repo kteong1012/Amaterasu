@@ -11,6 +11,8 @@ namespace Luban
         public abstract void LoadJson(SimpleJSON.JSONObject json);
 
         public abstract void SaveJson(SimpleJSON.JSONObject json);
+        public string OriginalDataJson { get; set; }
+        public abstract void Render();
 
         public void LoadJsonFile(string file)
         {

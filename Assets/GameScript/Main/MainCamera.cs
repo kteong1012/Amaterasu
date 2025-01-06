@@ -3,6 +3,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace Game
 {
+
     public class MainCamera : MonoBehaviour
     {
         public static MainCamera Instance { get; private set; }

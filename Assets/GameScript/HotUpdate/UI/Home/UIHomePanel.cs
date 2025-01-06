@@ -1,29 +1,69 @@
-using Game;
-using Game.Log;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Cysharp.Threading.Tasks;
+using UniFramework.Event;
 using UnityEngine.UI;
 
-[UI2D("UIHomePanel")]
-public partial class UIHomePanel : UI2DPanel
+namespace Game
 {
-    public override UI2DPanelLayer Layer => UI2DPanelLayer.Normal;
-
-    public override UI2DPanelOptions Options => UI2DPanelOptions.None;
-
-    public Button btnStartBattle;
-
-    protected override void OnCreate()
+    [UI2D("UIHomePanel")]
+    public partial class UIHomePanel : UI2DPanel
     {
-        btnStartBattle.onClick.AddListener(OnClickBtnStartBattle);
+        public override UI2DPanelLayer Layer => UI2DPanelLayer.Normal;
 
-        var roleData = SSS.PlayerDataService.GetPlayerData<RoleData>();
-    }
+        public override UI2DPanelOptions Options => UI2DPanelOptions.None;
 
-    private async void OnClickBtnStartBattle()
-    {
-        await SSS.SceneService.ChangeToBattleScene();
-        Close();
+        public Button btnPlayerData;
+        public Button btnContinuePlayerGame;
+        public Button btnStartNewGame;
+        public Button btnSwitchLanguage;
+        public Button btnQuitGame;
+
+        protected override void OnCreate()
+        {
+            btnPlayerData.onClick.AddListener(OnPlayerData);
+            btnContinuePlayerGame.onClick.AddListener(OnContinuePlayerGame);
+            btnStartNewGame.onClick.AddListener(OnStartNewGame);
+            btnSwitchLanguage.onClick.AddListener(OnSwitchLanguage);
+            btnQuitGame.onClick.AddListener(OnQuitGame);
+        }
+
+        protected override void OnShow()
+        {
+            UpdateView();
+        }
+
+        protected override void UpdateView()
+        {
+            UpdateViewAsync().Forget();
+        }
+        
+        private async UniTaskVoid UpdateViewAsync()
+        {
+        }
+
+        private void OnPlayerData()
+        {
+        }
+
+        private void OnContinuePlayerGame()
+        {
+        }
+
+        private void OnStartNewGame()
+        {
+        }
+
+        private void OnSwitchLanguage()
+        {
+            SSS.Get<UIService>().OpenPanel<UISelectLanguagePanel>();
+        }
+
+        private void OnQuitGame()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            UnityEngine.Application.Quit();
+#endif
+        }
     }
 }

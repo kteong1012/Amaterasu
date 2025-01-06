@@ -9,40 +9,56 @@ namespace Game
     public class GameEntry : MonoBehaviour
     {
         #region Constants
+
         private const int TARGET_FRAME_RATE = 60;
+
         #endregion
 
         #region Fields & Properties
+
         public static GameEntry Ins { get; private set; }
 
         private readonly EventGroup _eventGroup = new EventGroup();
+
         #endregion
 
-        private async void Awake()
+        private void Awake()
         {
-            Ins = this;
-            Application.targetFrameRate = TARGET_FRAME_RATE;
-            Application.runInBackground = true;
-            DontDestroyOnLoad(this.gameObject);
+            AsyncMethod().Forget();
+            return;
 
-            // 添加事件监听
-            AddEventListeners();
+            async UniTaskVoid AsyncMethod()
+            {
+                Ins = this;
+                Application.targetFrameRate = TARGET_FRAME_RATE;
+                Application.runInBackground = true;
+                DontDestroyOnLoad(this.gameObject);
 
-            // 关闭更新窗口
-            PatchEventDefine.ClosePatchWindow.SendEventMessage();
+                // 添加事件监听
+                AddEventListeners();
 
-            // 启动Game服务
-            await SSS.StartServices( GameServiceDomain.Game);
+                // 关闭更新窗口
+                PatchEventDefine.ClosePatchWindow.SendEventMessage();
 
-            // 进入登录场景
-            SSS.SceneService.ChangeToLoginScene().Forget();
+                // 启动Game服务
+                await SSS.StartServices(GameServiceDomain.Game);
 
-            // 打开登录界面
-            UIService.OpenPanel<UILoginPanel>();
+                // 预加载Loading界面
+                PreloadLoadingPanel();
+
+                // 切换至登录状态
+                SSS.Get<GameStateService>().ChangeState(new GameStateLogin()).Forget();
+            }
         }
 
         private void AddEventListeners()
         {
+        }
+
+        private void PreloadLoadingPanel()
+        {
+            SSS.Get<UIService>().OpenPanel<UILoadingPanel>();
+            SSS.Get<UIService>().ClosePanel<UILoadingPanel>();
         }
 
         private void Update()
@@ -55,6 +71,7 @@ namespace Game
             _eventGroup?.RemoveAllListener();
             GameLog.ClearLogger();
         }
+
         private void OnApplicationQuit()
         {
             SSS.StopAll();

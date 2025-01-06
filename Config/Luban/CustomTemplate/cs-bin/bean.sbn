@@ -84,6 +84,8 @@ public {{class_modifier __bean}} partial class {{__name}} : {{if parent_def_type
         }
             {{~end~}}
         {{~end~}}
+
+        TranslateText();
     }
 
     public static {{__name}} Deserialize{{__name}}(ByteBuf _buf)
@@ -107,7 +109,7 @@ public {{class_modifier __bean}} partial class {{__name}} : {{if parent_def_type
     /// {{escape_comment field.comment}}
     /// </summary>
 {{~end~}}
-    public readonly {{declaring_type_name field.ctype}} {{format_property_name __code_style field.name}};
+    public {{declaring_type_name field.ctype}} {{format_property_name __code_style field.name}} { get; private set; }
     {{~if can_generate_ref field~}}
     public {{declaring_type_name (get_ref_type field)}} {{get_ref_name field}};
     {{~else if can_generate_collection_ref field~}}
@@ -131,7 +133,22 @@ public {{class_modifier __bean}} partial class {{__name}} : {{if parent_def_type
         base.ResolveRef(tables);
         {{~end~}}
         {{~for field in export_fields~}}
-        {{generate_resolve_field_ref field}}
+        {{~solve_code = generate_resolve_field_ref field~}}
+            {{~if solve_code != ''~}}
+        {{solve_code}}
+            {{~end~}}
+        {{~end~}}
+    }
+
+    public {{method_modifier __bean}} void TranslateText()
+    {
+        {{~if parent_def_type~}}
+        base.TranslateText();
+        {{~end~}}
+        {{~for field in export_fields~}}
+            {{~if field.ctype.type_name == "string" && has_tag field.ctype 'text'~}}
+        {{format_property_name __code_style field.name}} = {{format_property_name __code_style field.name}}.Translate();
+            {{~end~}}
         {{~end~}}
     }
 

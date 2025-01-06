@@ -7,7 +7,7 @@ namespace Game
 {
     public partial class UIService
     {
-        private Dictionary<string, YooAssetGameObjectPool> _nodePools = new Dictionary<string, YooAssetGameObjectPool>();
+        private Dictionary<string, GameObjectPool> _nodePools = new Dictionary<string, GameObjectPool>();
 
         private const float _disposeNodePoolInterval = 30f;
         private float _disposeNodePoolTimer = 0f;
@@ -51,7 +51,7 @@ namespace Game
             }
             if (!_nodePools.TryGetValue(info.prefabPath, out var pool))
             {
-                pool = new YooAssetGameObjectPool(info.prefabPath, OnCreateUINode, OnGetUINode, OnReleaseUINode, OnDestroyUINode);
+                pool = new GameObjectPool(info.prefabPath, OnCreateUINode, OnGetUINode, OnReleaseUINode, OnDestroyUINode);
                 _nodePools.Add(info.prefabPath, pool);
             }
             return pool.GetAsComponent<UI2DNode>(null);
@@ -66,6 +66,7 @@ namespace Game
         private void OnGetUINode(GameObject go)
         {
             var node = go.GetComponent<UI2DNode>();
+            node.Translate(SSS.Get<Game.Cfg.ConfigService>().Language);
             node.__Show();
         }
 

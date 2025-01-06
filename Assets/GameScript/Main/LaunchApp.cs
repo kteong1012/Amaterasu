@@ -19,10 +19,23 @@ namespace Game
         public EPlayMode editorPlayMode = EPlayMode.EditorSimulateMode;
         public AppConfiguration editorAppConfig;
 
-        private async void Start()
+        private void Start()
         {
+            DoStart().Forget();
+        }
+        
+        private async UniTaskVoid DoStart()
+        {
+            if (AppInfo.IsEditor)
+            {
+                // 允许后台运行
+                Application.runInBackground = true;
+            }
+            
             // 初始化Log
             InitGameLog();
+            // 初始化鼠标
+            InitCursor();
             // 获取AppInfo
             InitAppInfo();
             // 播放启动视频
@@ -37,6 +50,13 @@ namespace Game
             LoadCSharpConfiguration();
             // 加载HotUpdate程序集
             LoadDll();
+        }
+
+        private void InitCursor()
+        {
+            GameCursor.Init();
+            GameCursor.SetCursorVisible(true);
+            GameCursor.SetCursorType(CursorType.Basic_Normal);
         }
 
         private void InitGameLog()

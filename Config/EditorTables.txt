@@ -1,0 +1,6 @@
+BuffCategory
+BuffDiceCategory
+SkillConfigCategory
+SkillDiceFaceConfigCategory
+BattleAICategory
+Avg.AvgConfigCategory

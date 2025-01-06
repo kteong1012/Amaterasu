@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game
 {
     public partial class UIService
     {
-        private Dictionary<string, YooAssetGameObjectPool> _panelPools = new Dictionary<string, YooAssetGameObjectPool>();
+        private Dictionary<string, GameObjectPool> _panelPools = new Dictionary<string, GameObjectPool>();
+        private HashSet<string> _dontNeedToClearPoolNames = new HashSet<string>();
 
         private const float _disposePanelPoolInterval = 30f;
         private float _disposePanelPoolTimer = 0f;
@@ -24,10 +26,15 @@ namespace Game
                 {
                     var poolName = pair.Key;
                     var pool = pair.Value;
+                    if (_dontNeedToClearPoolNames.Contains(poolName))
+                    {
+                        continue;
+                    }
                     if (pool.RefCount == 0)
                     {
                         GameLog.Debug($"自动清除对象池： '{poolName}'");
                         pool.Dispose();
+                        removeKeys.Add(poolName);
                     }
                 }
                 foreach (var removeKey in removeKeys)
@@ -37,11 +44,11 @@ namespace Game
             }
         }
 
-        private UI2DPanel GetPanel(UI2DPanelInfo info)
+        private UI2DPanel GetPanel(UI2DInfo info)
         {
             if (!_panelPools.TryGetValue(info.prefabPath, out var pool))
             {
-                pool = new YooAssetGameObjectPool(info.prefabPath, OnCreateUIPanel, null, null, OnDestroyUIPanel, true, 1, 1);
+                pool = new GameObjectPool(info.prefabPath, OnCreateUIPanel, OnGetUIPanel, OnReleaseUIPanel, OnDestroyUIPanel, true, 1, 1);
                 _panelPools.Add(info.prefabPath, pool);
             }
             return pool.GetAsComponent<UI2DPanel>(null);
@@ -51,6 +58,20 @@ namespace Game
         {
             var panel = go.GetComponent<UI2DPanel>();
             panel.__Init();
+
+            // 定制代码，检测子物体有没有 CloseButton，有的话绑定关闭事件
+            var closeButtons = panel.GetComponentsInChildren<ButtonClose>();
+            foreach (var closeButton in closeButtons)
+            {
+                closeButton.onClick.AddListener(() =>
+                {
+                    UIEventDefine.UI2DPanelCloseEvent.SendMsg(panel);
+                });
+            }
+            if (!panel.IsAutoRelease)
+            {
+                _dontNeedToClearPoolNames.Add(panel.ClassName);
+            }
         }
 
         private void OnDestroyUIPanel(GameObject go)
@@ -62,6 +83,7 @@ namespace Game
         private void OnGetUIPanel(GameObject go)
         {
             var panel = go.GetComponent<UI2DPanel>();
+            panel.Translate(SSS.Get<Game.Cfg.ConfigService>().Language);
             panel.__Show();
         }
 

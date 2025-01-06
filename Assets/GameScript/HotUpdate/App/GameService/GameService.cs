@@ -20,6 +20,25 @@ namespace Game
     {
         protected EventGroup _eventGroup = new EventGroup();
 
+        public UniTask __Init()
+        {
+            GameLog.Debug($"{GetType().Name}:__Init");
+            return Awake();
+        }
+
+        public UniTask __PostInit()
+        {
+            GameLog.Debug($"{GetType().Name}:__PostInit");
+            return Start();
+        }
+
+        public void __Dispose()
+        {
+            GameLog.Debug($"{GetType().Name}:__Dispose");
+            RemoveAllListener();
+            OnDestroy();
+        }
+
         protected virtual UniTask Awake()
         {
             return UniTask.CompletedTask;
@@ -32,13 +51,22 @@ namespace Game
         public virtual void Update()
         {
         }
+
+        public virtual void LateUpdate()
+        {
+        }
+
+        public virtual void FixedUpdate()
+        {
+        }
+
         protected virtual void OnDestroy()
         {
         }
 
         protected void AddEventListener<T>(Action<IEventMessage> action) where T : IEventMessage
         {
-            if(_eventGroup == null)
+            if (_eventGroup == null)
             {
                 _eventGroup = new EventGroup();
             }

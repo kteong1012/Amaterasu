@@ -1,5 +1,4 @@
-﻿using Unity.AI.Navigation;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 namespace Game
@@ -9,7 +8,6 @@ namespace Game
         public static void Class()
         {
             GameObject go = new GameObject();
-            go.AddComponent<NavMeshSurface>();
             NavMeshData data = new NavMeshData();
         }
     }

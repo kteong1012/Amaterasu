@@ -1,4 +1,5 @@
-﻿using UniFramework.Event;
+﻿using System.Runtime.CompilerServices;
+using UniFramework.Event;
 
 namespace Game
 {
@@ -6,12 +7,24 @@ namespace Game
     {
         protected EventGroup _eventGroup = new EventGroup();
 
-        public abstract UI2DPanelLayer Layer { get; }
-        public abstract UI2DPanelOptions Options { get; }
+        public virtual UI2DPanelLayer Layer { get; } = UI2DPanelLayer.Normal;
+        public virtual UI2DPanelOptions Options { get; } = UI2DPanelOptions.None;
+        public virtual bool IsAutoRelease => true;
 
-        public virtual string ClassName { get; }
+        private string _className;
+        public string ClassName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_className))
+                {
+                    _className = GetType().FullName;
+                }
+                return _className;
+            }
+        }
 
-        public void Close()
+        protected void Close()
         {
             UIEventDefine.UI2DPanelCloseEvent.SendMsg(this);
         }

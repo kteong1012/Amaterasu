@@ -14,7 +14,7 @@
 //    [UnityEditor.CustomEditor(typeof(Game.UIComponent))]
 //    public class UIComponentInspector : UnityEditor.Editor
 //    {
-//        private static Dictionary<string, Type> _componentTypes = new Dictionary<string, Type>()
+//        private static Dictionary<string, State> _componentTypes = new Dictionary<string, State>()
 //        {
 //            { nameof(GameObject), typeof(GameObject) },
 //            { nameof(Transform), typeof(Transform) },

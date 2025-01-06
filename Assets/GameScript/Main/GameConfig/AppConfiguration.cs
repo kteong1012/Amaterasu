@@ -12,8 +12,8 @@ namespace Game
         public string cdnHostUrl;
         public string mainPackageName;
         public string rawFilePackageName;
+        public Language[] languages;
 
         public EPlayMode ReleasePlayMode => enableHotupdate ? EPlayMode.HostPlayMode : EPlayMode.OfflinePlayMode;
-
     }
 }

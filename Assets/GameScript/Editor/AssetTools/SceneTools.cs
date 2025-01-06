@@ -1,8 +1,10 @@
+using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Game
+namespace GameEditor
 {
     public static class SceneTools
     {
@@ -21,6 +23,11 @@ namespace Game
             }
 
             EditorApplication.isPlaying = true;
+        }
+
+        [MenuItem("测试/测试任何")]
+        public static void Test()
+        {
         }
     }
 }

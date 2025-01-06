@@ -24,6 +24,8 @@ public sealed partial class UnitData : Luban.BeanBase
         RadiusX1000 = _buf.ReadLong();
         {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);BaseStatsX1000 = new System.Collections.Generic.Dictionary<NumericId, long>(n0 * 3 / 2);for(var i0 = 0 ; i0 < n0 ; i0++) { NumericId _k0;  _k0 = (NumericId)_buf.ReadInt(); long _v0;  _v0 = _buf.ReadLong();     BaseStatsX1000.Add(_k0, _v0);}}
         {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);LevelGrowthStatsX1000 = new System.Collections.Generic.Dictionary<NumericId, long>(n0 * 3 / 2);for(var i0 = 0 ; i0 < n0 ; i0++) { NumericId _k0;  _k0 = (NumericId)_buf.ReadInt(); long _v0;  _v0 = _buf.ReadLong();     LevelGrowthStatsX1000.Add(_k0, _v0);}}
+
+        TranslateText();
     }
 
     public static UnitData DeserializeUnitData(ByteBuf _buf)
@@ -31,34 +33,30 @@ public sealed partial class UnitData : Luban.BeanBase
         return new UnitData(_buf);
     }
 
-    public readonly int Id;
-    public readonly string Name;
-    public readonly string Desc;
-    public readonly string ModelPath;
-    public readonly string ControllerName;
-    public readonly long RadiusX1000;
+    public int Id { get; private set; }
+    public string Name { get; private set; }
+    public string Desc { get; private set; }
+    public string ModelPath { get; private set; }
+    public string ControllerName { get; private set; }
+    public long RadiusX1000 { get; private set; }
     /// <summary>
     /// 基础属性
     /// </summary>
-    public readonly System.Collections.Generic.Dictionary<NumericId, long> BaseStatsX1000;
+    public System.Collections.Generic.Dictionary<NumericId, long> BaseStatsX1000 { get; private set; }
     /// <summary>
     /// 成长属性
     /// </summary>
-    public readonly System.Collections.Generic.Dictionary<NumericId, long> LevelGrowthStatsX1000;
+    public System.Collections.Generic.Dictionary<NumericId, long> LevelGrowthStatsX1000 { get; private set; }
    
     public const int __ID__ = -228507794;
     public override int GetTypeId() => __ID__;
 
     public  void ResolveRef(ConfigService tables)
     {
-        
-        
-        
-        
-        
-        
-        
-        
+    }
+
+    public  void TranslateText()
+    {
     }
 
     public override string ToString()

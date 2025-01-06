@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Build;
 
 namespace GameEditor
 {
@@ -20,8 +21,9 @@ namespace GameEditor
 
             var target = EditorUserBuildSettings.activeBuildTarget;
             var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(target);
-            PlayerSettings.SetApiCompatibilityLevel(buildTargetGroup, ApiCompatibilityLevel.NET_4_6);
-            PlayerSettings.SetScriptingBackend(buildTargetGroup, ScriptingImplementation.IL2CPP);
+            var namedBuildTarget = NamedBuildTarget.FromBuildTargetGroup(buildTargetGroup);
+            PlayerSettings.SetApiCompatibilityLevel(namedBuildTarget, ApiCompatibilityLevel.NET_4_6);
+            PlayerSettings.SetScriptingBackend(namedBuildTarget, ScriptingImplementation.IL2CPP);
         }
 
         private void SetSymbols(BuildContext context)
@@ -29,7 +31,8 @@ namespace GameEditor
 
             var target = EditorUserBuildSettings.activeBuildTarget;
             var buildTargetGroup = UnityEditor.BuildPipeline.GetBuildTargetGroup(target);
-            var rawSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
+            var namedBuildTarget = NamedBuildTarget.FromBuildTargetGroup(buildTargetGroup);
+            var rawSymbols = PlayerSettings.GetScriptingDefineSymbols(namedBuildTarget);
             var symbols = rawSymbols.Split(';').Distinct().ToHashSet();
 
             // Common Basic symbols
@@ -47,7 +50,7 @@ namespace GameEditor
                 symbols.Remove("LOG_DEBUG");
             }
 
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget), string.Join(";", symbols));
+            PlayerSettings.SetScriptingDefineSymbols(namedBuildTarget, string.Join(";", symbols));
         }
     }
 }
