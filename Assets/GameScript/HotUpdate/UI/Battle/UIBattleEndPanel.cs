@@ -38,7 +38,7 @@ public partial class UIBattleEndPanel : UI2DPanel
     private void OnClickBackToHomeSceneButton()
     {
         Close();
-        SSS.Get<SceneService>().LoadSceneAsync("scene_home");
+        SSS.Get<GameStateService>().ChangeState(new GameStateHome()).Forget();
     }
 
     private void OnClickRestartButton()

@@ -23,7 +23,7 @@ namespace Game
         {
             DoStart().Forget();
         }
-        
+
         private async UniTaskVoid DoStart()
         {
             if (AppInfo.IsEditor)
@@ -31,7 +31,7 @@ namespace Game
                 // 允许后台运行
                 Application.runInBackground = true;
             }
-            
+
             // 初始化Log
             InitGameLog();
             // 初始化鼠标
@@ -157,7 +157,8 @@ namespace Game
 
             if (AppInfo.IsEditor)
             {
-                entryAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "HotUpdate");
+                entryAssembly = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "Game.HotUpdate");
+                TypeManager.Instance.AddAssembly(entryAssembly);
             }
             else
             {
@@ -173,7 +174,8 @@ namespace Game
                     var dllBytes = LoadRawFileDataSync(location);
                     GameLog.Debug($"加载HotUpdate程序集: {location}, {dllBytes.Length} bytes");
                     var ass = Assembly.Load(dllBytes);
-                    if (assName == "HotUpdate")
+                    TypeManager.Instance.AddAssembly(ass);
+                    if (assName == "Game.HotUpdate")
                     {
                         entryAssembly = ass;
                     }

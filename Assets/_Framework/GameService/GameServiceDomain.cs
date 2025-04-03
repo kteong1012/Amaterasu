@@ -1,5 +1,15 @@
 ﻿namespace Game
 {
+    [System.AttributeUsage(System.AttributeTargets.Field)]
+    public class GameServiceDomainParentAttribute : System.Attribute
+    {
+        public GameServiceDomainParentAttribute(GameServiceDomain parent)
+        {
+            Parent = parent;
+        }
+        public GameServiceDomain Parent { get; }
+    }
+
     /// <summary>
     /// 游戏服务作用域
     /// </summary>
@@ -11,12 +21,14 @@
         /// </summary>
         Game,
         /// <summary>
-        /// 登陆，登陆时创建，登出时销毁。
+        /// 账号，登陆时创建，登出时销毁。
         /// </summary>
-        Login,
+        [GameServiceDomainParent(Game)]
+        Account,
         /// <summary>
         /// 战斗，战斗开始时创建，战斗结束时销毁。
         /// </summary>
+        [GameServiceDomainParent(Account)]
         Battle
     }
 }

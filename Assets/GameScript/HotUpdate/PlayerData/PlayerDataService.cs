@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Game
 {
-    [GameService(GameServiceDomain.Login)]
+    [GameService(GameServiceDomain.Account)]
     public partial class PlayerDataService : GameService
     {
         #region Fields & Properties

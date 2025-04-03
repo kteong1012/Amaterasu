@@ -43,7 +43,7 @@ namespace Game
             GameLog.Info($"AccountService Login, LoginChannel: {LoginChannel}, PlayerId: {PlayerId}");
 
             // 进入登录域
-            await SSS.StartServices(GameServiceDomain.Login);
+            await SSS.StartServices(GameServiceDomain.Account);
 
             // 发送登录事件
             GameEntryEventsDefine.LoginSuccess.SendEventMessage(LoginChannel, playerId);
@@ -58,7 +58,7 @@ namespace Game
             GameEntryEventsDefine.LogoutSuccess.SendEventMessage(LoginChannel, PlayerId);
 
             // 退出Login领域
-            SSS.StopServices(GameServiceDomain.Login);
+            SSS.StopServices(GameServiceDomain.Account);
 
             // 切换至登录场景
             SSS.Get<GameStateService>().ChangeState(new GameStateLogin()).Forget();

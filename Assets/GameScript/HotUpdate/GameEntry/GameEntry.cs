@@ -40,8 +40,6 @@ namespace Game
                 // 关闭更新窗口
                 PatchEventDefine.ClosePatchWindow.SendEventMessage();
 
-                // 初始化SSS
-                SSS.Init(GetType().Assembly);
                 // 启动Game服务
                 await SSS.StartServices(GameServiceDomain.Game);
 
