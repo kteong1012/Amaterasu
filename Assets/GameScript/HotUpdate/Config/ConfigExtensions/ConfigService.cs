@@ -22,7 +22,7 @@ namespace Game.Cfg
             UniEvent.SendMessage(e);
         }
     }
-    
+
     [GameService(GameServiceDomain.Game)]
     public partial class ConfigService : GameService, ILocalizationHandler
     {
@@ -158,20 +158,16 @@ namespace Game.Cfg
 
         string ILocalizationHandler.GetText(string key, string defaultText)
         {
-            if (Language == Language.zh_CN)
+            if (!_textMap.TryGetValue(key, out var value))
             {
-                if (!defaultText.IsNullOrEmpty())
+                if (string.IsNullOrEmpty(defaultText))
                 {
-                    return defaultText;
+                    return $"(tbt:{key})";
                 }
                 else
                 {
-                    return key;
+                    return $"(tbt:{key}){defaultText}";
                 }
-            }
-            if (!_textMap.TryGetValue(key, out var value))
-            {
-                value = key;
             }
             return value;
         }
