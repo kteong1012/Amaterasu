@@ -19,5 +19,10 @@ namespace Game
         {
             await _gameStateMachine.ChangeState(state);
         }
+
+        public async UniTask RestartState()
+        {
+            await _gameStateMachine.RestartState();
+        }
     }
 }
