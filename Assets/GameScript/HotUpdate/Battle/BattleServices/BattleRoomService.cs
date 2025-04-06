@@ -23,7 +23,6 @@ namespace Game
 
         protected override UniTask Start()
         {
-            CreateDemo();
             return UniTask.CompletedTask;
         }
         #endregion

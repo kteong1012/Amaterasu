@@ -4,6 +4,8 @@ namespace Game
 {
     public class GameStateLogin : GameStateBase
     {
+        public override GameServiceDomain Domain => GameServiceDomain.Game;
+
         public override async UniTask Enter()
         {
             await SSS.Get<SceneService>().LoadSceneAsync("scene_login");

@@ -41,7 +41,7 @@ namespace Game
                 PatchEventDefine.ClosePatchWindow.SendEventMessage();
 
                 // 启动Game服务
-                await SSS.StartServices(GameServiceDomain.Game);
+                await SSS.SetCurrentDomain(GameServiceDomain.Game);
 
                 // 预加载Loading界面
                 PreloadLoadingPanel();

@@ -6,7 +6,7 @@ namespace Game
     {
         private GameStateBase _currentState;
 
-        public async UniTask ChangeState<T>(T state) where T : GameStateBase
+        public async UniTask ChangeState<T>(T state, bool force = false) where T : GameStateBase
         {
             if (_currentState != null)
             {
@@ -14,6 +14,8 @@ namespace Game
             }
             var newState = state;
             _currentState = newState;
+            var domain = newState.Domain;
+            await SSS.SetCurrentDomain(domain, force);
             await _currentState.Enter();
             if (_currentState.NextState != null)
             {

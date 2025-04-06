@@ -41,6 +41,7 @@ namespace Game
 
         private async UniTaskVoid UpdateViewAsync()
         {
+            await UniTask.CompletedTask;
         }
 
         private void OnPlayerData()

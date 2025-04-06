@@ -13,6 +13,7 @@ namespace Game
         {
             public GameServiceDomain Domain { get; }
             public DomainTreeNode Parent { get; private set; }
+            public int Depth => Parent == null ? 0 : Parent.Depth + 1;
             private List<DomainTreeNode> _children = new List<DomainTreeNode>();
 
 
@@ -37,6 +38,9 @@ namespace Game
         private static Dictionary<GameServiceDomain, bool> _domainActive = new Dictionary<GameServiceDomain, bool>();
         private static Dictionary<GameServiceDomain, List<GameService>> _services = new Dictionary<GameServiceDomain, List<GameService>>();
         private static Dictionary<GameServiceDomain, DomainTreeNode> _domainTree = new Dictionary<GameServiceDomain, DomainTreeNode>();
+        public static GameServiceDomain CurrentDomain { get; private set; }
+
+        internal static IEnumerable<GameServiceDomain> DomainActive => _domainActive.Keys;
 
         static SSS()
         {
@@ -148,39 +152,59 @@ namespace Game
             return result;
         }
 
-        private static void TryStopSibling(GameServiceDomain serviceDomain)
+        private static DomainTreeNode GetCommonAncestor(DomainTreeNode node1, DomainTreeNode node2)
         {
-            var node = GetDomainTreeNode(serviceDomain);
-            var parentNode = node.Parent;
-            if (parentNode == null)
+            while (node1 != node2)
             {
-                return;
-            }
-
-            foreach (var child in parentNode.GetChildren())
-            {
-                if (child.Domain == serviceDomain)
+                if (node1.Depth > node2.Depth)
                 {
-                    continue;
+                    node1 = node1.Parent;
                 }
-                StopServices(child.Domain);
+                else if (node2.Depth > node1.Depth)
+                {
+                    node2 = node2.Parent;
+                }
+                else
+                {
+                    node1 = node1.Parent;
+                    node2 = node2.Parent;
+                }
             }
+            return node1;
         }
 
-        public static async UniTask StartServices(GameServiceDomain serviceDomain)
+        public static async UniTask SetCurrentDomain(GameServiceDomain serviceDomain, bool force = false)
         {
-            if (!_domainTypes.TryGetValue(serviceDomain, out var domainTypes))
-            {
-                return;
-            }
             // check if parent domain is active
             if (!IsParentDomainActive(serviceDomain, true))
             {
                 return;
             }
 
-            // check if sibling domain is active, if so, stop it
-            TryStopSibling(serviceDomain);
+            var currentNode = GetDomainTreeNode(CurrentDomain);
+            var newNode = GetDomainTreeNode(serviceDomain);
+            if (currentNode == newNode && !force)
+            {
+                return;
+            }
+
+            var commonAncestor = GetCommonAncestor(currentNode, newNode);
+            while (currentNode != commonAncestor)
+            {
+                StopDomain(currentNode.Domain);
+                currentNode = currentNode.Parent;
+            }
+
+            await StartDomain(serviceDomain);
+            CurrentDomain = serviceDomain;
+        }
+
+        private static async UniTask StartDomain(GameServiceDomain serviceDomain)
+        {
+            if (!_domainTypes.TryGetValue(serviceDomain, out var domainTypes))
+            {
+                return;
+            }
 
             if (!_services.TryGetValue(serviceDomain, out var services))
             {
@@ -212,7 +236,7 @@ namespace Game
             await UniTask.WhenAll(postInitTasks);
         }
 
-        public static void StopServices(GameServiceDomain serviceDomain)
+        private static void StopDomain(GameServiceDomain serviceDomain)
         {
             if (!_services.TryGetValue(serviceDomain, out var services))
             {
@@ -223,7 +247,7 @@ namespace Game
             var node = GetDomainTreeNode(serviceDomain);
             foreach (var child in node.GetChildren())
             {
-                StopServices(child.Domain);
+                StopDomain(child.Domain);
             }
             foreach (var service in services)
             {
@@ -238,7 +262,7 @@ namespace Game
 
         public static void StopAll()
         {
-            StopServices(GameServiceDomain.Game);
+            StopDomain(GameServiceDomain.Game);
         }
 
         public static void Update()

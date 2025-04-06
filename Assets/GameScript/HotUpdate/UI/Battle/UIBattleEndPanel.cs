@@ -43,7 +43,7 @@ public partial class UIBattleEndPanel : UI2DPanel
 
     private void OnClickRestartButton()
     {
-        SSS.Get<BattleRoomService>().CreateDemo();
+        SSS.Get<GameStateService>().ChangeState(new GameStateBattle()).Forget();
         Close();
     }
 }
